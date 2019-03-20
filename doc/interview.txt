@@ -8,3 +8,18 @@ Ein Patient kann mehrere Ärzte haben evt. auch in mehreren Kliniken sein. Wie w
 Wie wird überprüft ob der Patient seine Medikamente einnimmt
 Gibt es ein Notfallmanagement, falls ja wie sieht dieses aus
 Informationsveranstaltung für Angehörige oder änliches
+
+// Hutzli
+Wie wird die Stärke der Störung bestimmt? (ICD-10?)
+Für welchen Schaden können medizinische Fachkräfte haften?
+Was versprechen die mezinischen Fachkräften den Patienten? (jederzeit erreichbar, Aufbewahrung der Daten, ...) 
+Wie lange werden die Patientendaten aufbewahrt?
+Wer hat alles Einsicht in die Patientendaten?
+Mit wie vielen verschiedenen Patienten beschäftigt sich eine Fachkraft? (pro Jahr/Monat)
+Wie lange dauert eine Behandlung im Normalfall?
+Kann die Benutzung eines Tools für Patienten eine reflektierende oder verstörende Wirkung hervorrufen?
+Wie gut ist das Personal mit IT-Systemen vertraut?
+Wer ist für die Computer Infrastuktur verantwortlich?
+Lassen sich Programme auf den Arztrechnern installieren?
+Welche Betriebsysteme laufen auf den Rechnern?
+
