@@ -6,7 +6,7 @@ Anwesend: ALLE
   * Sophie: Möglicher Interviewpartner abklären OPEN
 
 ### 20.03.19 
-Anwesend: Haug, Hutzli, Kramer, Meyer, Kramer, Schwärzler
+Anwesend: Haug, Hutzli, Kramer, Meyer, Schwärzler
 * Interview per Skype auf Freitag 22.03. angesetzt (noch nicht bestätigt)
 * Interview Fragen ergänzt
 * Design Thinking: Scoping & Research
