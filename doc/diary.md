@@ -10,3 +10,11 @@ Anwesend: Haug, Hutzli, Kramer, Meyer, Schwärzler
 * Interview per Skype auf Freitag 22.03. angesetzt (noch nicht bestätigt)
 * Interview Fragen ergänzt
 * Design Thinking: Scoping & Research
+* Todos:
+  * Alle: Interview planen und recherche
+
+### 22.03.19
+Anwesend: Kramer, Meyer, Schwärzler
+* Design Thinking: User Stories, Recherche, Use case, Synthesize
+* Todos:
+  * 
