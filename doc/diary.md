@@ -14,7 +14,8 @@ Anwesend: Haug, Hutzli, Kramer, Meyer, Schwärzler
   * Alle: Interview planen und recherche
 
 ### 22.03.19
-Anwesend: Kramer, Meyer, Schwärzler
+Anwesend: Kramer, Meyer, Schwärzler, Haug, Hutzli
 * Design Thinking: User Stories, Recherche, Use case, Synthesize
+* Interview Fragen besprochen
 * Todos:
-  * 
+  * Alle: Interview am 25.03 20:00 durchführen
