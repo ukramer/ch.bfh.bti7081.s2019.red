@@ -1,47 +1,140 @@
-Vermutlich als Einstiegsfrage gut:
-Wo arbeiten Sie aktuell und inwiefern hatten Sie in Ihrer Berufslaufbahn mit Zwangsstörungen zu tun.
+Notizen - noch auszuformulieren:
 
+Vermutlich als Einstiegsfrage gut:
+- Wo arbeiten Sie aktuell und inwiefern hatten Sie in Ihrer Berufslaufbahn mit Zwangsstörungen zu tun.
+Wissenschaftlerin und Psychotherapeutin
+Universitäre Psychiatrische Kliniken 
+20 Jahre Psychotherapeutin
+Doktorarbeit: Angststörungen
 
 Therapieformen:
 
-Wie sehen mögliche Behanldungstherapien aus
-->Werden in der Schweiz Patienten auch mit der ERM Therapie behandelt?
-->Was halten Sie von dieser Therapieform?
-Wie lange dauert eine Behandlung im Normalfall?
-Kommt es oft vor, dass Patienten rückfällig werden?
+- Wie sehen mögliche Behanldungstherapien aus
+Verhaltenstherapie
+Gedanken auf Metaebene behandeln
+Oft Medikamentös
+Ev. Hirnimplantate, aber nicht ihr Feld
 
+ ->Werden in der Schweiz Patienten auch mit der ERM Therapie behandelt?
+Verhaltenstherapie
+In den 80/90er aus den USA
+Modelle von Angststörungen wurden von USA auf DE gebracht
+Auch implementationen in VR
+
+ ->Was halten Sie von dieser Therapieform?
+
+
+- Wie lange dauert eine Behandlung im Normalfall?
+Allgemein schwierig behandelbar
+Phobien 90-95% Erfolgsquote
+Zwangsstörungen nur 60% Erfolgsquote
+--> Längere Behandlung als bei anderen Störungen
+Bei Erfolg kann es aber auch sehr schnell gehen
+
+- Kommt es oft vor, dass Patienten rückfällig werden?
+Nachbehandlung nimmt oft Überhand aufgrund von Leere und Einsamkeit
+Bis zu 4hwo plötzlich pro Tag mehr Zeit zur Verfügung stehen
+--> Patienten werden darauf angesprochen, was sie in der gewonnen Zeit machen wollen
 
 Medikation:
 
-Welche Medikamente können eingenommen werden
+- Welche Medikamente können eingenommen werden
+Sehr hoch verschriebene Anti-Depressiva
+Nicht ihr Feld
 
 
 Kommunikation, Beziehung Arzt/Patient allg.: 
 
-Welche Daten vom Patienten werden aufgenommen
+- Welche Daten vom Patienten werden aufgenommen
+Alle Informationen zu Medikamenten
+
  -> Welche Infos werden nach den Sitzungen mit einem Patient aufgenommen
-Wie sieht die Kommunikation mit einem Patienten  aus
-Ein Patient kann mehrere Ärzte haben evt. auch in mehreren Kliniken sein. Wie wird dies organisiert
-Wie wird überprüft ob der Patient seine Medikamente einnimmt
-Gibt es ein Notfallmanagement, falls ja wie sieht dieses aus
-Informationsveranstaltung für Angehörige oder änliches
-Was versprechen die mezinischen Fachkräften den Patienten? (jederzeit erreichbar, Aufbewahrung der Daten, ...)
-Mit wie vielen verschiedenen Patienten beschäftigt sich eine Fachkraft? (pro Jahr/Monat)
-Gibt es Begleitung/Veranstaltung für Angehörige?
+Persönlich schreibt sie wenig auf
+--> Nur Titel (zB Krankheitsmodell, Vorbereitung Exposition, ...)
+Es sei denn, es treten Schwierigkeiten auf, welche für künftige Sitzungen nötig wären 
+ 
+ -> Exposition
+Infos an Patienten: Wie entstehten die Störungen? Behandlungsmehthoden, Experimente
+zB Weisser Eisbär Experiment: 1min lang nicht an weisse Eisbären denken
+Was führt zu Störungen? Angewöhnung - wird von selber wieder weggehen -> Erklärung des Krankheitsmodells anhand ihrer Erkrankung
+Flooding: Schwere Experimente zu beginn (frontale exposition) vs leichter einstieg -> Der Patient entscheidet mit
+Auch Hausbesuche sind häufig
+Bekanntes Umfeld
+Konfrontation um Gefühle
+Auch kurzfristiges verstärken der Gefühle macht sinn
+Wiederholen über mehrere Tage, da die Handlungen ja auch regelmässig sind
+Versuchen die Handlungen zu verkürzen
+Patienten wieder beruhigen und im Prozess begleiten
+
+- Wie sieht die Kommunikation mit einem Patienten  aus
+Oft Whatsapp, SMS (insbesondere bei Jugendlichen)
+Auch Coaching über Whatsapp, Email, Telefon bei auftreten einer Störung
+--> Risiko Whatsapp muss Mitgeteilt werden (Grenzen, Nutzen --> Wird dem Patienten überlassen)
+--> Kritische Seite selten Patient. Eher Graubereich Versicherung (Ist die Kommunikation versichert? Abrechnung der Zeit - gibt noch keine Gesetze)
+
+- Ein Patient kann mehrere Ärzte haben evt. auch in mehreren Kliniken sein. Wie wird dies organisiert
+
+
+- Wie wird überprüft ob der Patient seine Medikamente einnimmt
+Nicht bekannt -> Arzt
+
+- Gibt es ein Notfallmanagement, falls ja wie sieht dieses aus
+Ganz klar
+Notfallstelle muss dem Patienten bekannt sein
+Whatsapp kann dafür genutzt werden, hat aber auch Risiken (Keine schnelle Antwort, Berufswechsel, ...)
+
+- Informationsveranstaltung für Angehörige oder änliches
+Auf jedenfall ist eine Begleitung der Angehörigen nötig
+Psychoedukation
+Sehr stark involviert
+
+- Was versprechen die mezinischen Fachkräften den Patienten? (jederzeit erreichbar, Aufbewahrung der Daten, ...)
+
+
+- Mit wie vielen verschiedenen Patienten beschäftigt sich eine Fachkraft? (pro Jahr/Monat)
+Für sie schwirig zu beantworten
+Nur 20% Psychotherapeutin (Rest Wissenschaftlerin)
+5-8 Patienten pro Tag (25-40 pro Woche) bei 100%
+Je nach usätzlicher Aufwand (Berichte, Kommunikation)
+
+
+- Gibt es Begleitung/Veranstaltung für Angehörige?
 
 
 Datenverwaltung/IT:
 
-Kann die Benutzung eines Tools für Patienten eine reflektierende oder verstörende Wirkung hervorrufen?
-Wie gut ist das Personal mit IT-Systemen vertraut?
-Wer ist für die Computer Infrastuktur verantwortlich?
-Lassen sich Programme auf den Arztrechnern installieren?
-Welche Betriebsysteme laufen auf den Rechnern?
+- Kann die Benutzung eines Tools für Patienten eine reflektierende oder verstörende Wirkung hervorrufen?
+
+
+- Wie gut ist das Personal mit IT-Systemen vertraut?
+
+
+- Wer ist für die Computer Infrastuktur verantwortlich?
+
+
+- Lassen sich Programme auf den Arztrechnern installieren?
+
+
+- Welche Betriebsysteme laufen auf den Rechnern?
 
 
 Rechtliches/Verwaltung allg.
 
-Wie wird die Stärke der Störung bestimmt? (ICD-10?)
-Für welchen Schaden können medizinische Fachkräfte haften?
-Wie lange werden die Patientendaten aufbewahrt?
-Wer hat alles Einsicht in die Patientendaten?
+- Wie wird die Stärke der Störung bestimmt? (ICD-10?)
+Anzahl der problematischen Gedanken
+Stärke der Gefühle
+Tagebuchführung
+
+- Für welchen Schaden können medizinische Fachkräfte haften?
+
+
+- Wie lange werden die Patientendaten aufbewahrt?
+Klinik hat ein Tool (Sehr Benutzerunfreundlich!*)
+Verlauf und Abrechnung
+Aufbewahrung unbekannt
+*Fall finden ist schwierig (zB Doppelname muss eindeutig gesucht werden, ein Name reicht nicht); Zu viele Klicks (Verlauf); Akte sind nicht gut ersichtlich; Startet andere App; Neues Login; Auswahl aus über 70 Kategorien (Meistens werden aber nur 5 benötigt), Unnötige Kategorien (Für ganzens Medizinisches Personal); Mehrere Fälle müssen pro Patient eröffnet werden; Planen und durchführen muss zwingend gemacht werden; Abrechung über ein Formular; Zeit eintragen mühsam
+
+- Wer hat alles Einsicht in die Patientendaten?
+Alle in der Klinik haben Einsicht
+Macht Übernehme praktisch
+Vertrauliche Informationen können geschützt werden
