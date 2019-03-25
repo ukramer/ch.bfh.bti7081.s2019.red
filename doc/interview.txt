@@ -1,28 +1,43 @@
-Was gibt es für Arten von Zwangstörungen
+
+Therapieformen:
+
 Wie sehen mögliche Behanldungstherapien aus
+->Werden in der Schweiz Patienten auch mit der ERM Therapie behandelt?
+->Was halten Sie von dieser Therapieform?
+Wie lange dauert eine Behandlung im Normalfall?
+Kommt es oft vor, dass Patienten rückfällig werden?
+
+
+Medikation:
+
 Welche Medikamente können eingenommen werden
 Welche Daten vom Patienten werden aufgenommen
- - Welche Infos werden nach den Sitzungen mit einem Patient aufgenommen
-Wie sieht die Kommunikation mit einem Patienten aus
+ -> Welche Infos werden nach den Sitzungen mit einem Patient aufgenommen
+
+Kommunikation, Beziehung Arzt/Patient allg.: 
+
+sieht die Kommunikation mit einem Patienten  aus
 Ein Patient kann mehrere Ärzte haben evt. auch in mehreren Kliniken sein. Wie wird dies organisiert
 Wie wird überprüft ob der Patient seine Medikamente einnimmt
 Gibt es ein Notfallmanagement, falls ja wie sieht dieses aus
 Informationsveranstaltung für Angehörige oder änliches
-
-// Hutzli
-Wie wird die Stärke der Störung bestimmt? (ICD-10?)
-Für welchen Schaden können medizinische Fachkräfte haften?
-Was versprechen die mezinischen Fachkräften den Patienten? (jederzeit erreichbar, Aufbewahrung der Daten, ...) 
-Wie lange werden die Patientendaten aufbewahrt?
-Wer hat alles Einsicht in die Patientendaten?
+Was versprechen die mezinischen Fachkräften den Patienten? (jederzeit erreichbar, Aufbewahrung der Daten, ...)
 Mit wie vielen verschiedenen Patienten beschäftigt sich eine Fachkraft? (pro Jahr/Monat)
-Wie lange dauert eine Behandlung im Normalfall?
+Gibt es Begleitung/Veranstaltung für Angehörige?
+
+
+Datenverwaltung/IT:
+
 Kann die Benutzung eines Tools für Patienten eine reflektierende oder verstörende Wirkung hervorrufen?
 Wie gut ist das Personal mit IT-Systemen vertraut?
 Wer ist für die Computer Infrastuktur verantwortlich?
 Lassen sich Programme auf den Arztrechnern installieren?
 Welche Betriebsysteme laufen auf den Rechnern?
 
-//Haug
-Werden in der Schweiz Patienten auch mit der ERM Therapie behandelt?
-Was halten Sie von dieser Therapieform?
+
+Rechtliches/Verwaltung allg.
+
+Wie wird die Stärke der Störung bestimmt? (ICD-10?)
+Für welchen Schaden können medizinische Fachkräfte haften?
+Wie lange werden die Patientendaten aufbewahrt?
+Wer hat alles Einsicht in die Patientendaten?
