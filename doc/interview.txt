@@ -11,12 +11,13 @@ Kommt es oft vor, dass Patienten rückfällig werden?
 Medikation:
 
 Welche Medikamente können eingenommen werden
-Welche Daten vom Patienten werden aufgenommen
- -> Welche Infos werden nach den Sitzungen mit einem Patient aufgenommen
+
 
 Kommunikation, Beziehung Arzt/Patient allg.: 
 
-sieht die Kommunikation mit einem Patienten  aus
+Welche Daten vom Patienten werden aufgenommen
+ -> Welche Infos werden nach den Sitzungen mit einem Patient aufgenommen
+Wie sieht die Kommunikation mit einem Patienten  aus
 Ein Patient kann mehrere Ärzte haben evt. auch in mehreren Kliniken sein. Wie wird dies organisiert
 Wie wird überprüft ob der Patient seine Medikamente einnimmt
 Gibt es ein Notfallmanagement, falls ja wie sieht dieses aus
