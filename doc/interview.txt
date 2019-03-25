@@ -23,3 +23,6 @@ Wer ist für die Computer Infrastuktur verantwortlich?
 Lassen sich Programme auf den Arztrechnern installieren?
 Welche Betriebsysteme laufen auf den Rechnern?
 
+//Haug
+Werden in der Schweiz Patienten auch mit der ERM Therapie behandelt?
+Was halten Sie von dieser Therapieform?
