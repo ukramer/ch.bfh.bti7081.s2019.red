@@ -19,3 +19,9 @@ Anwesend: Kramer, Meyer, Schwärzler, Haug, Hutzli
 * Interview Fragen besprochen
 * Todos:
   * Alle: Interview am 25.03 20:00 durchführen
+
+### 25.03.19
+Anwesend: Kramer, Meyer, Schwärzler, Haug, Hutzli
+* Interview mit Frau Noortje Vriends
+* Todos:
+  * Alle: Dokument gem. Todos vervollständigen
