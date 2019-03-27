@@ -1,6 +1,6 @@
 # Diary
 ### 15.03.19 
-Anwesend: ALLE
+Anwesend: Alle
 * interview fragen definiert 20min
 * Todos:
   * Sophie: Möglicher Interviewpartner abklären OPEN
@@ -14,7 +14,7 @@ Anwesend: Haug, Hutzli, Kramer, Meyer, Schwärzler
   * Alle: Interview planen und recherche
 
 ### 22.03.19
-Anwesend: Kramer, Meyer, Schwärzler, Haug, Hutzli
+Anwesend: Alle
 * Design Thinking: User Stories, Recherche, Use case, Synthesize
 * Interview Fragen besprochen
 * Todos:
@@ -25,3 +25,10 @@ Anwesend: Kramer, Meyer, Schwärzler, Haug, Hutzli
 * Interview mit Frau Noortje Vriends
 * Todos:
   * Alle: Dokument gem. Todos vervollständigen
+  
+### 27.03.19
+Anwesend: Kramer, Cyrill, Hutzli, Haug
+* Non-Functinal Requirements definiert
+* Vorbereitung Presentation
+* Todos:
+  * Hutzli: Präsentation durchführen 29.03.19
