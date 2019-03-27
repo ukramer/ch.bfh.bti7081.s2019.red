@@ -27,7 +27,7 @@ Anwesend: Kramer, Meyer, Schwärzler, Haug, Hutzli
   * Alle: Dokument gem. Todos vervollständigen
   
 ### 27.03.19
-Anwesend: Kramer, Cyrill, Hutzli, Haug
+Anwesend: Kramer, Cyrill
 * Non-Functinal Requirements definiert
 * Vorbereitung Presentation
 * Todos:
