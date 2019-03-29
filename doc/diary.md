@@ -27,8 +27,15 @@ Anwesend: Kramer, Meyer, Schwärzler, Haug, Hutzli
   * Alle: Dokument gem. Todos vervollständigen
   
 ### 27.03.19
-Anwesend: Kramer, Cyrill, Haug, Hutzli
+Anwesend: Kramer, Cyrill, Haug, Hutzli, Schwärzler
 * Non-Functinal Requirements definiert
 * Vorbereitung Presentation
 * Todos:
   * Hutzli, Haug: Präsentation durchführen 29.03.19
+
+### 29.03.19
+Anwesend: Kramer, Cyrill, Haug, Hutzli, Schwärzler
+* Dokumentation Design Thinking in das Repository gepusht
+* Präsentation Design Thinking gehalten
+* Todos:
+  * Alle: Task 2 beginnen
