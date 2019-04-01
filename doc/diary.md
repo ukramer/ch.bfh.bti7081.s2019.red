@@ -41,7 +41,7 @@ Anwesend: Kramer, Cyrill, Haug, Hutzli, Schwärzler
   * Alle: Task 2 beginnen
 
 ### 01.04.2019
-Anwesend: Kramer, Cyrill, Haug, Hutzli
+Anwesend: Kramer, Cyrill, Haug, Hutzli, Blaser
  * Dokumentation Requirements begonnen
    * Dokumentenstruktur erstellt
    * Use Cases definiert
@@ -51,6 +51,6 @@ Anwesend: Kramer, Cyrill, Haug, Hutzli
  * Todos:
    * Hutzli: Use-Case Diagram
    * Kramer & Meyer: Functional & Non-Functional System Requirements fertig stellen
-   * Steve: System Models
+   * Blaser: System Models
    * Haug & Schwärzler: Testing
  
