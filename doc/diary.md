@@ -39,3 +39,18 @@ Anwesend: Kramer, Cyrill, Haug, Hutzli, Schwärzler
 * Präsentation Design Thinking gehalten
 * Todos:
   * Alle: Task 2 beginnen
+
+### 01.04.2019
+Anwesend: Kramer, Cyrill, Haug, Hutzli
+ * Dokumentation Requirements begonnen
+   * Dokumentenstruktur erstellt
+   * Use Cases definiert
+   * Systemarchitektur aufgezeichnet
+   * Functional and Non-Functional System Requirements begonnen
+ * Feedback zu Design Thinking erhalten
+ * Todos:
+   * Hutzli: Use-Case Diagram
+   * Kramer & Meyer: Functional & Non-Functional System Requirements fertig stellen
+   * Steve: System Models
+   * Haug & Schwärzler: Testing
+ 
