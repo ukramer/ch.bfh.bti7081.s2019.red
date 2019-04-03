@@ -56,7 +56,7 @@ Anwesend: Kramer, Cyrill, Haug, Hutzli, Blaser
  
 ### 03.04.19
 Anwesend: Kramer, Cyrill, Haug, Hutzli, Schwärzler
-* Dokumentation Requirements vortgefahren
+* Dokumentation Requirements fortgefahren
   * Use Case Diagram gezeichnet
   * System Model erstellt
   * Testing spezifiziert
