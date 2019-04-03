@@ -40,7 +40,7 @@ Anwesend: Kramer, Cyrill, Haug, Hutzli, Schwärzler
 * Todos:
   * Alle: Task 2 beginnen
 
-### 01.04.2019
+### 01.04.19
 Anwesend: Kramer, Cyrill, Haug, Hutzli, Blaser
  * Dokumentation Requirements begonnen
    * Dokumentenstruktur erstellt
@@ -54,3 +54,13 @@ Anwesend: Kramer, Cyrill, Haug, Hutzli, Blaser
    * Blaser: System Models
    * Haug & Schwärzler: Testing
  
+### 03.04.19
+Anwesend: Kramer, Cyrill, Haug, Hutzli, Schwärzler
+* Dokumentation Requirements vortgefahren
+  * Use Case Diagram gezeichnet
+  * System Model erstellt
+  * Testing spezifiziert
+  * Diverse Ergänzungen vorgenommen
+* Todos:
+  * Alle: Feinschliff Dokumentation Requirements
+  * Schwärzler & Blaser: Präsentation vorbereiten
