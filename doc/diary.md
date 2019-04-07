@@ -63,4 +63,4 @@ Anwesend: Kramer, Cyrill, Haug, Hutzli, Schwärzler
   * Diverse Ergänzungen vorgenommen
 * Todos:
   * Alle: Feinschliff Dokumentation Requirements
-  * Schwärzler & Blaser: Präsentation vorbereiten
+  * Schwärzler & Hutzli: Präsentation durchführen 08.04.2019
