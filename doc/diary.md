@@ -35,7 +35,7 @@ Anwesend: Kramer, Cyrill, Haug, Hutzli, Schwärzler
 
 ### 29.03.19
 Anwesend: Kramer, Cyrill, Haug, Hutzli, Schwärzler
-* Dokumentation Design Thinking in das Repository gepusht
+* Dokumentation Design Thinking in das Repository gepusht doc\task01
 * Präsentation Design Thinking gehalten
 * Todos:
   * Alle: Task 2 beginnen
@@ -68,6 +68,13 @@ Anwesend: Kramer, Cyrill, Haug, Hutzli, Schwärzler
 ### 05.04.19
 Anwesend: Alle
 * Schwärzler & Hutzli: Präsentation gehalten
-* Dokumentation Requirements in das Repository gepusht
+* Dokumentation Requirements in das Repository gepusht doc\task02
 * Todos:
   * Alle: Task 3 beginnen
+
+### 10.04.19
+Anwesend: Alle
+* Dokument Requirements der Gruppe "green" analyisert und bewertet
+* Dokument Requirements-Review in das Repository gepusht doc\task03
+* Todos
+  * Alle: Task 4 beginnen
