@@ -27,21 +27,21 @@ Anwesend: Kramer, Meyer, Schwärzler, Haug, Hutzli
   * Alle: Dokument gem. Todos vervollständigen
   
 ### 27.03.19
-Anwesend: Kramer, Cyrill, Haug, Hutzli, Schwärzler
+Anwesend: Kramer, Meyer, Haug, Hutzli, Schwärzler
 * Non-Functinal Requirements definiert
 * Vorbereitung Presentation
 * Todos:
   * Hutzli, Haug: Präsentation durchführen 29.03.19
 
 ### 29.03.19
-Anwesend: Kramer, Cyrill, Haug, Hutzli, Schwärzler
+Anwesend: Kramer, Meyer, Haug, Hutzli, Schwärzler
 * Dokumentation Design Thinking in das Repository gepusht doc\task01
 * Präsentation Design Thinking gehalten
 * Todos:
   * Alle: Task 2 beginnen
 
 ### 01.04.19
-Anwesend: Kramer, Cyrill, Haug, Hutzli, Blaser
+Anwesend: Kramer, Meyer, Haug, Hutzli, Blaser
  * Dokumentation Requirements begonnen
    * Dokumentenstruktur erstellt
    * Use Cases definiert
@@ -55,7 +55,7 @@ Anwesend: Kramer, Cyrill, Haug, Hutzli, Blaser
    * Haug & Schwärzler: Testing
  
 ### 03.04.19
-Anwesend: Kramer, Cyrill, Haug, Hutzli, Schwärzler
+Anwesend: Kramer, Meyer, Haug, Hutzli, Schwärzler
 * Dokumentation Requirements fortgefahren
   * Use Case Diagram gezeichnet
   * System Model erstellt
