@@ -65,8 +65,8 @@ Anwesend: Kramer, Cyrill, Haug, Hutzli, Schwärzler
   * Alle: Feinschliff Dokumentation Requirements
   * Schwärzler & Hutzli: Präsentation durchführen 08.04.2019
   
-  ### 05.04.19
-  Anwesend: Alle
-  * Schwärzler & Hutzli: Präsentation gehalten
-  * Todos:
-   * Alle: Task 3 beginnen
+ ### 05.04.19
+ Anwesend: Alle
+ * Schwärzler & Hutzli: Präsentation gehalten
+ * Todos:
+  * Alle: Task 3 beginnen
