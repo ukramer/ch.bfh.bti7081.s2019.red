@@ -68,5 +68,6 @@ Anwesend: Kramer, Cyrill, Haug, Hutzli, Schwärzler
 ### 05.04.19
 Anwesend: Alle
 * Schwärzler & Hutzli: Präsentation gehalten
+* Dokumentation Requirements in das Repository gepusht
 * Todos:
   * Alle: Task 3 beginnen
