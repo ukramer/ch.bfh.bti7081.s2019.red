@@ -78,3 +78,11 @@ Anwesend: Alle
 * Dokument Requirements-Review in das Repository gepusht doc\task03
 * Todos
   * Alle: Task 4 beginnen
+  
+### 24.04.19
+Anwesend: Alle
+* Erste Version Domain Model erstellt
+* Ein Sequence Diagram erstellt
+* Todos:
+  * Alle: Zweites Sequence Diagramm erstellen
+  * Alle: Klassendiagramm erstellen
