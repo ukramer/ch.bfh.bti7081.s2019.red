@@ -86,3 +86,21 @@ Anwesend: Alle
 * Todos:
   * Alle: Zweites Sequence Diagramm erstellen
   * Alle: Klassendiagramm erstellen
+  
+### 26.04.19
+Anwesend: Alle
+* Domain Model und Sequence Diagramm fertiggestellt
+* Todos:
+  * Alle: Präsentation vorbereiten
+  
+### 29.04.19
+Anwesend: Alle
+* Hutzli & Schwärzler: Präsentation gehalten
+* Todos:
+  * Alle: Nächster Task fassen
+
+### 01.05.19
+Anwesend: alle
+* Task 5 & 6 aufteilen
+* Todos:
+  * Alle:
