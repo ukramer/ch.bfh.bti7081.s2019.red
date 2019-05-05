@@ -1,8 +1,9 @@
 package ch.bfh.red.backend.services;
 
-import ch.bfh.red.backend.models.Therapist;
 import ch.bfh.red.backend.repositories.TherapistRepository;
 import ch.bfh.red.backend.models.SearchTherapist;
+import ch.bfh.red.backend.models.Therapist;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

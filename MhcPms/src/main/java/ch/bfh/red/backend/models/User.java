@@ -2,7 +2,7 @@ package ch.bfh.red.backend.models;
 
 import java.io.Serializable;
 
-public class User extends Person implements Serializable {
+public class User extends Person {
 	private final String username;
 	private final String password;
 

@@ -1,8 +1,6 @@
 package ch.bfh.red.backend.models;
 
-import java.io.Serializable;
-
-public class Person implements Serializable {
+public class Person{
 	private final String firstName;
 	private final String lastName;
 	private final Address address;

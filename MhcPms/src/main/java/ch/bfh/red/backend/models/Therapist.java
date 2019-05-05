@@ -1,6 +1,7 @@
 package ch.bfh.red.backend.models;
 
 import javax.persistence.*;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
