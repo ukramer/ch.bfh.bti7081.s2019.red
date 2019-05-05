@@ -20,7 +20,7 @@ public class Therapy implements Serializable {
 	private Collection<GroupSession> groupSessions;
 	private Collection<PatientNote> patientNotes;
 	private Collection<TherapistNote> therapistNotes;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -28,12 +28,15 @@ public class Therapy implements Serializable {
 	public Date getStartDate() {
 		return startDate;
 	}
+
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
+
 	public boolean isFinished() {
 		return finished;
 	}
+
 	public void setFinished(boolean finished) {
 		this.finished = finished;
 	}

@@ -1,6 +1,6 @@
 package ch.bfh.red.backend.models;
 
-public class Person{
+public class Person {
 	private final String firstName;
 	private final String lastName;
 	private final Address address;

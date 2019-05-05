@@ -21,7 +21,7 @@ public abstract class Note implements Serializable {
 		this.text = text;
 		this.visibility = visibility;
 	}
-	
+
 	public Note(Date date, String text) {
 		this.date = date;
 		this.text = text;

@@ -21,12 +21,13 @@ public class Therapist extends User implements Serializable {
 		this.id = id;
 	}
 
-	public Therapist(long id, String username, String password, AcademicTitle academicTitle, String firstName, String lastName, Address address) {
+	public Therapist(long id, String username, String password, AcademicTitle academicTitle, String firstName,
+			String lastName, Address address) {
 		super(username, password, firstName, lastName, address);
 		this.id = id;
 		this.academicTitle = academicTitle;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
