@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class Therapist extends User implements Serializable {
 	@GeneratedValue
 	private Long id;
 	private AcademicTitle academicTitle;
+	private Collection<Therapy> therapies;
 
 	public Therapist(long id, String username, String password, String firstName, String lastName, Address address) {
 		super(username, password, firstName, lastName, address);
@@ -29,15 +31,23 @@ public class Therapist extends User implements Serializable {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public List<Therapist> search(SearchTherapist search) {
 		if (search.getId() != null) {
 			if (!id.equals(search.getId()))
 				return Collections.emptyList();
 		}
 		return Arrays.asList(this);
+	}
+
+	public AcademicTitle getAcademicTitle() {
+		return academicTitle;
+	}
+
+	public void setAcademicTitle(AcademicTitle academicTitle) {
+		this.academicTitle = academicTitle;
+	}
+
+	public Collection<Therapy> getTherapies() {
+		return therapies;
 	}
 }

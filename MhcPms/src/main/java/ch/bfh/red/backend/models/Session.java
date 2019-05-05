@@ -31,6 +31,10 @@ public abstract class Session implements Serializable {
 		this.sessionType = sessionType;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
 	public Date getStartDate() {
 		return startDate;
 	}

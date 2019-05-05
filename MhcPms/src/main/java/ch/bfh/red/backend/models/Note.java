@@ -27,6 +27,10 @@ public abstract class Note implements Serializable {
 		this.text = text;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
 	public Date getDate() {
 		return date;
 	}
