@@ -100,7 +100,20 @@ Anwesend: Alle
   * Alle: Nächster Task fassen
 
 ### 01.05.19
-Anwesend: alle
-* Task 5 & 6 aufteilen
+Anwesend: Alle
+* Task 5 & 6 aufteilen, Scrum Master bestimmen
+* Task 5 Diagramme erarbeitet
 * Todos:
-  * Alle:
+  * Alle: Diagramme für Task 5 reviewen, Präsentation vorbereiten
+  * Blaser: Scrum Backlog
+
+### 03.05.19
+Anwesend: Alle
+* Setup Vaadin, Maven Project und IDE
+* Scrum Sprint 1 erfassen, aufteilen und beginnen
+* Todos:
+  * Alle: Scrum Sprint 1
+ 
+ ### 06.05.19
+ Anwesend: Blaser, Schwärzler
+ * Blaser & Schwärzler Präsentation Task 5 und 6 gehalten
