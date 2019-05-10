@@ -1,6 +1,7 @@
 package ch.bfh.red.ui.components;
 
 import ch.bfh.red.ui.views.DashboardView;
+import ch.bfh.red.ui.views.EditPatientView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.dom.ElementFactory;
@@ -11,7 +12,7 @@ import com.vaadin.flow.router.RouterLink;
 public class NavigationComponent extends Component {
     public NavigationComponent() {
         add(new RouterLink("Dashboard", DashboardView.class));
-        add(new RouterLink("Test", DashboardView.class));
+        add(new RouterLink("Edit Patient", EditPatientView.class));
         add(new RouterLink("Test2", DashboardView.class));
     }
 
