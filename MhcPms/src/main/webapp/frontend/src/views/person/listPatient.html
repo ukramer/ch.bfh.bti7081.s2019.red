@@ -12,6 +12,12 @@
     <template>
         <div class="view-container">
             <h2 id="header"></h2>
+            <vaadin-text-field label="Vorname" value="{{patient.firstName::input}}"></vaadin-text-field>
+            <vaadin-text-field label="Nachname" value="{{patient.lastName::input}}"></vaadin-text-field><br/>
+            <vaadin-text-field label="Strasse" value="{{patient.address.street::input}}"></vaadin-text-field>
+            <vaadin-text-field label="PLZ" value="{{patient.address.plz::input}}"></vaadin-text-field>
+            <vaadin-text-field label="Stadt" value="{{patient.address.city::input}}"></vaadin-text-field>
+            <br/><vaadin-button on-click="search">Suchen</vaadin-button>
             <table>
                 <tr>
                     <th>Index</th>
