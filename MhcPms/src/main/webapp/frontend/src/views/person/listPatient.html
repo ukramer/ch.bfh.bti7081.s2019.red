@@ -15,7 +15,8 @@
             <vaadin-text-field label="Vorname" value="{{patient.firstName::input}}"></vaadin-text-field>
             <vaadin-text-field label="Nachname" value="{{patient.lastName::input}}"></vaadin-text-field><br/>
             <vaadin-text-field label="Strasse" value="{{patient.address.street::input}}"></vaadin-text-field>
-            <vaadin-text-field label="PLZ" value="{{patient.address.plz::input}}"></vaadin-text-field>
+            <vaadin-text-field label="Hausnummer" value="{{patient.address.streetNumber::input}}"></vaadin-text-field>
+            <vaadin-text-field label="PLZ" value="{{patient.address.postalCode::input}}"></vaadin-text-field>
             <vaadin-text-field label="Stadt" value="{{patient.address.city::input}}"></vaadin-text-field>
             <br/><vaadin-button on-click="search">Suchen</vaadin-button>
             <table>
@@ -24,6 +25,7 @@
                     <th>Vorname</th>
                     <th>Nachname</th>
                     <th>Strasse</th>
+                    <th>Hausnummer</th>
                     <th>PLZ</th>
                     <th>Stadt</th>
                     <th></th>
@@ -34,7 +36,8 @@
                         <td>{{item.firstName}}</td>
                         <td>{{item.lastName}}</td>
                         <td>{{item.address.street}}</td>
-                        <td>{{item.address.plz}}</td>
+                        <td>{{item.address.streetNumber}}</td>
+                        <td>{{item.address.postalCode}}</td>
                         <td>{{item.address.city}}</td>
                     </tr>
                 </template>
