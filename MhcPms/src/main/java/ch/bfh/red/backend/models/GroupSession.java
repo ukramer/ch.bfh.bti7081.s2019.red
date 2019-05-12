@@ -3,14 +3,15 @@ package ch.bfh.red.backend.models;
 import java.util.Collection;
 import java.util.Date;
 
-public class GroupSession extends Session {
+public class GroupSession extends AbstractSession<GroupSession> {
 	private Collection<Patient> patients;
 	private Collection<Therapist> therapists;
-	private Therapist leader;
 
-	public GroupSession(Collection<Patient> patients, Collection<Therapist> therapists, Date startDate, Date endDate,
+	public GroupSession() {}
+	
+	public GroupSession(Collection<Patient> patients, Collection<Therapist> therapists, Therapist leader, Date startDate, Date endDate,
 			SessionType sessionType) {
-		super(therapists, startDate, endDate, sessionType);
+		super(leader, startDate, endDate, sessionType);
 		this.patients = patients;
 	}
 
@@ -28,14 +29,51 @@ public class GroupSession extends Session {
 
 	public void setTherapists(Collection<Therapist> therapists) {
 		this.therapists = therapists;
+	}	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((patients == null) ? 0 : patients.hashCode());
+		result = prime * result + ((therapists == null) ? 0 : therapists.hashCode());
+		return result;
 	}
 
 	@Override
-	public Therapist getLeader() {
-		return leader;
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GroupSession other = (GroupSession) obj;
+		if (patients == null) {
+			if (other.patients != null)
+				return false;
+		} else if (!patients.equals(other.patients))
+			return false;
+		if (therapists == null) {
+			if (other.therapists != null)
+				return false;
+		} else if (!therapists.equals(other.therapists))
+			return false;
+		return true;
 	}
 
-	public void setLeader(Therapist leader) {
-		this.leader = leader;
+	@Override
+	public int compareTo(GroupSession o) {
+		int i;
+		i = Integer.compare(o.therapists.size(), therapists.size());
+		if (i != 0) return i;
+		return Integer.compare(o.patients.size(), patients.size());
 	}
+
+	@Override
+	public String toString() {
+		return "GroupSession [therapists=" + therapists + ", patients=" 
+				+patients + ", " +super.toString() +"]";
+	}
+
 }

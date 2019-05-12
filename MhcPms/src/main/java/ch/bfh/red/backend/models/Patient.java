@@ -1,40 +1,64 @@
 package ch.bfh.red.backend.models;
 
-import java.io.Serializable;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+public class Patient extends AbstractPerson<Patient> {
 
-@Entity
-public class Patient extends Person implements Serializable {
-	@Id
-	@GeneratedValue
-	private Long id;
-	private Collection<Therapy> therapies;
+	private Collection<Therapist> therapists = new ArrayList<>();
+	
+	private Collection<Therapy> therapies = new ArrayList<>();
+	
+	private Collection<SingleSession> singleSessions = new ArrayList<>();
+	
+	private Collection<GroupSession> groupSessions = new ArrayList<>();
 
-	public Patient(long id, String firstName, String lastName, Address address) {
+	public Patient() {}
+	
+	public Patient(String firstName, String lastName, Address address) {
 		super(firstName, lastName, address);
-		this.id = id;
+	}
+	
+	public Collection<Therapist> getTherapists() {
+		return therapists;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public List<Patient> search(SearchPatient search) {
-		if (search.getId() != null) {
-			if (!id.equals(search.getId()))
-				return Collections.emptyList();
-		}
-		return Arrays.asList(this);
+	public void setTherapists(Collection<Therapist> therapists) {
+		this.therapists = therapists;
 	}
 
 	public Collection<Therapy> getTherapies() {
 		return therapies;
 	}
+
+	public void setTherapies(Collection<Therapy> therapies) {
+		this.therapies = therapies;
+	}
+
+	public Collection<SingleSession> getSingleSessions() {
+		return singleSessions;
+	}
+
+	public void setSingleSessions(Collection<SingleSession> singleSessions) {
+		this.singleSessions = singleSessions;
+	}
+
+	public Collection<GroupSession> getGroupSessions() {
+		return groupSessions;
+	}
+
+	public void setGroupSessions(Collection<GroupSession> groupSessions) {
+		this.groupSessions = groupSessions;
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
+	}
+	
 }
