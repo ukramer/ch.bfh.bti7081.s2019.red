@@ -1,9 +1,20 @@
 package ch.bfh.red.backend.models;
 
+import javax.annotation.Generated;
+import javax.persistence.*;
+
+@Entity
 public class Address implements Comparable<Address> {
+	@Id
+	@GeneratedValue
+	private int id;
+	@Column(name = "street")
 	private String street;
+	@Column(name = "steetNumber")
 	private String streetNumber;
+	@Column(name = "postalCode")
 	private int postalCode;
+	@Column(name = "city")
 	private String city;
 	
 	public Address() {}
