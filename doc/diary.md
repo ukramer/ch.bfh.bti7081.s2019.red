@@ -104,3 +104,11 @@ Anwesend: alle
 * Task 5 & 6 aufteilen
 * Todos:
   * Alle:
+
+### 10.05.19
+Anwesend: alle
+* Daily Scrum:
+	* Entscheid zu H2 statt mySQL
+	* Model Classes müssen noch erweitert werden mit Konstruktoren wegen Polymer-Template
+* Todos:
+	* Alle: Weiter nach Sprint 1 Backlog
