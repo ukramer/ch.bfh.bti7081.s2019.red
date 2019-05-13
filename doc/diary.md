@@ -117,3 +117,22 @@ Anwesend: Alle
  ### 06.05.19
  Anwesend: Blaser, Schwärzler
  * Blaser & Schwärzler Präsentation Task 5 und 6 gehalten
+ 
+ ### 08.05.19
+ Anwesend: Alle
+ * Arbeit an Tasks in Sprint 1
+ * Todos:
+   * Alle: Weiterarbeiten an Tasks in Sprint 1
+   
+ ### 10.05.19
+ Anwesend: Alle
+ * Arbeit an Tasks in Sprint 1
+ * Todos:
+   * Alle: Weiterarbeiten an Tasks in Sprint 1
+ 
+ ### 13.05.19
+ Anwesend: Alle
+ * Arbeit an Tasks in Sprint 1
+ * Todos:
+   * Alle: Weiterarbeiten an Tasks in Sprint 1
+ 
