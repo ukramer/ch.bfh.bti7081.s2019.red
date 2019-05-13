@@ -8,7 +8,8 @@ public class PatientSearchBean {
     private String postalCode;
     private String city;
 
-    public PatientSearchBean(){}
+    public PatientSearchBean() {
+    }
 
     public String getFirstName() {
         return firstName;
