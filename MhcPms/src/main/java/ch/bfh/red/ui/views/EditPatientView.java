@@ -17,7 +17,7 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.templatemodel.Encode;
-import com.vaadin.flow.templatemodel.Exclude;
+import com.vaadin.flow.templatemodel.Include;
 import com.vaadin.flow.templatemodel.TemplateModel;
 
 import java.util.ArrayList;
@@ -33,51 +33,51 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
 
     @Override
     public void setParameter(BeforeEvent beforeEvent, @OptionalParameter String s) {
-        if(s==null ||s.isEmpty()){
-            getModel().setPatient(new Patient());
-        }else{
+        if (s == null || s.isEmpty()) {
+            getModel().setPatient(new Patient("", "", new Address()));
+        } else {
             System.out.println("find patient with id: " + s + " on db and set on model");
-            Patient p = new Patient("cyrill","meyer",new Address()); //can be replaced with found patient
+            Patient p = new Patient("cyrill", "meyer", new Address("bethlehem", "7", 3185, "schmitten")); //can be replaced with found patient
             getModel().setPatient(p);
         }
     }
 
-    /** View Model Interface **/
+    /**
+     * View Model Interface
+     **/
     public interface EditPatientModel extends TemplateModel {
-        @Exclude("id")
-        @Encode(value = IntegerToStringEncoder.class, path = "address.plz")
+        @Include({"firstName", "lastName", "address.street", "address.streetNumber", "address.postalCode", "address.city"})
+        @Encode(value = IntegerToStringEncoder.class, path = "address.postalCode")
         void setPatient(Patient patient);
+
         Patient getPatient();
     }
-    public interface EditPatientViewListener{
 
+    public interface EditPatientViewListener {
+        void save(Patient patient);
 
     }
+
     @Override
     public void addListener(EditPatientViewListener listener) {
         listeners.add(listener);
     }
 
-    public EditPatientView(){
+    public EditPatientView() {
         new PatientPresenter(this);
         header.setText("Edit Patient");
     }
 
     @EventHandler
-    private void save(){
-        Patient p = getModel().getPatient();
-        System.out.println("save!");
-        System.out.println("fname: " + p.getFirstName());
-        System.out.println("lname: " + p.getLastName());
-        Address a = p.getAddress();
-        System.out.println("strasse: " + a.getStreet());
-        System.out.println("plz: " + a.getPlz());
-        System.out.println("stadt: " + a.getCity());
+    private void save() {
+        listeners.forEach(x -> {
+            x.save(getModel().getPatient());
+        });
         Notification.show("Patient konnte erfolgreich gespeichert werden!");
     }
 
     @EventHandler
-    private void cancel(){
+    private void cancel() {
 
     }
 
