@@ -1,0 +1,61 @@
+<!-- Dependency resources -->
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<!-- Added Web Component dependencies to make Vaadin Designer preview work -->
+<link rel="import" href="../../../bower_components/vaadin-text-field/src/vaadin-text-field.html">
+<link rel="import" href="../../../bower_components/vaadin-button/src/vaadin-button.html">
+<link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/badge.html">
+<!-- TODO Needed to show icons in Vaadin Designer preview mode for now, but can be removed soon -->
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/icons.html">
+
+<dom-module id="listpatient-element">
+    <template>
+        <div class="view-container">
+            <h2 id="header"></h2>
+            <vaadin-text-field label="Vorname" value="{{patientSearchBean.firstName::input}}"></vaadin-text-field>
+            <vaadin-text-field label="Nachname" value="{{patientSearchBean.lastName::input}}"></vaadin-text-field><br/>
+            <vaadin-text-field label="Strasse" value="{{patientSearchBean.street::input}}"></vaadin-text-field>
+            <vaadin-text-field label="Hausnummer" value="{{patientSearchBean.streetNr::input}}"></vaadin-text-field>
+            <vaadin-text-field label="PLZ" value="{{patientSearchBean.postalCode::input}}"></vaadin-text-field>
+            <vaadin-text-field label="Stadt" value="{{patientSearchBean.city::input}}"></vaadin-text-field>
+            <br/><vaadin-button on-click="search">Suchen</vaadin-button>
+            <table>
+                <tr>
+                    <th>Index</th>
+                    <th>Vorname</th>
+                    <th>Nachname</th>
+                    <th>Strasse</th>
+                    <th>Hausnummer</th>
+                    <th>PLZ</th>
+                    <th>Stadt</th>
+                    <th></th>
+                </tr>
+                <template is="dom-repeat"  items="[[patienten]]">
+                    <tr on-click="onClick" id="[[item.id]]">
+                        <td>{{index}}</td>
+                        <td>{{item.firstName}}</td>
+                        <td>{{item.lastName}}</td>
+                        <td>{{item.address.street}}</td>
+                        <td>{{item.address.streetNumber}}</td>
+                        <td>{{item.address.postalCode}}</td>
+                        <td>{{item.address.city}}</td>
+                    </tr>
+                </template>
+            </table>
+        </div>
+    </template>
+
+    <script>
+        class ListPatientElement extends Polymer.Element {
+            static get is() {
+                return 'listpatient-element'
+            }
+
+            _isEmpty(array) {
+                return array.length == 0;
+            }
+        }
+
+        customElements.define(ListPatientElement.is, ListPatientElement);
+    </script>
+</dom-module>
