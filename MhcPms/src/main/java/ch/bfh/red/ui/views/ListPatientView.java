@@ -6,6 +6,7 @@ import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
 import ch.bfh.red.ui.encoders.LongToStringEncoder;
 import ch.bfh.red.ui.presenters.PatientPresenter;
+import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.HtmlImport;
@@ -41,10 +42,9 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
         @Encode(value = LongToStringEncoder.class, path = "id")
         void setPatienten(List<Patient> patienten);
         List<Patient> getPatienten();
-        @Include({"firstName", "lastName", "address.street", "address.streetNumber", "address.postalCode", "address.city"})
-        @Encode(value = IntegerToStringEncoder.class, path = "address.postalCode")
-        void setPatient(Patient patient); //TODO replace with SearchPatient Bean
-        Patient getPatient();
+
+        void setPatientSearchBean(PatientSearchBean patientSearchBean);
+        PatientSearchBean getPatientSearchBean();
     }
 
     @Override
@@ -58,7 +58,7 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
         patientList.add(new Patient("cyrill", "meyer", new Address("bethlehem", "7", 3185, "schmitten")));
         patientList.add(new Patient("ueli", "kramer", new Address("thunstrasse", "18", 2499, "thun")));
         getModel().setPatienten(patientList);
-        getModel().setPatient(new Patient("", "", new Address()));
+        getModel().setPatientSearchBean(new PatientSearchBean());
     }
 
     @EventHandler
@@ -70,13 +70,13 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
 
     @EventHandler
     private void search(){
-        Patient searchPatient = getModel().getPatient();
+        PatientSearchBean searchPatient = getModel().getPatientSearchBean();
         System.out.println("Vorname: " + searchPatient.getFirstName());
         System.out.println("Nachname: " + searchPatient.getLastName());
-        System.out.println("Strasse: " + searchPatient.getAddress().getStreet());
-        System.out.println("Hausnr: " + searchPatient.getAddress().getStreetNumber());
-        System.out.println("PLZ: " + searchPatient.getAddress().getPostalCode());
-        System.out.println("Stadt: " + searchPatient.getAddress().getCity());
+        System.out.println("Strasse: " + searchPatient.getStreet());
+        System.out.println("Hausnr: " + searchPatient.getStreetNr());
+        System.out.println("PLZ: " + searchPatient.getPostalCode());
+        System.out.println("Stadt: " + searchPatient.getCity());
     }
 
 
