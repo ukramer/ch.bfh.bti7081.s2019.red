@@ -28,7 +28,16 @@
                 body="[[patientSearchBean]]"
                 handle-as="json"
                 content-type="application/json"
-                on-response="_onResponse">
+                on-response="_onSearchResponse">
+            </iron-ajax>
+            <iron-ajax
+                    id="ajaxDeletePatient"
+                    method="post"
+                    url="deletePatient"
+                    body="[[body]]"
+                    handle-as="json"
+                    content-type="application/json"
+                    on-response="_onDeleteResponse">
             </iron-ajax>
             <vaadin-grid id="gridPatienten" theme="no-border" style="width:1100px" column-reordering-allowed multi-sort>
                 <vaadin-grid-column>
@@ -100,6 +109,11 @@
                         <vaadin-button theme="tertiary" on-click="edit">Bearbeiten</vaadin-button>
                     </template>
                 </vaadin-grid-column>
+                <vaadin-grid-column>
+                    <template>
+                        <vaadin-button theme="error tertiary" on-click="_delete">Löschen</vaadin-button>
+                    </template>
+                </vaadin-grid-column>
             </vaadin-grid>
         </div>
     </template>
@@ -118,7 +132,17 @@
                 this.$.ajaxSearchPatient.generateRequest();
             }
 
-            _onResponse(event, request){
+            _delete(e){
+                this.body=e.model.item;
+                this.$.ajaxDeletePatient.generateRequest();
+            }
+
+            _onDeleteResponse(event, request){
+                var response = request.response;
+                this.$.gridPatienten.items = response;
+            }
+
+            _onSearchResponse(event, request){
                 var response = request.response;
                 this.$.gridPatienten.items = response;
             }
