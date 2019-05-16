@@ -13,11 +13,11 @@ import java.util.List;
 @RestController
 public class PatientRestService {
 
-    //TODO: Repository instanzieren
+    //TODO: instantiate repository
     List<Patient> patientList = new ArrayList<>();
 
-    @PostMapping("/searchPatienten")
-    List searchPersonen(@RequestBody PatientSearchBean patientSearchBean) {
+    @PostMapping("/searchPatients")
+    List searchPatients(@RequestBody PatientSearchBean patientSearchBean) {
         System.out.println(patientSearchBean.toString());
         patientList.add(new Patient("cyrill", "meyer", new Address("bethlehem", "7", 3185, "schmitten")));
         patientList.add(new Patient("ueli", "kramer", new Address("thunstrasse", "18", 2499, "thun")));
