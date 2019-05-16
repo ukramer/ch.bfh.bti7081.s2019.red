@@ -1,6 +1,7 @@
 package ch.bfh.red.ui.components;
 
 import ch.bfh.red.ui.views.DashboardView;
+import ch.bfh.red.ui.views.EditGroupSessionView;
 import ch.bfh.red.ui.views.EditPatientView;
 import ch.bfh.red.ui.views.ListPatientView;
 import com.vaadin.flow.component.Component;
@@ -15,6 +16,7 @@ public class NavigationComponent extends Component {
         add(new RouterLink("Dashboard", DashboardView.class));
         add(new RouterLink("List Patient", ListPatientView.class));
         add(new RouterLink("Edit Patient", EditPatientView.class));
+        add(new RouterLink("Edit Group Session", EditGroupSessionView.class));
         add(new RouterLink("Test2", DashboardView.class));
     }
 
