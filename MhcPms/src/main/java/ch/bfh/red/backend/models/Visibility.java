@@ -1,6 +1,12 @@
 package ch.bfh.red.backend.models;
 
+import javax.persistence.*;
+
+@Entity
 public class Visibility implements Comparable<Visibility> {
+	@Id
+	@GeneratedValue
+	private int id;
 	private String name;
 	private String description;
 

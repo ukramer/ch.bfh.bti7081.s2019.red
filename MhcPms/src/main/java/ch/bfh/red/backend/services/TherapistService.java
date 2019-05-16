@@ -1,15 +1,12 @@
 package ch.bfh.red.backend.services;
 
 import ch.bfh.red.backend.repositories.TherapistRepository;
-//import ch.bfh.red.backend.models.SearchTherapist;
 import ch.bfh.red.backend.models.Therapist;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service("therapistService")
 public class TherapistService {
@@ -19,8 +16,22 @@ public class TherapistService {
         this.therapistRepository = therapistRepository;
     }
 
-    public List<Therapist> getTherapists() {
-        return therapistRepository.findAll();
+    public List<Therapist> getAllTherapists() {
+    	List<Therapist> therapists = new ArrayList<Therapist>();
+        therapistRepository.findAll().forEach(therapist -> therapists.add(therapist));
+        return therapists;
+    }
+    
+    public Therapist getTherapistById(int id) {
+    	return therapistRepository.findById(id).get();
+    }
+    
+    public void saveOrUpdate(Therapist therapist) {
+    	therapistRepository.save(therapist);
+    }
+    
+    public void delete(int id) {
+    	therapistRepository.deleteById(id);
     }
 
 //    public List<Therapist> search(SearchTherapist search) {

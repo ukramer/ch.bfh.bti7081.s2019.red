@@ -1,6 +1,12 @@
 package ch.bfh.red.backend.models;
 
+import javax.persistence.*;
+
+@MappedSuperclass
 public abstract class AbstractUser<T extends AbstractUser<T>> extends AbstractPerson<T> {
+	@Id
+	@GeneratedValue
+	private int id;
 	private String username;
 	private String password;
 

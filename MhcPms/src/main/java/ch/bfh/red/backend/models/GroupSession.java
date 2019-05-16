@@ -3,6 +3,9 @@ package ch.bfh.red.backend.models;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.*;
+
+@Entity
 public class GroupSession extends AbstractSession<GroupSession> {
 	private Collection<Patient> patients;
 	private Collection<Therapist> therapists;

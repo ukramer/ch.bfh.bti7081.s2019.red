@@ -3,6 +3,9 @@ package ch.bfh.red.backend.models;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.*;
+
+@Entity
 public class Therapist extends AbstractUser<Therapist> {
 
 	private AcademicTitle academicTitle;

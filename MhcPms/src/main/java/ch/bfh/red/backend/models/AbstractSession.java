@@ -2,10 +2,13 @@ package ch.bfh.red.backend.models;
 
 import java.util.Date;
 
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 @MappedSuperclass
 public abstract class AbstractSession<T extends AbstractSession<T>> implements Comparable<T> {
+	@Id
+	@GeneratedValue
+	private int id;
 	private Therapist therapist;
 	private Date startDate;
 	private Date endDate;

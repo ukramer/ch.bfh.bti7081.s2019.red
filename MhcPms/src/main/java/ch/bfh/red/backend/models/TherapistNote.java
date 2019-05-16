@@ -3,6 +3,9 @@ package ch.bfh.red.backend.models;
 import java.util.Date;
 import java.util.Objects;
 
+import javax.persistence.*;
+
+@Entity
 public class TherapistNote extends AbstractNote<TherapistNote> {
 	
 	private Therapist therapist;

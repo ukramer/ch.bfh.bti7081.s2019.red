@@ -7,9 +7,7 @@ public class AcademicTitle implements Comparable<AcademicTitle> {
 	@Id
 	@GeneratedValue
 	private int id;
-	@Column(name = "prefix")
 	private String prefix;
-	@Column(name = "description")
 	private String description;
 	
 	public AcademicTitle() {}

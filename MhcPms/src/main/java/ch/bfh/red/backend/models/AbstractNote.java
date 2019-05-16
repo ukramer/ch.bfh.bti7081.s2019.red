@@ -2,7 +2,13 @@ package ch.bfh.red.backend.models;
 
 import java.util.Date;
 
+import javax.persistence.*;
+
+@MappedSuperclass
 public abstract class AbstractNote<T extends AbstractNote<T>> implements Comparable<T>  {
+	@Id
+	@GeneratedValue
+	private int id;
 	private Date date;
 	private String text;
 	private Visibility visibility;

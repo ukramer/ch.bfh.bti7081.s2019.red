@@ -2,6 +2,9 @@ package ch.bfh.red.backend.models;
 
 import java.util.Date;
 
+import javax.persistence.*;
+
+@Entity
 public class SingleSession extends AbstractSession<SingleSession> {
 	private Patient patient;
 	private Therapist therapist;

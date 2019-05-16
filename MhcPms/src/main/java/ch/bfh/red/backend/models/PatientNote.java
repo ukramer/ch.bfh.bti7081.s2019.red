@@ -2,6 +2,9 @@ package ch.bfh.red.backend.models;
 
 import java.util.Date;
 
+import javax.persistence.*;
+
+@Entity
 public class PatientNote extends AbstractNote<PatientNote> {
 	private Patient patient;
 

@@ -5,7 +5,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;
 
+import javax.persistence.*;
+
+@Entity
 public class Therapy implements Comparable<Therapy> {
+	@Id
+	@GeneratedValue
+	private int id;
 	private Date startDate;
 	private boolean finished;
 	private TherapyType therapyType;

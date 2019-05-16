@@ -1,6 +1,12 @@
 package ch.bfh.red.backend.models;
 
+import javax.persistence.*;
+
+@Entity
 public class SessionType implements Comparable<SessionType> {
+	@Id
+	@GeneratedValue
+	private int id;
 	private String name;
 	private String description;
 

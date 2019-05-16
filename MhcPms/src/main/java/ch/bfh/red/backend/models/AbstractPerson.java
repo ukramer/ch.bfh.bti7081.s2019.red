@@ -1,6 +1,12 @@
 package ch.bfh.red.backend.models;
 
+import javax.persistence.*;
+
+@MappedSuperclass
 public abstract class AbstractPerson<T extends AbstractPerson<T>> implements Comparable<T> {
+	@Id
+	@GeneratedValue
+	private int id;
 	private String firstName;
 	private String lastName;
 	private Address address;
