@@ -18,7 +18,7 @@ public class PatientRestService {
 
     @PostMapping("/searchPatients")
     List searchPatients(@RequestBody PatientSearchBean patientSearchBean) {
-        System.out.println(patientSearchBean.toString());
+        patientList.clear();
         patientList.add(new Patient("cyrill", "meyer", new Address("bethlehem", "7", 3185, "schmitten")));
         patientList.add(new Patient("ueli", "kramer", new Address("thunstrasse", "18", 2499, "thun")));
         return patientList;
