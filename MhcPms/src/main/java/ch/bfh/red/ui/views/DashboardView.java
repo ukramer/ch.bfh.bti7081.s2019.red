@@ -24,8 +24,8 @@ import java.util.List;
 public class DashboardView extends PolymerTemplate<DashboardView.TherapistModel> implements View<DashboardView.DashboardViewListener> {
     /** View Model Interface **/
     public interface TherapistModel extends TemplateModel {
-        @Encode(value = LongToStringEncoder.class, path = "id")
-        void setTherapist(List<Therapist> therapist);
+        /*@Encode(value = LongToStringEncoder.class, path = "id")
+        void setTherapist(List<Therapist> therapist);*/
     }
 
     /** Html Elements **/
@@ -43,7 +43,7 @@ public class DashboardView extends PolymerTemplate<DashboardView.TherapistModel>
     public DashboardView(@Autowired TherapistService therapistService) {
         new DashboardPresenter(this);
         this.therapistService = therapistService;
-        getModel().setTherapist(null); // otherwise pass the model
+        //getModel().setTherapist(null); // otherwise pass the model
         header.setText("Dashboard");
     }
 
