@@ -8,6 +8,7 @@ import ch.bfh.red.ui.presenters.PatientPresenter;
 import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.polymertemplate.EventHandler;
 import com.vaadin.flow.component.polymertemplate.Id;
@@ -32,8 +33,6 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
     private H2 header;
 
     public interface ListPatientViewListener {
-        void search(PatientSearchBean patientSearchBean);
-
         void onPatientClick(String param);
     }
 
@@ -64,20 +63,12 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
     }
 
     @EventHandler
-    public void onClick(@RepeatIndex int itemIndex) {
+    public void edit(@RepeatIndex int itemIndex) {
         //String param = patientList.get(itemIndex).getId()+"";
         String param = itemIndex + "";
         listeners.forEach(x -> {
             x.onPatientClick(param);
         });
+        patientList.remove(itemIndex);
     }
-
-    @EventHandler
-    private void search() {
-        listeners.forEach(x -> {
-            x.search(getModel().getPatientSearchBean());
-        });
-    }
-
-
 }
