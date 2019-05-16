@@ -15,13 +15,13 @@ import java.util.stream.Collectors;
 public class TherapistService {
     private TherapistRepository therapistRepository;
 
-    public TherapistService(@Autowired TherapistRepository therapistRepository) {
+    /*public TherapistService(@Autowired TherapistRepository therapistRepository) {
         this.therapistRepository = therapistRepository;
-    }
+    }*/
 
-    public List<Therapist> getTherapists() {
+    /*public List<Therapist> getTherapists() {
         return therapistRepository.findAll();
-    }
+    }*/
 
 //    public List<Therapist> search(SearchTherapist search) {
 //        return getTherapists().stream().map(t -> t.search(search)).flatMap(Collection::stream).collect(Collectors.toList());
