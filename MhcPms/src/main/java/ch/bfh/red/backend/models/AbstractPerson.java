@@ -3,12 +3,18 @@ package ch.bfh.red.backend.models;
 import javax.persistence.*;
 
 @MappedSuperclass
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AbstractPerson<T extends AbstractPerson<T>> implements Comparable<T> {
+	
 	@Id
 	@GeneratedValue
 	private int id;
+	
 	private String firstName;
+	
 	private String lastName;
+	
+	@OneToOne
 	private Address address;
 
 	public AbstractPerson() {}

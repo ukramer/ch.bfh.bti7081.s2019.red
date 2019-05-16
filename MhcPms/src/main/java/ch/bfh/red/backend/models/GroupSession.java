@@ -7,7 +7,11 @@ import javax.persistence.*;
 
 @Entity
 public class GroupSession extends AbstractSession<GroupSession> {
+	
+	@ManyToMany
 	private Collection<Patient> patients;
+	
+	@ManyToMany
 	private Collection<Therapist> therapists;
 
 	public GroupSession() {}

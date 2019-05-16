@@ -8,12 +8,16 @@ import javax.persistence.*;
 @Entity
 public class Patient extends AbstractPerson<Patient> {
 
+	@ManyToMany
 	private Collection<Therapist> therapists = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "patient")
 	private Collection<Therapy> therapies = new ArrayList<>();
 	
+	@OneToMany
 	private Collection<SingleSession> singleSessions = new ArrayList<>();
 	
+	@OneToMany
 	private Collection<GroupSession> groupSessions = new ArrayList<>();
 
 	public Patient() {}

@@ -9,20 +9,40 @@ import javax.persistence.*;
 
 @Entity
 public class Therapy implements Comparable<Therapy> {
+	
 	@Id
 	@GeneratedValue
 	private int id;
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date startDate;
+	
 	private boolean finished;
+	
+	@OneToOne
 	private TherapyType therapyType;
+	
+	@ManyToOne
 	private Patient patient;
+	
+	@ManyToOne
+	private Therapist therapist;
+	
+	@ManyToMany
 	private Collection<SingleSession> singleSessions = new ArrayList<>();
+	
+	@ManyToMany
 	private Collection<GroupSession> groupSessions = new ArrayList<>();
+	
+	@ManyToMany
 	private Collection<PatientNote> patientNotes = new ArrayList<>();
+	
+	@ManyToMany
 	private Collection<TherapistNote> therapistNotes = new ArrayList<>();
 	
 	public Therapy() {}
 	
+	// TODO add patient, therapist, ...
 	public Therapy(Date startDate, TherapyType therapyType) {
 		this.startDate = startDate;
 		this.therapyType = therapyType;
@@ -93,6 +113,14 @@ public class Therapy implements Comparable<Therapy> {
 		this.therapistNotes = therapistNotes;
 	}
 
+	public Therapist getTherapist() {
+		return therapist;
+	}
+
+	public void setTherapist(Therapist therapist) {
+		this.therapist = therapist;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(patient, startDate, therapyType);
@@ -108,6 +136,7 @@ public class Therapy implements Comparable<Therapy> {
 			return false;
 		Therapy other = (Therapy) obj;
 		return Objects.equals(patient, other.patient)
+				&& Objects.equals(therapist, other.therapist)
 				&& Objects.equals(startDate, other.startDate)
 				&& Objects.equals(therapyType, other.therapyType);
 	}
@@ -115,13 +144,13 @@ public class Therapy implements Comparable<Therapy> {
 	@Override
 	public int compareTo(Therapy o) {
 		int i;
+		i = therapist.compareTo(o.therapist);
+		if (i != 0) return i;
 		i = patient.compareTo(o.patient);
 		if (i != 0) return i;
 		i = startDate.compareTo(startDate);
 		if (i != 0) return i;
 		return therapyType.compareTo(o.therapyType);
 	}
-	
-	
 	
 }

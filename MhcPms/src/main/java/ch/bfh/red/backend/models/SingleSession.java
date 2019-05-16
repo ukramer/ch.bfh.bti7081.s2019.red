@@ -6,7 +6,11 @@ import javax.persistence.*;
 
 @Entity
 public class SingleSession extends AbstractSession<SingleSession> {
+	
+	@ManyToOne
 	private Patient patient;
+	
+	@ManyToOne
 	private Therapist therapist;
 	
 	public SingleSession() {}

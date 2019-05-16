@@ -6,6 +6,8 @@ import javax.persistence.*;
 
 @Entity
 public class PatientNote extends AbstractNote<PatientNote> {
+	
+	@OneToOne
 	private Patient patient;
 
 	public PatientNote() {}

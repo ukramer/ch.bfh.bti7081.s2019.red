@@ -4,12 +4,17 @@ import javax.persistence.*;
 
 @Entity
 public class Address implements Comparable<Address> {
+	
 	@Id
 	@GeneratedValue
 	private int id;
+	
 	private String street;
+	
 	private String streetNumber;
+	
 	private int postalCode;
+	
 	private String city;
 	
 	public Address() {}

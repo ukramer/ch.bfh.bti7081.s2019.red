@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Entity
 public class TherapistNote extends AbstractNote<TherapistNote> {
 	
+	@OneToOne
 	private Therapist therapist;
 	
 	public TherapistNote() {}

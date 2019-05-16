@@ -3,11 +3,15 @@ package ch.bfh.red.backend.models;
 import javax.persistence.*;
 
 @MappedSuperclass
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AbstractUser<T extends AbstractUser<T>> extends AbstractPerson<T> {
+	
 	@Id
 	@GeneratedValue
 	private int id;
+	
 	private String username;
+	
 	private String password;
 
 	public AbstractUser() {}

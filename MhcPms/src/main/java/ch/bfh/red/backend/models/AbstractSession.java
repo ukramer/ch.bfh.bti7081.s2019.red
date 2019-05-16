@@ -5,13 +5,23 @@ import java.util.Date;
 import javax.persistence.*;
 
 @MappedSuperclass
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AbstractSession<T extends AbstractSession<T>> implements Comparable<T> {
+	
 	@Id
 	@GeneratedValue
 	private int id;
+	
+	@OneToOne
 	private Therapist therapist;
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date startDate;
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date endDate;
+	
+	@OneToOne
 	private SessionType sessionType;
 
 	public AbstractSession() {}
