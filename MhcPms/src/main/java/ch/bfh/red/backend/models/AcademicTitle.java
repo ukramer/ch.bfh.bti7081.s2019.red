@@ -1,7 +1,16 @@
 package ch.bfh.red.backend.models;
 
+import javax.persistence.*;
+
+@Entity
 public class AcademicTitle implements Comparable<AcademicTitle> {
+	
+	@Id
+	@GeneratedValue
+	private int id;
+	
 	private String prefix;
+	
 	private String description;
 	
 	public AcademicTitle() {}

@@ -2,9 +2,21 @@ package ch.bfh.red.backend.models;
 
 import java.util.Date;
 
+import javax.persistence.*;
+
+@MappedSuperclass
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AbstractNote<T extends AbstractNote<T>> implements Comparable<T>  {
+	@Id
+	@GeneratedValue
+	private int id;
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
+	
 	private String text;
+	
+	@OneToOne
 	private Visibility visibility;
 
 	public AbstractNote() {}

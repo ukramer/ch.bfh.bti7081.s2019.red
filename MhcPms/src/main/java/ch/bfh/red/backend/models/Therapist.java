@@ -3,14 +3,21 @@ package ch.bfh.red.backend.models;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.*;
+
+@Entity
 public class Therapist extends AbstractUser<Therapist> {
 
+	@OneToOne
 	private AcademicTitle academicTitle;
 	
+	@ManyToMany
 	private Collection<Patient> patients = new ArrayList<>();
 	
+	@ManyToMany
 	private Collection<GroupSession> groupSessions = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "therapist")
 	private Collection<Therapy> therapies = new ArrayList<>();
 	
 	public Therapist() {}

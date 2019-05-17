@@ -1,9 +1,7 @@
 package ch.bfh.red.backend.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
+import org.springframework.data.repository.CrudRepository;
 import ch.bfh.red.backend.models.Therapist;
 
-//public interface TherapistRepository extends JpaRepository<Therapist, Long> {
-public interface TherapistRepository{
+public interface TherapistRepository extends CrudRepository<Therapist, Integer> {
 }
