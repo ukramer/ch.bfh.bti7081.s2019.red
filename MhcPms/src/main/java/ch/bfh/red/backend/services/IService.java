@@ -16,8 +16,6 @@ public interface IService<T> {
 	}
 	
 	default T getById(Integer id) {
-		System.out.println("IService: " +id.getClass().getSimpleName());
-		
 		T obj = getRepository().findById(id).get();
 		return obj;
 	}
