@@ -15,16 +15,10 @@ import com.vaadin.flow.router.RouterLink;
 @Tag("div")
 public class NavigationComponent extends Component {
     public NavigationComponent() {
-        add(new RouterLink("Dashboard", DashboardView.class));
-        add(new RouterLink("List Patient", ListPatientView.class));
-        add(new RouterLink("Edit Patient", EditPatientView.class));
-        add(new RouterLink("Edit Group Session", EditGroupSessionView.class));
-        add(new RouterLink("Test2", DashboardView.class));
-      
         getElement().getClassList().add("main-layout__nav");
 
         RouterLink dashboard = new RouterLink(null, DashboardView.class);
-        dashboard.add(new Icon(VaadinIcon.LIST), new Text("Dashboard"));
+        dashboard.add(new Icon(VaadinIcon.GRID), new Text("Dashboard"));
         dashboard.addClassName("main-layout__nav-item");
         dashboard.setHighlightCondition(HighlightConditions.sameLocation());
         add(dashboard);
@@ -34,7 +28,18 @@ public class NavigationComponent extends Component {
         patientList.addClassName("main-layout__nav-item");
         patientList.setHighlightCondition(HighlightConditions.sameLocation());
         add(patientList);
-      
+
+        RouterLink addPatient = new RouterLink(null, EditPatientView.class);
+        addPatient.add(new Icon(VaadinIcon.PLUS), new Text("Add Patient"));
+        addPatient.addClassName("main-layout__nav-item");
+        addPatient.setHighlightCondition(HighlightConditions.sameLocation());
+        add(addPatient);
+
+        RouterLink editGroupSession = new RouterLink(null, EditGroupSessionView.class);
+        editGroupSession.add(new Icon(VaadinIcon.PENCIL), new Text("Edit Group Session"));
+        editGroupSession.addClassName("main-layout__nav-item");
+        editGroupSession.setHighlightCondition(HighlightConditions.sameLocation());
+        add(editGroupSession);
     }
 
     private void add(Component child) {

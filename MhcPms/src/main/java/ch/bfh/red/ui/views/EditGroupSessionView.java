@@ -128,7 +128,7 @@ public class EditGroupSessionView extends FormLayout {
 	private Collection<SessionType> createSessionTypes() {
 		List<SessionType> sessionTypes = new ArrayList<>();
 		sessionTypes.add(new SessionType("Session", ""));
-		sessionTypes.add(new SessionType("Discusssion", ""));
+		sessionTypes.add(new SessionType("Discussion", ""));
 		return sessionTypes;
 	}
 	
