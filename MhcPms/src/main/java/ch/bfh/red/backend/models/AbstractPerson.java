@@ -48,6 +48,14 @@ public abstract class AbstractPerson<T extends AbstractPerson<T>> implements Com
 	public void setAddress(Address address) {
 		this.address = address;
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	
 	@Override
 	public int hashCode() {

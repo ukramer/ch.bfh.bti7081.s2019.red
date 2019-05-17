@@ -11,7 +11,7 @@ public class AcademicTitleCrudTest extends CrudTest<AcademicTitle> {
 
 	@Override
 	protected Integer getId(AcademicTitle instance) {
-		throw new RuntimeException();
+		return instance.getId();
 	}
 
 	@Override

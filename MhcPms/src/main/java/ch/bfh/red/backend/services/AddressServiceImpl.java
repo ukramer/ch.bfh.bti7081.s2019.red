@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import ch.bfh.red.backend.models.Address;
 import ch.bfh.red.backend.repositories.AddressRepository;
 
-@Service
+@Service("addressService")
 public class AddressServiceImpl implements IService<Address> {
 	
 	@Autowired

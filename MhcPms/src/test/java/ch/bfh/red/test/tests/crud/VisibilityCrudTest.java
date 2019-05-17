@@ -11,7 +11,7 @@ public class VisibilityCrudTest extends CrudTest<Visibility> {
 
 	@Override
 	protected Integer getId(Visibility instance) {
-		throw new RuntimeException();
+		return instance.getId();
 	}
 
 	@Override
