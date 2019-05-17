@@ -12,8 +12,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MhcPmsApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MhcPmsApplication.class, args);
+    	start(args);
+//        SpringApplication.run(MhcPmsApplication.class, args);
         browse("http://localhost:8080");
+    }
+    
+    public static void start(String[] args) {
+    	SpringApplication.run(MhcPmsApplication.class, args);
     }
     
     private static void browse(String url) {

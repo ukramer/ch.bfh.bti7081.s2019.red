@@ -1,20 +1,29 @@
 package ch.bfh.red.backend.models;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 @Entity
-public class Address implements Comparable<Address> {
+@Table(name = "ADDRESSES")
+public class Address implements Comparable<Address>, Serializable {
+	private static final long serialVersionUID = 8153106662017090155L;
 	
 	@Id
 	@GeneratedValue
+	@Column(name = "ID")
 	private int id;
 	
+	@Column(name = "STREET")
 	private String street;
 	
+	@Column(name = "STREET_NUMBER")
 	private String streetNumber;
 	
+	@Column(name = "POSTAL_CODE")
 	private int postalCode;
 	
+	@Column(name = "CITY")
 	private String city;
 	
 	public Address() {}
@@ -58,6 +67,14 @@ public class Address implements Comparable<Address> {
 		this.city = city;
 	}
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
