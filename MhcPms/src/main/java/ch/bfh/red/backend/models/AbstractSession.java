@@ -65,6 +65,14 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 		this.therapist = therapist;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

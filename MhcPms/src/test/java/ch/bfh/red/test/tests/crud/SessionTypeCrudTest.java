@@ -11,7 +11,7 @@ public class SessionTypeCrudTest extends CrudTest<SessionType> {
 
 	@Override
 	protected Integer getId(SessionType instance) {
-		throw new RuntimeException();
+		return instance.getId();
 	}
 
 	@Override

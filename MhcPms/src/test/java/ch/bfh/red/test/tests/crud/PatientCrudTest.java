@@ -2,17 +2,24 @@ package ch.bfh.red.test.tests.crud;
 
 import ch.bfh.red.backend.models.Address;
 import ch.bfh.red.backend.models.Patient;
+import ch.bfh.red.backend.services.IService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class PatientCrudTest extends CrudTest<Patient> {
 
+	@Autowired
+	private IService<Address> addressService;
+
 	@Override
 	protected Patient createInstance() {
-		return new Patient("Jürgen", "", new Address("Langstrasse", "12k", 7777, "Burgdorf"));
+		Address address = new Address("Langstrasse", "12k", 7777, "Burgdorf");
+		addressService.add(address);
+		return new Patient("Jürgen", "", address);
 	}
 
 	@Override
 	protected Integer getId(Patient instance) {
-		throw new RuntimeException();
+		return instance.getId();
 	}
 
 	@Override

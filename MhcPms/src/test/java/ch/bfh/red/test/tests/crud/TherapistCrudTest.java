@@ -3,19 +3,30 @@ package ch.bfh.red.test.tests.crud;
 import ch.bfh.red.backend.models.AcademicTitle;
 import ch.bfh.red.backend.models.Address;
 import ch.bfh.red.backend.models.Therapist;
+import ch.bfh.red.backend.services.IService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TherapistCrudTest extends CrudTest<Therapist> {
+
+	@Autowired
+	private IService<Address> addressIService;
+
+	@Autowired
+	private IService<AcademicTitle> academicTitleIService;
 
 	@Override
 	protected Therapist createInstance() {
 		AcademicTitle title = new AcademicTitle("Dr.", "");
+		academicTitleIService.add(title);
+
 		Address address = new Address("Winkelstrasse", "A", 2387, "Bülach");
+		addressIService.add(address);
 		return new Therapist("marle34", "1234", title, "Marlies", "Lotti", address);
 	}
 
 	@Override
 	protected Integer getId(Therapist instance) {
-		throw new RuntimeException();
+		return instance.getId();
 	}
 
 	@Override

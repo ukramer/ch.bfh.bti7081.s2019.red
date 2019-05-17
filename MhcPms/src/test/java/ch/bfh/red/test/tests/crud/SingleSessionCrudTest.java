@@ -8,27 +8,58 @@ import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.SessionType;
 import ch.bfh.red.backend.models.SingleSession;
 import ch.bfh.red.backend.models.Therapist;
+import ch.bfh.red.backend.services.IService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class SingleSessionCrudTest extends CrudTest<SingleSession> {
 
+	@Autowired
+	private IService<Therapist> therapistIService;
+
+	@Autowired
+	private IService<SessionType> sessionTypeIService;
+
+	@Autowired
+	private IService<AcademicTitle> academicTitleIService;
+
+	@Autowired
+	private IService<Patient> patientIService;
+
+	@Autowired
+	private IService<Address> addressIService;
+
 	@Override
 	protected SingleSession createInstance() {
-		Patient patient = new Patient("Jürgen", "", new Address("Langstrasse", "12k", 7777, "Burgdorf"));
-		AcademicTitle title = new AcademicTitle("Dr.", "");
 		Address address = new Address("Winkelstrasse", "A", 2387, "Bülach");
+		addressIService.add(address);
+
+		Address address2 = new Address("Langstrasse", "12k", 7777, "Burgdorf");
+		addressIService.add(address2);
+
+		Patient patient = new Patient("Jürgen", "", address2);
+		patientIService.add(patient);
+
+		AcademicTitle title = new AcademicTitle("Dr.", "");
+		academicTitleIService.add(title);
+
 		Therapist therapist = new Therapist("marle34", "1234", title, "Marlies", "Lotti", address);
+		therapistIService.add(therapist);
+
 		SessionType sessionType = new SessionType("SessionType", "");
+		sessionTypeIService.add(sessionType);
 		return new SingleSession(patient, therapist, new Date(), new Date(), sessionType);
 	}
 
 	@Override
 	protected Integer getId(SingleSession instance) {
-		throw new RuntimeException();
+		return instance.getId();
 	}
 
 	@Override
 	protected void setAnUpdateValue(SingleSession instance) {
-		instance.setSessionType(new SessionType("Other", ""));
+		SessionType sessionType = new SessionType("Other", "");
+		sessionTypeIService.add(sessionType);
+		instance.setSessionType(sessionType);
 	}
 	
 }

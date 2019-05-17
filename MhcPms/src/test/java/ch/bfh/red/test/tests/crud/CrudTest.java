@@ -2,6 +2,8 @@ package ch.bfh.red.test.tests.crud;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +14,14 @@ import ch.bfh.red.test.tests.StartupTest;
 
 import org.junit.runners.MethodSorters;
 
+import java.util.NoSuchElementException;
+
 @FixMethodOrder(MethodSorters.DEFAULT)
 public abstract class CrudTest<T> extends StartupTest {
 	
 	@Autowired
-	protected CrudRepository<T, Integer> addressRepository;
-	
+	protected CrudRepository<T, Integer> repository;
+
 	@Autowired
 	protected IService<T> service;
 	
@@ -28,12 +32,23 @@ public abstract class CrudTest<T> extends StartupTest {
 	protected abstract void setAnUpdateValue(T instance);
 	
 	private T instance;
-	
-	@Test
-    public void create() {
-		T instance = createInstance();
+
+	@Before
+	public void init() {
+		instance = createInstance();
 		service.add(instance);
-    }
+		instance = service.getById(getId(instance));
+	}
+
+	@After
+	public void cleanUp() {
+		try {
+			T instance2 = service.getById(getId(instance));
+			service.delete(getId(instance2));
+		} catch (NoSuchElementException e) {
+			return;
+		}
+	}
 	
 	@Test
 	public void read() {
@@ -55,5 +70,5 @@ public abstract class CrudTest<T> extends StartupTest {
 		service.delete(id);
 		assertEquals(service.existById(id),false);
 	}
-	
+
 }
