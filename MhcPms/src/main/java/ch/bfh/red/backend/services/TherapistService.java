@@ -9,7 +9,7 @@ import ch.bfh.red.backend.repositories.TherapistRepository;
 
 @Service("therapistService")
 public class TherapistService implements IService<Therapist> {
-	
+
 	@Autowired
 	private TherapistRepository repository;
 

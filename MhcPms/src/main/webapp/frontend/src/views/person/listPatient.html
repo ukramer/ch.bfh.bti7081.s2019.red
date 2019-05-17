@@ -1,0 +1,154 @@
+<!-- Dependency resources -->
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<!-- Added Web Component dependencies to make Vaadin Designer preview work -->
+<link rel="import" href="../../../bower_components/vaadin-text-field/vaadin-text-field.html">
+<link rel="import" href="../../../bower_components/vaadin-button/vaadin-button.html">
+<link rel="import" href="../../../bower_components/vaadin-grid/all-imports.html">
+<link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/badge.html">
+<!-- TODO Needed to show icons in Vaadin Designer preview mode for now, but can be removed soon -->
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/icons.html">
+
+<dom-module id="listpatient-element">
+    <template>
+        <style include="lumo-color lumo-typography lumo-badge view-styles"></style>
+        <div class="view-container">
+            <h2 id="header"></h2>
+            <vaadin-text-field label="Vorname" value="{{patientSearchBean.firstName::input}}"></vaadin-text-field>
+            <vaadin-text-field label="Nachname" value="{{patientSearchBean.lastName::input}}"></vaadin-text-field><br/>
+            <vaadin-text-field label="Strasse" value="{{patientSearchBean.street::input}}"></vaadin-text-field>
+            <vaadin-text-field label="Hausnummer" value="{{patientSearchBean.streetNr::input}}"></vaadin-text-field>
+            <vaadin-text-field label="PLZ" value="{{patientSearchBean.postalCode::input}}"></vaadin-text-field>
+            <vaadin-text-field label="Stadt" value="{{patientSearchBean.city::input}}"></vaadin-text-field>
+            <br/><vaadin-button on-click="_search">Suchen</vaadin-button>
+            <iron-ajax
+                id="ajaxSearchPatient"
+                method="post"
+                url="searchPatients"
+                body="[[patientSearchBean]]"
+                handle-as="json"
+                content-type="application/json"
+                on-response="_onSearchResponse">
+            </iron-ajax>
+            <iron-ajax
+                    id="ajaxDeletePatient"
+                    method="post"
+                    url="deletePatient"
+                    body="[[body]]"
+                    handle-as="json"
+                    content-type="application/json"
+                    on-response="_onDeleteResponse">
+            </iron-ajax>
+            <vaadin-grid id="gridPatienten" theme="no-border" style="width:1100px" column-reordering-allowed multi-sort>
+                <vaadin-grid-column>
+                    <template class="header">#</template>
+                    <template>[[index]]</template>
+                </vaadin-grid-column>
+                <vaadin-grid-column>
+                    <template class="header">
+                        <vaadin-grid-sorter path="firstName">
+                            <vaadin-grid-filter path="firstName" value="[[_filterFirstName]]">
+                                <vaadin-text-field label="Vorname" value="{{_filterFirstName::input}}"></vaadin-text-field>
+                            </vaadin-grid-filter>
+                        </vaadin-grid-sorter>
+                    </template>
+                    <template>[[item.firstName]]</template>
+                </vaadin-grid-column>
+                <vaadin-grid-column>
+                    <template class="header">
+                        <vaadin-grid-sorter path="lastName">
+                            <vaadin-grid-filter path="lastName" value="[[_filterLastName]]">
+                                <vaadin-text-field label="Nachname" value="{{_filterLastName::input}}"></vaadin-text-field>
+                            </vaadin-grid-filter>
+                        </vaadin-grid-sorter>
+                    </template>
+                    <template>[[item.lastName]]</template>
+                </vaadin-grid-column>
+                <vaadin-grid-column>
+                    <template class="header">
+                        <vaadin-grid-sorter path="address.street">
+                            <vaadin-grid-filter path="address.street" value="[[_filterStreet]]">
+                                <vaadin-text-field label="Strasse" value="{{_filterStreet::input}}"></vaadin-text-field>
+                            </vaadin-grid-filter>
+                        </vaadin-grid-sorter>
+                    </template>
+                    <template>[[item.address.street]]</template>
+                </vaadin-grid-column>
+                <vaadin-grid-column>
+                    <template class="header">
+                        <vaadin-grid-sorter path="address.streetNumber">
+                            <vaadin-grid-filter path="address.streetNumber" value="[[_filterStreetNr]]">
+                                <vaadin-text-field label="Hausnummer" value="{{_filterStreetNr::input}}"></vaadin-text-field>
+                            </vaadin-grid-filter>
+                        </vaadin-grid-sorter>
+                    </template>
+                    <template>[[item.address.streetNumber]]</template>
+                </vaadin-grid-column>
+                <vaadin-grid-column>
+                    <template class="header">
+                        <vaadin-grid-sorter path="address.postalCode">
+                            <vaadin-grid-filter path="address.postalCode" value="[[_filterPostalCode]]">
+                                <vaadin-text-field label="PLZ" value="{{_filterPostalCode::input}}"></vaadin-text-field>
+                            </vaadin-grid-filter>
+                        </vaadin-grid-sorter>
+                    </template>
+                    <template>[[item.address.postalCode]]</template>
+                </vaadin-grid-column>
+                <vaadin-grid-column>
+                    <template class="header">
+                        <vaadin-grid-sorter path="address.city">
+                            <vaadin-grid-filter path="address.city" value="[[_filterCity]]">
+                                <vaadin-text-field label="Stadt" value="{{_filterCity::input}}"></vaadin-text-field>
+                            </vaadin-grid-filter>
+                        </vaadin-grid-sorter>
+                    </template>
+                    <template>[[item.address.city]]</template>
+                </vaadin-grid-column>
+                <vaadin-grid-column>
+                    <template>
+                        <vaadin-button theme="tertiary" on-click="edit">Bearbeiten</vaadin-button>
+                    </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column>
+                    <template>
+                        <vaadin-button theme="error tertiary" on-click="_delete">Löschen</vaadin-button>
+                    </template>
+                </vaadin-grid-column>
+            </vaadin-grid>
+        </div>
+    </template>
+
+    <script>
+        class ListPatientElement extends Polymer.Element {
+            static get is() {
+                return 'listpatient-element'
+            }
+
+            _isEmpty(array) {
+                return array.length == 0;
+            }
+
+            _search(){
+                this.$.ajaxSearchPatient.generateRequest();
+            }
+
+            _delete(e){
+                this.body=e.model.item;
+                this.$.ajaxDeletePatient.generateRequest();
+            }
+
+            _onDeleteResponse(event, request){
+                var response = request.response;
+                this.$.gridPatienten.items = response;
+            }
+
+            _onSearchResponse(event, request){
+                var response = request.response;
+                this.$.gridPatienten.items = response;
+            }
+        }
+
+        customElements.define(ListPatientElement.is, ListPatientElement);
+    </script>
+</dom-module>
