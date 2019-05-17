@@ -2,7 +2,11 @@ package ch.bfh.red.backend.models;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "ADDRESSES")
@@ -12,7 +16,7 @@ public class Address implements Comparable<Address>, Serializable {
 	@Id
 	@GeneratedValue
 	@Column(name = "ID")
-	private int id;
+	private Integer id;
 	
 	@Column(name = "STREET")
 	private String street;
@@ -67,11 +71,11 @@ public class Address implements Comparable<Address>, Serializable {
 		this.city = city;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

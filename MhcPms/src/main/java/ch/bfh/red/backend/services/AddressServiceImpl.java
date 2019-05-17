@@ -8,21 +8,14 @@ import ch.bfh.red.backend.models.Address;
 import ch.bfh.red.backend.repositories.AddressRepository;
 
 @Service
-public class AddressServiceImpl implements AddressService {
+public class AddressServiceImpl implements IService<Address> {
 	
 	@Autowired
-	private AddressRepository addressRepository;
-	
-	public Address getAddressById(int id) {
-		return addressRepository.findById(id).get();
-	}
-	
-	public void saveOrUpdate(Address address) {
-		addressRepository.save(address);
-	}
-	
-	public void delete(int id) {
-		addressRepository.deleteById(id);
+	private AddressRepository repository;
+
+	@Override
+	public CrudRepository<Address, Integer> getRepository() {
+		return repository;
 	}
 
 }
