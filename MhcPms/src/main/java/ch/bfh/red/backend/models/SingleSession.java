@@ -1,5 +1,7 @@
 package ch.bfh.red.backend.models;
 
+import org.hibernate.annotations.Cascade;
+
 import java.util.Date;
 
 import javax.persistence.*;
@@ -8,9 +10,11 @@ import javax.persistence.*;
 public class SingleSession extends AbstractSession<SingleSession> {
 	
 	@ManyToOne
+	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private Patient patient;
 	
 	@ManyToOne
+	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private Therapist therapist;
 	
 	public SingleSession() {}

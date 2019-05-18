@@ -1,5 +1,7 @@
 package ch.bfh.red.backend.models;
 
+import org.hibernate.annotations.Cascade;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -9,6 +11,7 @@ import javax.persistence.*;
 public class Therapist extends AbstractUser<Therapist> {
 
 	@OneToOne
+	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private AcademicTitle academicTitle;
 	
 	@ManyToMany

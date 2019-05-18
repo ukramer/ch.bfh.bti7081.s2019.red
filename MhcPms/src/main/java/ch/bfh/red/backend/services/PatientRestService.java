@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class PatientRestService {
+public class PatientRestService extends PatientService {
 
     //TODO: instantiate repository
-    List<Patient> patientList = new ArrayList<>();
+    private List<Patient> patientList = new ArrayList<>();
 
     @PostMapping("/searchPatients")
     List searchPatients(@RequestBody PatientSearchBean patientSearchBean) {

@@ -11,7 +11,7 @@ public interface IService<T> {
 	
 	default List<T> getAll() {
 		List<T> list = new ArrayList<>();
-		getRepository().findAll().forEach(e -> list.add(e));
+		getRepository().findAll().iterator().forEachRemaining(list::add);
 		return list;
 	}
 	
@@ -26,7 +26,11 @@ public interface IService<T> {
 	}
 	
 	default void delete(Integer id) {
-		getRepository().delete(getById(id));
+		delete(getById(id));
+	}
+
+	default void delete(T t) {
+		getRepository().delete(t);
 	}
 	
 	default boolean add(T t) {

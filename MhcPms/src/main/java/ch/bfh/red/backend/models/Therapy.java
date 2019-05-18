@@ -1,5 +1,7 @@
 package ch.bfh.red.backend.models;
 
+import org.hibernate.annotations.Cascade;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -20,12 +22,15 @@ public class Therapy implements Comparable<Therapy> {
 	private boolean finished;
 	
 	@OneToOne
+	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private TherapyType therapyType;
 	
 	@ManyToOne
+	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private Patient patient;
 	
 	@ManyToOne
+	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private Therapist therapist;
 	
 	@ManyToMany
@@ -119,6 +124,14 @@ public class Therapy implements Comparable<Therapy> {
 
 	public void setTherapist(Therapist therapist) {
 		this.therapist = therapist;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	@Override
