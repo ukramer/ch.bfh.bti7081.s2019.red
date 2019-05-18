@@ -4,6 +4,7 @@ import ch.bfh.red.backend.models.*;
 import ch.bfh.red.backend.services.TherapyService;
 import ch.bfh.red.ui.views.Therapy.ListView;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,5 +64,15 @@ public class TherapyPresenter implements ListView.ListViewListener {
         therapy.setTherapist(new Therapist("user", "1234", new AcademicTitle("Dr.", ""), "Ueli", "Kramer", new Address("Burgstrasse", "18", 3600, "Thun")));
         therapy.setPatient(patient);
         therapyService.add(therapy);
+
+        Date date = new Date();
+        try {
+            date = (new SimpleDateFormat("yyyy-MM-dd")).parse("2018-01-01");
+        } catch (Exception e) {}
+        Patient patient2 = new Patient("Jürgen", "Test", new Address("Langstrasse", "12k", 7777, "Burgdorf"));
+        Therapy therapy2 = new Therapy(date, new TherapyType("Exposition", ""));
+        therapy2.setTherapist(new Therapist("user", "1234", new AcademicTitle("Dr.", ""), "Ueli", "Kramer", new Address("Burgstrasse", "18", 3600, "Thun")));
+        therapy2.setPatient(patient2);
+        therapyService.add(therapy2);
     }
 }

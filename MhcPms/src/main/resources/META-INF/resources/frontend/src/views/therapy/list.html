@@ -45,17 +45,17 @@
 
             <div hidden="{{_isEmpty(therapies)}}">
                 <vaadin-grid theme="no-border" items="[[therapies]]">
-                    <vaadin-grid-column header="Startdatum" path="startDate"></vaadin-grid-column>
-                    <vaadin-grid-column header="Patient">
+                    <vaadin-grid-sort-column header="Startdatum" path="startDate" direction="desc"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Patient">
                         <template>
                             [[item.patient.lastName]] [[item.patient.firstName]]
                         </template>
-                    </vaadin-grid-column>
-                    <vaadin-grid-column header="Therapeut">
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Therapeut">
                         <template>
                             [[item.therapist.lastName]] [[item.therapist.firstName]]
                         </template>
-                    </vaadin-grid-column>
+                    </vaadin-grid-sort-column>
                     <vaadin-grid-column>
                         <template>
                             <vaadin-button theme="tertiary" on-click="edit">Bearbeiten</vaadin-button>
