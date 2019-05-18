@@ -2,6 +2,7 @@ package ch.bfh.red.ui.presenters;
 
 import ch.bfh.red.backend.models.*;
 import ch.bfh.red.backend.services.TherapyService;
+import ch.bfh.red.ui.common.AbstractEditorDialog;
 import ch.bfh.red.ui.views.Therapy.ListView;
 import com.vaadin.flow.component.notification.Notification;
 
@@ -29,8 +30,17 @@ public class TherapyPresenter implements ListView.ListViewListener {
     }
 
     public void delete(Therapy therapy) {
-        therapyService.delete(therapyService.getById(therapy.getId()));
+        getService().delete(getService().getById(therapy.getId()));
         Notification.show("Die Therapie wurde erfolgreich gelöscht.");
+    }
+
+    @Override
+    public void save(Therapy therapy, AbstractEditorDialog.Operation operation) {
+        therapyService.update(therapy);
+    }
+
+    public TherapyService getService() {
+        return therapyService;
     }
 
     @Override
@@ -38,23 +48,23 @@ public class TherapyPresenter implements ListView.ListViewListener {
         therapies.clear();
         if (patient != null) {
             if (start != null && end != null) {
-                therapies = therapyService.getByFinishedAndPatientNameAndDateRange(finished, patient.getFirstName(), patient.getLastName(), start.toString(), end.toString());
+                therapies = getService().getByFinishedAndPatientNameAndDateRange(finished, patient.getFirstName(), patient.getLastName(), start.toString(), end.toString());
             } else if (start != null) {
-                therapies = therapyService.getByFinishedAndPatientNameAndStartDate(finished, patient.getFirstName(), patient.getLastName(), start.toString());
+                therapies = getService().getByFinishedAndPatientNameAndStartDate(finished, patient.getFirstName(), patient.getLastName(), start.toString());
             } else if (end != null) {
-                therapies = therapyService.getByFinishedAndPatientNameAndEndDate(finished, patient.getFirstName(), patient.getLastName(), end.toString());
+                therapies = getService().getByFinishedAndPatientNameAndEndDate(finished, patient.getFirstName(), patient.getLastName(), end.toString());
             } else {
-                therapies = therapyService.getByFinishedAndPatientName(finished, patient.getFirstName(), patient.getLastName());
+                therapies = getService().getByFinishedAndPatientName(finished, patient.getFirstName(), patient.getLastName());
             }
         } else {
             if (start != null && end != null) {
-                therapies = therapyService.getByFinishedAndDateRange(finished, start.toString(), end.toString());
+                therapies = getService().getByFinishedAndDateRange(finished, start.toString(), end.toString());
             } else if (start != null) {
-                therapies = therapyService.getByFinishedAndStartDate(finished, start.toString());
+                therapies = getService().getByFinishedAndStartDate(finished, start.toString());
             } else if (end != null) {
-                therapies = therapyService.getByFinishedAndEndDate(finished, end.toString());
+                therapies = getService().getByFinishedAndEndDate(finished, end.toString());
             } else {
-                therapies = therapyService.getByFinished(finished);
+                therapies = getService().getByFinished(finished);
             }
         }
         listView.setTherapies(therapies);

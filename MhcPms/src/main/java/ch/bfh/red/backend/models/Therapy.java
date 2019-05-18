@@ -2,6 +2,10 @@ package ch.bfh.red.backend.models;
 
 import org.hibernate.annotations.Cascade;
 
+import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -10,7 +14,7 @@ import java.util.Objects;
 import javax.persistence.*;
 
 @Entity
-public class Therapy implements Comparable<Therapy> {
+public class Therapy implements Comparable<Therapy>, Serializable {
 	
 	@Id
 	@GeneratedValue
@@ -60,6 +64,15 @@ public class Therapy implements Comparable<Therapy> {
 
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
+	}
+
+	public LocalDate getStartDateAsLocalDate() {
+		Instant instant = getStartDate().toInstant();
+		return instant.atZone(ZoneId.systemDefault()).toLocalDate();
+	}
+
+	public void setStartDateAsLocalDate(LocalDate startDate) {
+		setStartDate(Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 	}
 
 	public boolean isFinished() {

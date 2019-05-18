@@ -3,6 +3,7 @@ package ch.bfh.red.ui.views.Therapy;
 import ch.bfh.red.MainLayout;
 import ch.bfh.red.backend.models.*;
 import ch.bfh.red.backend.services.TherapyService;
+import ch.bfh.red.ui.common.AbstractEditorDialog;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
 import ch.bfh.red.ui.presenters.TherapyPresenter;
@@ -55,8 +56,11 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
 
     private TherapyPresenter therapyPresenter;
 
+    private EditDialog editDialog = new EditDialog(this::save);
+
     public interface ListViewListener {
         void delete(Therapy therapy);
+        void save(Therapy therapy, AbstractEditorDialog.Operation operation);
 
         void updateList(boolean finished, Patient patient, LocalDate start, LocalDate end);
     }
@@ -126,5 +130,18 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
     @EventHandler
     public void endChanged() {
         dateFilter();
+    }
+
+    @EventHandler
+    public void edit(@ModelItem Therapy therapy) {
+        if (editDialog.getElement().getParent() == null) {
+            getUI().ifPresent(ui -> ui.add(editDialog));
+        }
+        editDialog.open(therapyPresenter.getService().getById(therapy.getId()), AbstractEditorDialog.Operation.EDIT);
+    }
+
+    public void save(Therapy therapy, AbstractEditorDialog.Operation operation) {
+        listeners.forEach(l -> l.save(therapy, operation));
+        listeners.forEach(l -> l.updateList(false, currentPatientFilter, currentStartFilter, currentEndFilter));
     }
 }
