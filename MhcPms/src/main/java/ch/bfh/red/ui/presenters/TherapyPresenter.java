@@ -3,6 +3,7 @@ package ch.bfh.red.ui.presenters;
 import ch.bfh.red.backend.models.*;
 import ch.bfh.red.backend.services.TherapyService;
 import ch.bfh.red.ui.views.Therapy.ListView;
+import com.vaadin.flow.component.notification.Notification;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -29,6 +30,7 @@ public class TherapyPresenter implements ListView.ListViewListener {
 
     public void delete(Therapy therapy) {
         therapyService.delete(therapyService.getById(therapy.getId()));
+        Notification.show("Die Therapie wurde erfolgreich gelöscht.");
     }
 
     @Override
