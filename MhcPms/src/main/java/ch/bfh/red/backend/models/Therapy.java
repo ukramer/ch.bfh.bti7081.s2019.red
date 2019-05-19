@@ -1,5 +1,11 @@
 package ch.bfh.red.backend.models;
 
+import org.hibernate.annotations.Cascade;
+
+import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -8,7 +14,7 @@ import java.util.Objects;
 import javax.persistence.*;
 
 @Entity
-public class Therapy implements Comparable<Therapy> {
+public class Therapy implements Comparable<Therapy>, Serializable {
 	
 	@Id
 	@GeneratedValue
@@ -20,12 +26,15 @@ public class Therapy implements Comparable<Therapy> {
 	private boolean finished;
 	
 	@OneToOne
+	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private TherapyType therapyType;
 	
 	@ManyToOne
+	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private Patient patient;
 	
 	@ManyToOne
+	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private Therapist therapist;
 	
 	@ManyToMany
@@ -55,6 +64,15 @@ public class Therapy implements Comparable<Therapy> {
 
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
+	}
+
+	public LocalDate getStartDateAsLocalDate() {
+		Instant instant = getStartDate().toInstant();
+		return instant.atZone(ZoneId.systemDefault()).toLocalDate();
+	}
+
+	public void setStartDateAsLocalDate(LocalDate startDate) {
+		setStartDate(Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 	}
 
 	public boolean isFinished() {
@@ -119,6 +137,14 @@ public class Therapy implements Comparable<Therapy> {
 
 	public void setTherapist(Therapist therapist) {
 		this.therapist = therapist;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	@Override
