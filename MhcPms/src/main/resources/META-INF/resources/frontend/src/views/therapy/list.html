@@ -7,9 +7,6 @@
 <link rel="import" href="../../../bower_components/vaadin-select/vaadin-select.html">
 <link rel="import" href="../../../bower_components/vaadin-date-picker/vaadin-date-picker.html">
 <link rel="import" href="../../../bower_components/vaadin-form-layout/vaadin-form-layout.html">
-<link rel="import" href="../../../bower_components/vaadin-confirm-dialog/vaadin-confirm-dialog.html">
-<link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../../bower_components/vaadin-lumo-styles/badge.html">
 <!-- TODO Needed to show icons in Vaadin Designer preview mode for now, but can be removed soon -->
 <link rel="import" href="../../../bower_components/vaadin-lumo-styles/icons.html">
@@ -44,7 +41,7 @@
             </div>
 
             <div hidden="{{_isEmpty(therapies)}}">
-                <vaadin-grid theme="no-border" items="[[therapies]]">
+                <vaadin-grid theme="no-border" items="[[therapies]]" on-select="showDetails">
                     <vaadin-grid-sort-column header="Startdatum" path="startDate" direction="desc"></vaadin-grid-sort-column>
                     <vaadin-grid-sort-column header="Patient">
                         <template>
@@ -69,9 +66,6 @@
                 </vaadin-grid>
             </div>
         </div>
-        <vaadin-confirm-dialog id="deleteDialog" cancel header="Therapie wirklich löschen?" on-confirm="confirmDelete" confirm-text="Löschen" cancel cancel-text="Abbrechen">
-            Sind Sie sicher, dass Sie die Therapie löschen möchten?
-        </vaadin-confirm-dialog>
     </template>
 
     <script>

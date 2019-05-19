@@ -1,0 +1,41 @@
+<!-- Dependency resources -->
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<!-- Added Web Component dependencies to make Vaadin Designer preview work -->
+<link rel="import" href="../../../bower_components/vaadin-text-field/vaadin-text-field.html">
+<link rel="import" href="../../../bower_components/vaadin-button/vaadin-button.html">
+<link rel="import" href="../../../bower_components/vaadin-select/vaadin-select.html">
+<link rel="import" href="../../../bower_components/vaadin-date-picker/vaadin-date-picker.html">
+<link rel="import" href="../../../bower_components/vaadin-form-layout/vaadin-form-layout.html">
+<link rel="import" href="../../../bower_components/vaadin-checkbox/vaadin-checkbox.html">
+<!-- TODO Needed to show icons in Vaadin Designer preview mode for now, but can be removed soon -->
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/icons.html">
+
+<dom-module id="therapy-detail">
+    <template>
+        <style include="lumo-color lumo-typography lumo-badge view-styles"></style>
+        <div class="view-container">
+            <h2 id="header"></h2>
+
+            <vaadin-form-layout>
+                <vaadin-date-picker id="startDate" label="Startdatum" required immediate></vaadin-date-picker>
+                <br />
+                <vaadin-checkbox id="finished">Diese Therapie ist abgeschlossen.</vaadin-checkbox>
+
+                <br/><vaadin-button theme="success" on-click="save">Speichern</vaadin-button>
+            </vaadin-form-layout>
+        </div>
+    </template>
+
+    <script>
+        class TherapyDetail extends Polymer.Element {
+            static get is() {
+                return 'therapy-detail'
+            }
+
+            _isEmpty(array) {
+                return array.length == 0;
+            }
+        }
+        customElements.define(TherapyDetail.is, TherapyDetail);
+    </script>
+</dom-module>

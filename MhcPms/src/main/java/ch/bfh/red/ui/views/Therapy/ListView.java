@@ -3,17 +3,19 @@ package ch.bfh.red.ui.views.Therapy;
 import ch.bfh.red.MainLayout;
 import ch.bfh.red.backend.models.*;
 import ch.bfh.red.backend.services.TherapyService;
-import ch.bfh.red.ui.common.AbstractEditorDialog;
+import ch.bfh.red.ui.components.ConfirmationDialog;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
 import ch.bfh.red.ui.presenters.TherapyPresenter;
 import ch.bfh.red.ui.views.View;
 import com.vaadin.flow.component.Tag;
-import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.polymertemplate.*;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.templatemodel.Encode;
@@ -31,7 +33,7 @@ import java.util.List;
 @HtmlImport("frontend://src/views/therapy/list.html")
 @Component
 @UIScope
-public class ListView extends PolymerTemplate<ListView.TherapyModel> implements View<ListView.ListViewListener> {
+public class ListView extends PolymerTemplate<ListView.TherapyModel> implements View<ListView.ListViewListener>, BeforeEnterObserver {
     private List<ListViewListener> listeners = new ArrayList<>();
 
     @Id("header")
@@ -43,8 +45,7 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
     @Id("end")
     private DatePicker end;
 
-    @Id("deleteDialog")
-    private ConfirmDialog deleteDialog;
+    private ConfirmationDialog<Therapy> confirmationDialog = new ConfirmationDialog<>();
 
     private Patient currentPatientFilter;
 
@@ -52,15 +53,15 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
 
     private LocalDate currentEndFilter;
 
-    private Therapy currentTherapy;
+    private TherapyService therapyService;
 
-    private TherapyPresenter therapyPresenter;
-
-    private EditDialog editDialog = new EditDialog(this::save);
+    @Override
+    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+        new TherapyPresenter(this, therapyService);
+    }
 
     public interface ListViewListener {
         void delete(Therapy therapy);
-        void save(Therapy therapy, AbstractEditorDialog.Operation operation);
 
         void updateList(boolean finished, Patient patient, LocalDate start, LocalDate end);
     }
@@ -77,10 +78,12 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
 
     ListView(@Autowired TherapyService therapyService) {
         header.setText("Therapien");
+        start.setI18n(MainLayout.datePickerI18n);
+        end.setI18n(MainLayout.datePickerI18n);
 
         // @todo: to be removed
         TherapyPresenter.addMockData(therapyService);
-        therapyPresenter = new TherapyPresenter(this, therapyService);
+        this.therapyService = therapyService;
     }
 
     @Override
@@ -98,14 +101,12 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
 
     @EventHandler
     public void delete(@ModelItem Therapy therapy) {
-        currentTherapy = therapy;
-        deleteDialog.setOpened(true);
+        confirmationDialog.open("Therapie wirklich löschen?", "Möchten Sie die Therapie wirklich löschen?", "", "Löschen", true, therapy, this::confirmDelete);;
     }
 
-    @EventHandler
-    public void confirmDelete() {
-        if (currentTherapy == null) return;
-        listeners.forEach(l -> l.delete(currentTherapy));
+    public void confirmDelete(Therapy therapy) {
+        if (therapy == null) return;
+        listeners.forEach(l -> l.delete(therapy));
         listeners.forEach(l -> l.updateList(false, currentPatientFilter, currentStartFilter, currentEndFilter));
     }
 
@@ -134,14 +135,6 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
 
     @EventHandler
     public void edit(@ModelItem Therapy therapy) {
-        if (editDialog.getElement().getParent() == null) {
-            getUI().ifPresent(ui -> ui.add(editDialog));
-        }
-        editDialog.open(therapyPresenter.getService().getById(therapy.getId()), AbstractEditorDialog.Operation.EDIT);
-    }
-
-    public void save(Therapy therapy, AbstractEditorDialog.Operation operation) {
-        listeners.forEach(l -> l.save(therapy, operation));
-        listeners.forEach(l -> l.updateList(false, currentPatientFilter, currentStartFilter, currentEndFilter));
+        UI.getCurrent().navigate(DetailView.class, therapy.getId());
     }
 }
