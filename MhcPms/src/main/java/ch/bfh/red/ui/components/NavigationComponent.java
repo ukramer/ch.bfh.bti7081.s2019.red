@@ -1,11 +1,13 @@
 package ch.bfh.red.ui.components;
 
+
 import ch.bfh.red.ui.views.DashboardView;
 import ch.bfh.red.ui.views.EditGroupSessionView;
 import ch.bfh.red.ui.views.EditPatientView;
 import ch.bfh.red.ui.views.EditSingleSessionView;
 import ch.bfh.red.ui.views.ListPatientView;
 import ch.bfh.red.ui.views.Therapy.ListView;
+
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.Text;
@@ -13,6 +15,13 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
+
+import ch.bfh.red.ui.views.DashboardView;
+import ch.bfh.red.ui.views.EditGroupSessionView;
+import ch.bfh.red.ui.views.EditPatientView;
+import ch.bfh.red.ui.views.EditSingleSessionView;
+import ch.bfh.red.ui.views.ExpositionView;
+import ch.bfh.red.ui.views.ListPatientView;
 
 @Tag("div")
 public class NavigationComponent extends Component {
@@ -54,6 +63,13 @@ public class NavigationComponent extends Component {
         therapyListView.addClassName("main-layout__nav-item");
         therapyListView.setHighlightCondition(HighlightConditions.sameLocation());
         add(therapyListView);
+
+        RouterLink expositionView = new RouterLink(null, ExpositionView.class);
+        expositionView.add(new Icon(VaadinIcon.LIST), new Text("View Expositions"));
+        expositionView.addClassName("main-layout__nav-item");
+        expositionView.setHighlightCondition(HighlightConditions.sameLocation());
+        add(expositionView);
+
     }
 
     private void add(Component child) {
