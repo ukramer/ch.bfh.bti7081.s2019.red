@@ -1,0 +1,103 @@
+<!-- Dependency resources -->
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<!-- Added Web Component dependencies to make Vaadin Designer preview work -->
+<link rel="import" href="../../../bower_components/vaadin-text-field/vaadin-text-field.html">
+<link rel="import" href="../../../bower_components/vaadin-button/vaadin-button.html">
+<link rel="import" href="../../../bower_components/vaadin-grid/all-imports.html">
+<link rel="import" href="../../../bower_components/vaadin-select/vaadin-select.html">
+<link rel="import" href="../../../bower_components/vaadin-date-picker/vaadin-date-picker.html">
+<link rel="import" href="../../../bower_components/vaadin-form-layout/vaadin-form-layout.html">
+<link rel="import" href="../../../bower_components/vaadin-confirm-dialog/vaadin-confirm-dialog.html">
+<link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/badge.html">
+<!-- TODO Needed to show icons in Vaadin Designer preview mode for now, but can be removed soon -->
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/icons.html">
+
+<dom-module id="therapy-list">
+    <template>
+        <style include="lumo-color lumo-typography lumo-badge view-styles"></style>
+        <div class="view-container">
+            <h2 id="header"></h2>
+
+            <vaadin-form-layout>
+                <vaadin-select label="Patient" placeholder="Nach Patient filtern">
+                    <template>
+                        <vaadin-list-box>
+                            <dom-repeat items="[[patients]]">
+                                <template>
+                                    <vaadin-item on-click="patientFilter">[[item.lastName]] [[item.firstName]]</vaadin-item>
+                                </template>
+                            </dom-repeat>
+                        </vaadin-list-box>
+                    </template>
+                </vaadin-select>
+                <vaadin-custom-field class="width-auto" label="Datumsbereich" on-change="dateFilter">
+                    <vaadin-date-picker label="Datumsbereich" id="start" on-change="startChanged"></vaadin-date-picker>
+                    <vaadin-date-picker id="end" on-change="endChanged"></vaadin-date-picker>
+                </vaadin-custom-field>
+            </vaadin-form-layout>
+
+            <div hidden="{{!_isEmpty(therapies)}}">
+                Keine passende Therapie gefunden.
+                <vaadin-button on-click="add" theme="success">Therapie hinzufügen</vaadin-button>
+            </div>
+
+            <div hidden="{{_isEmpty(therapies)}}">
+                <vaadin-grid theme="no-border" items="[[therapies]]">
+                    <vaadin-grid-sort-column header="Startdatum" path="startDate" direction="desc"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Patient">
+                        <template>
+                            [[item.patient.lastName]] [[item.patient.firstName]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Therapeut">
+                        <template>
+                            [[item.therapist.lastName]] [[item.therapist.firstName]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="tertiary" on-click="edit">Bearbeiten</vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="error tertiary" on-click="delete">Löschen</vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                </vaadin-grid>
+            </div>
+        </div>
+        <vaadin-confirm-dialog id="deleteDialog" cancel header="Therapie wirklich löschen?" on-confirm="confirmDelete" confirm-text="Löschen" cancel cancel-text="Abbrechen">
+            Sind Sie sicher, dass Sie die Therapie löschen möchten?
+        </vaadin-confirm-dialog>
+    </template>
+
+    <script>
+        class TherapyList extends Polymer.Element {
+            static get is() {
+                return 'therapy-list'
+            }
+
+            _isEmpty(array) {
+                return array.length == 0;
+            }
+
+            startChanged() {
+                this.$.end.min = this.$.start.value;
+
+                // Open the second date picker when the user has selected a value
+                if (this.$.start.value)
+                {
+                    this.$.end.open();
+                }
+            }
+
+            endChanged() {
+                this.$.start.max = this.$.end.value;
+            }
+        }
+        customElements.define(TherapyList.is, TherapyList);
+    </script>
+</dom-module>

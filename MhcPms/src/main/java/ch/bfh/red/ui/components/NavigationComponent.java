@@ -5,6 +5,7 @@ import ch.bfh.red.ui.views.EditGroupSessionView;
 import ch.bfh.red.ui.views.EditPatientView;
 import ch.bfh.red.ui.views.EditSingleSessionView;
 import ch.bfh.red.ui.views.ListPatientView;
+import ch.bfh.red.ui.views.Therapy.ListView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.Text;
@@ -47,6 +48,12 @@ public class NavigationComponent extends Component {
         editSingleSession.addClassName("main-layout__nav-item");
         editSingleSession.setHighlightCondition(HighlightConditions.sameLocation());
         add(editSingleSession);
+
+        RouterLink therapyListView = new RouterLink(null, ListView.class);
+        therapyListView.add(new Icon(VaadinIcon.LIST), new Text("Therapien"));
+        therapyListView.addClassName("main-layout__nav-item");
+        therapyListView.setHighlightCondition(HighlightConditions.sameLocation());
+        add(therapyListView);
     }
 
     private void add(Component child) {

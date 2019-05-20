@@ -13,7 +13,6 @@ public class MhcPmsApplication {
 
     public static void main(String[] args) {
     	start(args);
-//        SpringApplication.run(MhcPmsApplication.class, args);
         browse("http://localhost:8080");
     }
     

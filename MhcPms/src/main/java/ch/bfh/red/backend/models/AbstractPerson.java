@@ -1,5 +1,8 @@
 package ch.bfh.red.backend.models;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.*;
 
 @MappedSuperclass
@@ -15,6 +18,7 @@ public abstract class AbstractPerson<T extends AbstractPerson<T>> implements Com
 	private String lastName;
 	
 	@OneToOne
+	@Cascade(CascadeType.ALL)
 	private Address address;
 
 	public AbstractPerson() {}
