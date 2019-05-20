@@ -26,7 +26,7 @@ import java.util.List;
 @Tag("listpatient-element")
 @HtmlImport("frontend://src/views/person/listPatient.html")
 public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatientModel> implements View<ListPatientView.ListPatientViewListener> {
-    List<ListPatientViewListener> listeners = new ArrayList<>();
+    private ListPatientViewListener listener;
     private List<Patient> patientList = new ArrayList<>();
 
     @Id("header")
@@ -49,8 +49,8 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
     }
 
     @Override
-    public void addListener(ListPatientViewListener listener) {
-        listeners.add(listener);
+    public void setListener(ListPatientViewListener listener) {
+        this.listener = listener;
     }
 
     ListPatientView() {
@@ -66,9 +66,7 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
     public void edit(@RepeatIndex int itemIndex) {
         //String param = patientList.get(itemIndex).getId()+"";
         String param = itemIndex + "";
-        listeners.forEach(x -> {
-            x.onPatientClick(param);
-        });
+        listener.onPatientClick(param);
         patientList.remove(itemIndex);
     }
 }

@@ -48,11 +48,11 @@ public class DashboardView extends PolymerTemplate<DashboardView.TherapistModel>
     }
 
     /* Only the presenter registers one listener... */
-    private List<DashboardViewListener> listeners = new ArrayList<>();
+    private DashboardViewListener listener;
 
     @Override
-    public void addListener(DashboardViewListener listener) {
-        listeners.add(listener);
+    public void setListener(DashboardViewListener listener) {
+        this.listener = listener;
     }
 
     // example event, delegate the event to the listeners

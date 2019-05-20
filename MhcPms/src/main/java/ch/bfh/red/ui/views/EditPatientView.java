@@ -27,7 +27,7 @@ import java.util.List;
 @Tag("editpatient-element")
 @HtmlImport("frontend://src/views/person/editPatient.html")
 public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatientModel> implements View<EditPatientView.EditPatientViewListener>, HasUrlParameter<String> {
-    List<EditPatientViewListener> listeners = new ArrayList<>();
+    private EditPatientViewListener listener;
     @Id("header")
     private H2 header;
 
@@ -59,8 +59,8 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
     }
 
     @Override
-    public void addListener(EditPatientViewListener listener) {
-        listeners.add(listener);
+    public void setListener(EditPatientViewListener listener) {
+        this.listener = listener;
     }
 
     public EditPatientView() {
@@ -70,9 +70,7 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
 
     @EventHandler
     private void save() {
-        listeners.forEach(x -> {
-            x.save(getModel().getPatient());
-        });
+        listener.save(getModel().getPatient());
         Notification.show("Patient konnte erfolgreich gespeichert werden!");
     }
 
