@@ -21,26 +21,8 @@
             <vaadin-text-field label="Hausnummer" value="{{patientSearchBean.streetNr::input}}"></vaadin-text-field>
             <vaadin-text-field label="PLZ" value="{{patientSearchBean.postalCode::input}}"></vaadin-text-field>
             <vaadin-text-field label="Stadt" value="{{patientSearchBean.city::input}}"></vaadin-text-field>
-            <br/><vaadin-button on-click="_search">Suchen</vaadin-button>
-            <iron-ajax
-                id="ajaxSearchPatient"
-                method="post"
-                url="searchPatients"
-                body="[[patientSearchBean]]"
-                handle-as="json"
-                content-type="application/json"
-                on-response="_onSearchResponse">
-            </iron-ajax>
-            <iron-ajax
-                    id="ajaxDeletePatient"
-                    method="post"
-                    url="deletePatient"
-                    body="[[body]]"
-                    handle-as="json"
-                    content-type="application/json"
-                    on-response="_onDeleteResponse">
-            </iron-ajax>
-            <vaadin-grid id="gridPatienten" theme="no-border" style="width:1100px" column-reordering-allowed multi-sort>
+            <br/><vaadin-button on-click="search">Suchen</vaadin-button>
+            <vaadin-grid id="gridPatienten" items=[[patients]] theme="no-border" style="width:1100px" column-reordering-allowed multi-sort>
                 <vaadin-grid-column>
                     <template class="header">#</template>
                     <template>[[index]]</template>
@@ -112,7 +94,7 @@
                 </vaadin-grid-column>
                 <vaadin-grid-column>
                     <template>
-                        <vaadin-button theme="error tertiary" on-click="_delete">Löschen</vaadin-button>
+                        <vaadin-button theme="error tertiary" on-click="delete">Löschen</vaadin-button>
                     </template>
                 </vaadin-grid-column>
             </vaadin-grid>
@@ -127,25 +109,6 @@
 
             _isEmpty(array) {
                 return array.length == 0;
-            }
-
-            _search(){
-                this.$.ajaxSearchPatient.generateRequest();
-            }
-
-            _delete(e){
-                this.body=e.model.item;
-                this.$.ajaxDeletePatient.generateRequest();
-            }
-
-            _onDeleteResponse(event, request){
-                var response = request.response;
-                this.$.gridPatienten.items = response;
-            }
-
-            _onSearchResponse(event, request){
-                var response = request.response;
-                this.$.gridPatienten.items = response;
             }
         }
 

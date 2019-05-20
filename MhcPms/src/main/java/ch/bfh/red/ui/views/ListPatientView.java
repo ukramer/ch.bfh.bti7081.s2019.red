@@ -3,12 +3,13 @@ package ch.bfh.red.ui.views;
 import ch.bfh.red.MainLayout;
 import ch.bfh.red.backend.models.Address;
 import ch.bfh.red.backend.models.Patient;
+import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
 import ch.bfh.red.ui.encoders.LongToStringEncoder;
 import ch.bfh.red.ui.presenters.PatientPresenter;
 import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
+import com.vaadin.flow.component.EventData;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.HtmlImport;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.polymertemplate.EventHandler;
 import com.vaadin.flow.component.polymertemplate.Id;
@@ -34,14 +35,16 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
 
     public interface ListPatientViewListener {
         void onPatientClick(String param);
+        List<Patient> searchPatient(PatientSearchBean patientSearchBean);
+        void deletePatient(int id);
     }
 
     public interface ListPatientModel extends TemplateModel {
-        @Include({"firstName", "lastName", "address.street", "address.streetNumber", "address.postalCode", "address.city"})
-        @Encode(value = LongToStringEncoder.class, path = "id")
-        void setPatienten(List<Patient> patienten);
+        @Include({"id", "firstName", "lastName", "address.street", "address.streetNumber", "address.postalCode", "address.city"})
+        @Encode(value = IntegerToStringEncoder.class, path = "id")
+        void setPatients(List<Patient> patienten);
 
-        List<Patient> getPatienten();
+        List<Patient> getPatients();
 
         void setPatientSearchBean(PatientSearchBean patientSearchBean);
 
@@ -56,19 +59,33 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
     ListPatientView() {
         new PatientPresenter(this);
         header.setText("List Patient");
-        patientList.add(new Patient("cyrill", "meyer", new Address("bethlehem", "7", 3185, "schmitten")));
-        patientList.add(new Patient("ueli", "kramer", new Address("thunstrasse", "18", 2499, "thun")));
-        getModel().setPatienten(patientList);
+        Patient p1 = new Patient("cyrill", "meyer", new Address("bethlehem", "7", 3185, "schmitten"));
+        p1.setId(1);
+        Patient p2 = new Patient("ueli", "kramer", new Address("thunstrasse", "18", 2499, "thun"));
+        p2.setId(2);
+        patientList.add(p1);
+        patientList.add(p2);
+        getModel().setPatients(patientList);
         getModel().setPatientSearchBean(new PatientSearchBean());
     }
 
     @EventHandler
-    public void edit(@RepeatIndex int itemIndex) {
-        //String param = patientList.get(itemIndex).getId()+"";
-        String param = itemIndex + "";
+    public void edit(@EventData("event.model.item.id") int id) {
         listeners.forEach(x -> {
-            x.onPatientClick(param);
+            x.onPatientClick(id+"");
         });
-        patientList.remove(itemIndex);
+    }
+
+    @EventHandler
+    public void delete(@EventData("event.model.item.id") int id) {
+        listeners.forEach(x -> {
+            x.deletePatient(id);
+        });
+    }
+
+    public void search(){
+        listeners.forEach(x -> {
+            x.searchPatient(getModel().getPatientSearchBean());
+        });
     }
 }

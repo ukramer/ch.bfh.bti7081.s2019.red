@@ -7,6 +7,8 @@ import ch.bfh.red.ui.views.ListPatientView;
 import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
 import com.vaadin.flow.component.UI;
 
+import java.util.List;
+
 public class PatientPresenter implements EditPatientView.EditPatientViewListener, ListPatientView.ListPatientViewListener {
     EditPatientView editPatientView;
     ListPatientView listPatientView;
@@ -25,6 +27,17 @@ public class PatientPresenter implements EditPatientView.EditPatientViewListener
     @Override
     public void onPatientClick(String param) {
         UI.getCurrent().navigate(EditPatientView.class, param);
+    }
+
+    @Override
+    public List<Patient> searchPatient(PatientSearchBean patientSearchBean) {
+        System.out.println(patientSearchBean.toString());
+        return null;
+    }
+
+    @Override
+    public void deletePatient(int id) {
+        System.out.println("delete patient with index: " + id);
     }
 
     @Override
