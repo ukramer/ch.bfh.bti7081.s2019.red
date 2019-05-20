@@ -1,6 +1,7 @@
 <!-- Dependency resources -->
 <link rel="import" href="../../../bower_components/polymer/polymer-element.html">
 <!-- Added Web Component dependencies to make Vaadin Designer preview work -->
+<link rel="import" href="../../../bower_components/vaadin-ordered-layout/vaadin-horizontal-layout.html">
 <link rel="import" href="../../../bower_components/vaadin-text-field/vaadin-text-field.html">
 <link rel="import" href="../../../bower_components/vaadin-button/vaadin-button.html">
 <link rel="import" href="../../../bower_components/vaadin-select/vaadin-select.html">
@@ -16,13 +17,19 @@
         <div class="view-container">
             <h2 id="header"></h2>
 
-            <vaadin-form-layout>
-                <vaadin-date-picker id="startDate" label="Startdatum" required immediate></vaadin-date-picker>
-                <br />
-                <vaadin-checkbox id="finished">Diese Therapie ist abgeschlossen.</vaadin-checkbox>
+            <vaadin-horizontal-layout>
+                <div>
+                    <vaadin-form-layout>
+                        <vaadin-date-picker id="startDate" label="Startdatum" required immediate></vaadin-date-picker>
+                        <br />
+                        <vaadin-checkbox id="finished">Diese Therapie ist abgeschlossen.</vaadin-checkbox>
 
-                <br/><vaadin-button theme="success" on-click="save">Speichern</vaadin-button>
-            </vaadin-form-layout>
+                        <br/><vaadin-button theme="success" on-click="save">Speichern</vaadin-button>
+                    </vaadin-form-layout>
+                </div>
+                <div>
+                </div>
+            </vaadin-horizontal-layout>
         </div>
     </template>
 

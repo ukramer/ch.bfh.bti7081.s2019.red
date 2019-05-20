@@ -5,6 +5,8 @@ import ch.bfh.red.backend.services.TherapyService;
 import ch.bfh.red.ui.views.Therapy.DetailView;
 import ch.bfh.red.ui.views.Therapy.ListView;
 import com.vaadin.flow.component.notification.Notification;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -13,29 +15,32 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class TherapyPresenter implements ListView.ListViewListener, DetailView.DetailViewListener {
     private ListView listView;
     private DetailView detailView;
+
+    @Autowired
     private TherapyService therapyService;
+
     private List<Therapy> therapies = new ArrayList<>();
 
     private Therapy loadedTherapy;
 
-    public TherapyPresenter(ListView listView, TherapyService therapyService) {
-        this.listView = listView;
-        this.therapyService = therapyService;
-        listView.addListener(this);
+    public TherapyPresenter() {}
 
+    public void setView(ListView listView) {
+        this.listView = listView;
+        listView.setListener(this);
         updateList(false, null, null, null);
 
         List<Patient> patients = therapies.stream().map(Therapy::getPatient).distinct().sorted().collect(Collectors.toList());
         listView.setPatients(patients);
     }
 
-    public TherapyPresenter(DetailView detailView, TherapyService therapyService) {
+    public void setView(DetailView detailView) {
         this.detailView = detailView;
-        this.therapyService = therapyService;
-        detailView.addListener(this);
+        detailView.setListener(this);
     }
 
     public void delete(Therapy therapy) {
@@ -91,7 +96,7 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
         listView.setTherapies(therapies);
     }
 
-    public static void addMockData(TherapyService therapyService) {
+    public void addMockData() {
         Patient patient = new Patient("Jürgen", "Test", new Address("Langstrasse", "12k", 7777, "Burgdorf"));
         Therapy therapy = new Therapy(new Date(), new TherapyType("Exposition", ""));
         therapy.setTherapist(new Therapist("user", "1234", new AcademicTitle("Dr.", ""), "Ueli", "Kramer", new Address("Burgstrasse", "18", 3600, "Thun")));

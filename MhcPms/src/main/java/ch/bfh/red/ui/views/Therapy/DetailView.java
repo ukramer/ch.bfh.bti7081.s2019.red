@@ -2,7 +2,6 @@ package ch.bfh.red.ui.views.Therapy;
 
 import ch.bfh.red.MainLayout;
 import ch.bfh.red.backend.models.Therapy;
-import ch.bfh.red.backend.services.TherapyService;
 import ch.bfh.red.ui.components.ConfirmationDialog;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
@@ -40,7 +39,7 @@ import java.util.stream.Collectors;
 @Component
 @UIScope
 public class DetailView extends PolymerTemplate<DetailView.TherapyModel> implements HasUrlParameter<Integer>, View<DetailView.DetailViewListener> {
-    private List<DetailViewListener> listeners = new ArrayList<>();
+    private DetailViewListener listener;
 
     @Id("header")
     private H2 header;
@@ -55,37 +54,35 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
 
     private TherapyPresenter therapyPresenter;
 
-    private TherapyService therapyService;
-
     private Binder<Therapy> binder = new Binder<>();
 
-    DetailView(@Autowired TherapyService therapyService) {
+    DetailView(@Autowired TherapyPresenter therapyPresenter) {
+        therapyPresenter.setView(this);
+        this.therapyPresenter = therapyPresenter;
         startDate.setI18n(MainLayout.datePickerI18n);
         startDate.setRequiredIndicatorVisible(true);
-        this.therapyService = therapyService;
-        this.therapyPresenter = new TherapyPresenter(this, therapyService);
+
         binder.forField(startDate).asRequired("Es muss ein Startdatum gesetzt sein.").bind(Therapy::getStartDateAsLocalDate, Therapy::setStartDateAsLocalDate);
         binder.forField(finished).bind(Therapy::isFinished, Therapy::setFinished);
     }
 
     @Override
     public void setParameter(BeforeEvent beforeEvent, Integer integer) {
-        listeners.forEach(l -> l.load(integer));
+        listener.load(integer);
     }
 
     @Override
-    public void addListener(DetailViewListener listener) {
-        listeners.add(listener);
+    public void setListener(DetailViewListener listener) {
+        this.listener = listener;
     }
 
     @EventHandler
     public void delete() {
         confirmationDialog.open("Therapie wirklich löschen?", "Möchten Sie die Therapie wirklich löschen?", "", "Löschen", true, getModel().getTherapy(), this::confirmDelete);
-        ;
     }
 
     public void confirmDelete(Therapy therapy) {
-        listeners.forEach(l -> l.delete(therapy));
+        listener.delete(therapy);
         UI.getCurrent().navigate("therapy/list");
     }
 
@@ -93,7 +90,7 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
     public void save() {
         BinderValidationStatus<Therapy> validate = binder.validate();
         if (validate.isOk()) {
-            listeners.forEach(l -> l.save(binder.getBean()));
+            listener.save(binder.getBean());
         } else {
             List<String> errorMessages = new ArrayList<>();
             validate.getValidationErrors().forEach(e -> errorMessages.add(e.getErrorMessage()));

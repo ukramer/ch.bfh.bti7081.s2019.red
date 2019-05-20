@@ -2,7 +2,6 @@ package ch.bfh.red.ui.views.Therapy;
 
 import ch.bfh.red.MainLayout;
 import ch.bfh.red.backend.models.*;
-import ch.bfh.red.backend.services.TherapyService;
 import ch.bfh.red.ui.components.ConfirmationDialog;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
@@ -25,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Route(value = "therapy/list", layout = MainLayout.class)
@@ -34,7 +32,7 @@ import java.util.List;
 @Component
 @UIScope
 public class ListView extends PolymerTemplate<ListView.TherapyModel> implements View<ListView.ListViewListener>, BeforeEnterObserver {
-    private List<ListViewListener> listeners = new ArrayList<>();
+    private ListViewListener listener;
 
     @Id("header")
     private H2 header;
@@ -53,11 +51,13 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
 
     private LocalDate currentEndFilter;
 
-    private TherapyService therapyService;
+    private TherapyPresenter therapyPresenter;
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        new TherapyPresenter(this, therapyService);
+        therapyPresenter.setView(this);
+        start.setI18n(MainLayout.datePickerI18n);
+        end.setI18n(MainLayout.datePickerI18n);
     }
 
     public interface ListViewListener {
@@ -76,19 +76,17 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
         void setPatients(List<Patient> patients);
     }
 
-    ListView(@Autowired TherapyService therapyService) {
+    ListView(@Autowired TherapyPresenter therapyPresenter) {
         header.setText("Therapien");
-        start.setI18n(MainLayout.datePickerI18n);
-        end.setI18n(MainLayout.datePickerI18n);
 
+        this.therapyPresenter = therapyPresenter;
         // @todo: to be removed
-        TherapyPresenter.addMockData(therapyService);
-        this.therapyService = therapyService;
+        therapyPresenter.addMockData();
     }
 
     @Override
-    public void addListener(ListViewListener listener) {
-        listeners.add(listener);
+    public void setListener(ListViewListener listener) {
+        this.listener = listener;
     }
 
     public void setTherapies(List<Therapy> therapies) {
@@ -106,21 +104,21 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
 
     public void confirmDelete(Therapy therapy) {
         if (therapy == null) return;
-        listeners.forEach(l -> l.delete(therapy));
-        listeners.forEach(l -> l.updateList(false, currentPatientFilter, currentStartFilter, currentEndFilter));
+        listener.delete(therapy);
+        listener.updateList(false, currentPatientFilter, currentStartFilter, currentEndFilter);
     }
 
     @EventHandler
     public void patientFilter(@ModelItem Patient patient) {
         currentPatientFilter = patient;
-        listeners.forEach(l -> l.updateList(false, currentPatientFilter, currentStartFilter, currentEndFilter));
+        listener.updateList(false, currentPatientFilter, currentStartFilter, currentEndFilter);
     }
 
     @EventHandler
     public void dateFilter() {
         currentStartFilter = start.getValue();
         currentEndFilter = end.getValue();
-        listeners.forEach(l -> l.updateList(false, currentPatientFilter, currentStartFilter, currentEndFilter));
+        listener.updateList(false, currentPatientFilter, currentStartFilter, currentEndFilter);
     }
 
     @EventHandler
