@@ -67,7 +67,7 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
     }
 
     public interface TherapyModel extends TemplateModel {
-        @Include({"id", "startDate", "finished", "patient.firstName", "patient.lastName", "therapist.firstName", "therapist.lastName"})
+        @Include({"id", "startDate", "finished", "patient.firstName", "patient.lastName", "therapist.academicTitle.prefix", "therapist.firstName", "therapist.lastName"})
         @Encode(value = IntegerToStringEncoder.class, path = "id")
         @Encode(value = DateToStringEncoder.class, path = "startDate")
         void setTherapies(List<Therapy> therapies);
