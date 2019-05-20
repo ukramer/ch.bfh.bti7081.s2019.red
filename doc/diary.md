@@ -135,4 +135,12 @@ Anwesend: Alle
  * Arbeit an Tasks in Sprint 1
  * Todos:
    * Alle: Weiterarbeiten an Tasks in Sprint 1
+   
+ ### 20.05.19
+ Anwesend: Haug, Hutzli, Kramer, Meyer
+ * Arbeit an Tasks in Sprint 2
+ * Todos:
+   * Alle: Tasks in Sprint 2
+   
+ 
  
