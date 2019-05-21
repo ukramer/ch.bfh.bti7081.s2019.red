@@ -1,7 +1,8 @@
 package ch.bfh.red.ui.views.Therapy;
 
 import ch.bfh.red.MainLayout;
-import ch.bfh.red.backend.models.*;
+import ch.bfh.red.backend.models.Patient;
+import ch.bfh.red.backend.models.Therapy;
 import ch.bfh.red.ui.components.ConfirmationDialog;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
@@ -12,7 +13,11 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.polymertemplate.*;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.polymertemplate.EventHandler;
+import com.vaadin.flow.component.polymertemplate.Id;
+import com.vaadin.flow.component.polymertemplate.ModelItem;
+import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
@@ -53,35 +58,22 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
 
     private TherapyPresenter therapyPresenter;
 
+    @Autowired
+    ListView(TherapyPresenter therapyPresenter) {
+        this.therapyPresenter = therapyPresenter;
+
+        // @todo: to be removed
+        therapyPresenter.addMockData();
+    }
+
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         therapyPresenter.setView(this);
+
+        // init view elements
+        header.setText("Therapien");
         start.setI18n(MainLayout.datePickerI18n);
         end.setI18n(MainLayout.datePickerI18n);
-    }
-
-    public interface ListViewListener {
-        void delete(Therapy therapy);
-
-        void updateList(boolean finished, Patient patient, LocalDate start, LocalDate end);
-    }
-
-    public interface TherapyModel extends TemplateModel {
-        @Include({"id", "startDate", "finished", "patient.firstName", "patient.lastName", "therapist.academicTitle.prefix", "therapist.firstName", "therapist.lastName"})
-        @Encode(value = IntegerToStringEncoder.class, path = "id")
-        @Encode(value = DateToStringEncoder.class, path = "startDate")
-        void setTherapies(List<Therapy> therapies);
-
-        @Include({"firstName", "lastName"})
-        void setPatients(List<Patient> patients);
-    }
-
-    ListView(@Autowired TherapyPresenter therapyPresenter) {
-        header.setText("Therapien");
-
-        this.therapyPresenter = therapyPresenter;
-        // @todo: to be removed
-        therapyPresenter.addMockData();
     }
 
     @Override
@@ -99,12 +91,16 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
 
     @EventHandler
     public void delete(@ModelItem Therapy therapy) {
-        confirmationDialog.open("Therapie wirklich löschen?", "Möchten Sie die Therapie wirklich löschen?", "", "Löschen", true, therapy, this::confirmDelete);;
+        confirmationDialog.open(
+                "Therapie wirklich löschen?",
+                "Möchten Sie die Therapie wirklich löschen?", "", "Löschen",
+                true, therapy, this::confirmDelete);
     }
 
     public void confirmDelete(Therapy therapy) {
         if (therapy == null) return;
         listener.delete(therapy);
+        Notification.show("Die Therapie wurde erfolgreich gelöscht.");
         listener.updateList(false, currentPatientFilter, currentStartFilter, currentEndFilter);
     }
 
@@ -134,5 +130,21 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
     @EventHandler
     public void edit(@ModelItem Therapy therapy) {
         UI.getCurrent().navigate(DetailView.class, therapy.getId());
+    }
+
+    public interface ListViewListener {
+        void delete(Therapy therapy);
+
+        void updateList(boolean finished, Patient patient, LocalDate start, LocalDate end);
+    }
+
+    public interface TherapyModel extends TemplateModel {
+        @Include({"id", "startDate", "finished", "patient.firstName", "patient.lastName", "therapist.academicTitle.prefix", "therapist.firstName", "therapist.lastName"})
+        @Encode(value = IntegerToStringEncoder.class, path = "id")
+        @Encode(value = DateToStringEncoder.class, path = "startDate")
+        void setTherapies(List<Therapy> therapies);
+
+        @Include({"firstName", "lastName"})
+        void setPatients(List<Patient> patients);
     }
 }

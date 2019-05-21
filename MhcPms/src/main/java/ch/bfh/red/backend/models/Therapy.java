@@ -21,7 +21,7 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 	private int id;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date startDate;
+	private Date startDate = new Date();
 	
 	private boolean finished;
 	

@@ -19,9 +19,7 @@ import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
-import com.vaadin.flow.router.BeforeEvent;
-import com.vaadin.flow.router.HasUrlParameter;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.templatemodel.Encode;
 import com.vaadin.flow.templatemodel.Include;
@@ -38,7 +36,7 @@ import java.util.stream.Collectors;
 @HtmlImport("frontend://src/views/therapy/detail.html")
 @Component
 @UIScope
-public class DetailView extends PolymerTemplate<DetailView.TherapyModel> implements HasUrlParameter<Integer>, View<DetailView.DetailViewListener> {
+public class DetailView extends PolymerTemplate<DetailView.TherapyModel> implements HasUrlParameter<Integer>, View<DetailView.DetailViewListener>, BeforeEnterObserver, AfterNavigationObserver {
     private DetailViewListener listener;
 
     @Id("header")
@@ -57,18 +55,29 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
     private Binder<Therapy> binder = new Binder<>();
 
     DetailView(@Autowired TherapyPresenter therapyPresenter) {
-        therapyPresenter.setView(this);
         this.therapyPresenter = therapyPresenter;
-        startDate.setI18n(MainLayout.datePickerI18n);
-        startDate.setRequiredIndicatorVisible(true);
 
         binder.forField(startDate).asRequired("Es muss ein Startdatum gesetzt sein.").bind(Therapy::getStartDateAsLocalDate, Therapy::setStartDateAsLocalDate);
         binder.forField(finished).bind(Therapy::isFinished, Therapy::setFinished);
     }
 
     @Override
-    public void setParameter(BeforeEvent beforeEvent, Integer integer) {
-        listener.load(integer);
+    public void setParameter(BeforeEvent beforeEvent, @OptionalParameter Integer integer) {
+        therapyPresenter.setView(this);
+
+        if (integer == null) {
+            listener.prepareNewObject();
+        } else {
+            try {
+                listener.load(integer);
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+        startDate.setI18n(MainLayout.datePickerI18n);
     }
 
     @Override
@@ -78,19 +87,28 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
 
     @EventHandler
     public void delete() {
-        confirmationDialog.open("Therapie wirklich löschen?", "Möchten Sie die Therapie wirklich löschen?", "", "Löschen", true, getModel().getTherapy(), this::confirmDelete);
+        confirmationDialog.open(
+                "Therapie wirklich löschen?",
+                "Möchten Sie die Therapie wirklich löschen?", "", "Löschen",
+                true, getModel().getTherapy(), this::confirmDelete);
     }
 
     public void confirmDelete(Therapy therapy) {
         listener.delete(therapy);
-        UI.getCurrent().navigate("therapy/list");
+        Notification.show("Die Therapie wurde erfolgreich gelöscht.");
+        UI.getCurrent().navigate(ListView.class);
     }
 
     @EventHandler
     public void save() {
         BinderValidationStatus<Therapy> validate = binder.validate();
         if (validate.isOk()) {
-            listener.save(binder.getBean());
+            try {
+                listener.save(binder.getBean());
+                Notification.show("Die Therapie wurde erfolgreich aktualisiert.");
+            } catch (Exception e) {
+                Notification.show(e.getMessage());
+            }
         } else {
             List<String> errorMessages = new ArrayList<>();
             validate.getValidationErrors().forEach(e -> errorMessages.add(e.getErrorMessage()));
@@ -101,7 +119,19 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
 
     public void setTherapy(Therapy therapy) {
         binder.setBean(therapy);
-        header.setText("Therapie #" + therapy.getId());
+        if (therapy.getId() == 0) {
+            header.setText("Neue Therapie");
+        } else {
+            header.setText("Therapie #" + therapy.getId());
+        }
+    }
+
+    @Override
+    public void afterNavigation(AfterNavigationEvent afterNavigationEvent) {
+        if (binder.getBean() == null) {
+            Notification.show("Die aufgerufene Therapie konnte nicht gefunden werden.");
+            UI.getCurrent().navigate(ListView.class);
+        }
     }
 
     public interface DetailViewListener {
@@ -109,7 +139,9 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
 
         void load(Integer therapyId);
 
-        void save(Therapy therapy);
+        void save(Therapy therapy) throws Exception;
+
+        void prepareNewObject();
     }
 
     public interface TherapyModel extends TemplateModel {

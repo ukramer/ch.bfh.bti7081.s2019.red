@@ -4,7 +4,6 @@ import ch.bfh.red.backend.models.*;
 import ch.bfh.red.backend.services.TherapyService;
 import ch.bfh.red.ui.views.Therapy.DetailView;
 import ch.bfh.red.ui.views.Therapy.ListView;
-import com.vaadin.flow.component.notification.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,14 +19,16 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
     private ListView listView;
     private DetailView detailView;
 
-    @Autowired
-    private TherapyService therapyService;
+    private final TherapyService therapyService;
 
     private List<Therapy> therapies = new ArrayList<>();
 
     private Therapy loadedTherapy;
 
-    public TherapyPresenter() {}
+    @Autowired
+    public TherapyPresenter(TherapyService therapyService) {
+        this.therapyService = therapyService;
+    }
 
     public void setView(ListView listView) {
         this.listView = listView;
@@ -45,7 +46,6 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
 
     public void delete(Therapy therapy) {
         getService().delete(getService().getById(therapy.getId()));
-        Notification.show("Die Therapie wurde erfolgreich gelöscht.");
     }
 
     @Override
@@ -55,14 +55,16 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
     }
 
     @Override
-    public void save(Therapy therapy) {
+    public void save(Therapy therapy) throws Exception {
         if (therapy.getStartDate() == null) {
-            Notification.show("Es muss ein Startdatum gesetzt sein. Die Therapie wurde nicht aktualisiert");
-            return;
+            throw new Exception("Es muss ein Startdatum gesetzt sein. Die Therapie wurde nicht aktualisiert");
         }
-        // @todo: validation
         getService().update(therapy);
-        Notification.show("Die Therapie wurde erfolgreich aktualisiert.");
+    }
+
+    @Override
+    public void prepareNewObject() {
+        detailView.setTherapy(new Therapy());
     }
 
     public TherapyService getService() {
@@ -106,7 +108,8 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
         Date date = new Date();
         try {
             date = (new SimpleDateFormat("yyyy-MM-dd")).parse("2018-01-01");
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
         Patient patient2 = new Patient("Jürgen", "Test", new Address("Langstrasse", "12k", 7777, "Burgdorf"));
         Therapy therapy2 = new Therapy(date, new TherapyType("Exposition", ""));
         therapy2.setTherapist(new Therapist("user", "1234", new AcademicTitle("Dr.", ""), "Ueli", "Kramer", new Address("Burgstrasse", "18", 3600, "Thun")));
