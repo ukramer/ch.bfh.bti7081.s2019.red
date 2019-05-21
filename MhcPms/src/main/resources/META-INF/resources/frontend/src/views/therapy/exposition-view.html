@@ -13,7 +13,7 @@
     <template>
         <style include="lumo-color lumo-typography lumo-badge view-styles"></style>
         <vaadin-vertical-layout theme="spacing" style="width: 100%; height: 100%;" id="vaadinVerticalLayout">
-            <vaadin-grid items="[[items]]" id="vaadinGrid-expositions" page-size="40">
+            <vaadin-grid items="[[expositions]]" id="vaadinGrid-expositions" page-size="40">
                 <vaadin-grid-column-group id="vaadinGridColumnGroup">
                     <template class="header">
                         Übersicht Expositionstherapie
@@ -23,7 +23,7 @@
                             Exposition
                         </template>
                         <template>
-                            {{item.text}}
+                            [[item.text]]
                         </template>
                     </vaadin-grid-column>
                     <vaadin-grid-column id="dateColumn">
@@ -31,7 +31,7 @@
                             Datum
                         </template>
                         <template>
-                            {{item.date}}
+                            [[item.date]]
                         </template>
                     </vaadin-grid-column>
                     <vaadin-grid-column id="degreeColumn">
@@ -39,7 +39,7 @@
                             Expositionsgrad
                         </template>
                         <template>
-                            {{item.dateOfExposure}}
+                            [[item.dateOfExposure]]
                         </template>
                     </vaadin-grid-column>
                 </vaadin-grid-column-group>

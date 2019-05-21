@@ -38,8 +38,10 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
 	public interface ExpositionViewModel extends TemplateModel {
 		    @Include({"date", "text", "degreeOfExposure"})
 	        @Exclude("visibility")
-	        @Encode(value = DateToStringEncoder.class, path = "date")
-	        void setExposition(ExpositionNote exposition);
+	        //@Encode(value = DateToStringEncoder.class, path = "date")
+		    //void setExposition(ExpositionNote exposition);
+		    @Encode(value = DateToStringEncoder.class, path = "list.date")
+	        void setExpositions(List<ExpositionNote> expositions);
 	        ExpositionNote getExposition();
 	    }
 	  
@@ -68,11 +70,13 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
 
     	new ExpositionPresenter(this);
    	
-       ArrayList<ExpositionNote> myExpositions = new ArrayList();
+       ArrayList<ExpositionNote> expositions = new ArrayList<ExpositionNote>();
+       
        ExpositionNote exp1 = new ExpositionNote( new Date(),"Used public transport without washing hands after", new Visibility(), 8);
        ExpositionNote  exp2 = new ExpositionNote(new Date(), "Went to bed without washing ritual", new Visibility(), 9);
-       getModel().setExposition(exp1);
-       getModel().setExposition(exp2);
+       expositions.add(exp1);
+       expositions.add(exp2);
+       getModel().setExpositions(expositions);
     }
     
     
