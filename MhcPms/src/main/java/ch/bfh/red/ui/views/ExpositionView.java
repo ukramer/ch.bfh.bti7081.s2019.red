@@ -3,7 +3,6 @@ package ch.bfh.red.ui.views;
 import ch.bfh.red.MainLayout;
 import ch.bfh.red.backend.models.ExpositionNote;
 import ch.bfh.red.backend.models.Visibility;
-import ch.bfh.red.backend.services.ExpositionNoteService;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
 import ch.bfh.red.ui.presenters.ExpositionPresenter;
@@ -30,9 +29,7 @@ import java.util.List;
 @Component
 @UIScope
 public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionViewModel> implements View<ExpositionView.ExpositionViewListener> {
-    private ExpositionNoteService expositionService;
-    private List<ExpositionViewListener> listeners = new ArrayList<>();
-
+    private ExpositionViewListener listener;
 
     public interface ExpositionViewModel extends TemplateModel {
         @Include({"text", "date", "degreeOfExposure"})
@@ -48,10 +45,8 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
 
     }
 
-    public ExpositionView(@Autowired ExpositionNoteService expositionService) {
-        this.expositionService = expositionService;
-        new ExpositionPresenter(this);
-
+    public ExpositionView(@Autowired ExpositionPresenter expositionPresenter) {;
+        expositionPresenter.setView(this);
         ArrayList<ExpositionNote> expositions = new ArrayList<>();
 
         ExpositionNote exp1 = new ExpositionNote(new Date(), "Used public transport without washing hands after", new Visibility(), 8);
@@ -62,8 +57,8 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
     }
 
     @Override
-    public void addListener(ExpositionViewListener listener) {
-        listeners.add(listener);
+    public void setListener(ExpositionViewListener listener) {
+        this.listener = listener;
     }
 
     @EventHandler
