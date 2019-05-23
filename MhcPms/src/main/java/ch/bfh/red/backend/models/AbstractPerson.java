@@ -3,18 +3,24 @@ package ch.bfh.red.backend.models;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class AbstractPerson<T extends AbstractPerson<T>> implements Comparable<T> {
-	
+public abstract class AbstractPerson<T extends AbstractPerson<T>> implements Comparable<T>, Serializable {
+	private static final long serialVersionUID = 6579309230709538479L;
+
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(nullable = false)
 	private int id;
 	
+	@Column(nullable = false)
 	private String firstName;
 	
+	@Column(nullable = false)
 	private String lastName;
 	
 	@OneToOne

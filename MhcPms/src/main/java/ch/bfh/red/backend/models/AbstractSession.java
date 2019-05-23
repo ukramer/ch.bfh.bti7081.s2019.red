@@ -1,24 +1,29 @@
 package ch.bfh.red.backend.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.*;
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class AbstractSession<T extends AbstractSession<T>> implements Comparable<T> {
-	
+public abstract class AbstractSession<T extends AbstractSession<T>> implements Comparable<T>, Serializable {
+	private static final long serialVersionUID = -5765831140092626255L;
+
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(nullable = false)
 	private int id;
 	
 	@OneToOne
 	private Therapist therapist;
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false)
 	private Date startDate;
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false)
 	private Date endDate;
 	
 	@OneToOne

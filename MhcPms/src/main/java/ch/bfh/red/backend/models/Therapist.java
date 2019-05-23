@@ -9,6 +9,7 @@ import javax.persistence.*;
 
 @Entity
 public class Therapist extends AbstractUser<Therapist> {
+	private static final long serialVersionUID = -2504605470636085302L;
 
 	@OneToOne
 	@Cascade(org.hibernate.annotations.CascadeType.ALL)

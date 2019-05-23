@@ -5,13 +5,12 @@ import javax.persistence.*;
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AbstractUser<T extends AbstractUser<T>> extends AbstractPerson<T> {
-	
-	@Id
-	@GeneratedValue
-	private int id;
-	
+	private static final long serialVersionUID = 7516376909524646114L;
+
+	@Column(nullable = false)
 	private String username;
 	
+	@Column(nullable = false)
 	private String password;
 
 	public AbstractUser() {}
@@ -37,14 +36,6 @@ public abstract class AbstractUser<T extends AbstractUser<T>> extends AbstractPe
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	@Override

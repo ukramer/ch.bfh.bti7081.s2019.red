@@ -15,9 +15,11 @@ import javax.persistence.*;
 
 @Entity
 public class Therapy implements Comparable<Therapy>, Serializable {
-	
+	private static final long serialVersionUID = 3832801113638175718L;
+
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(nullable = false)
 	private int id;
 	
 	@Temporal(TemporalType.TIMESTAMP)

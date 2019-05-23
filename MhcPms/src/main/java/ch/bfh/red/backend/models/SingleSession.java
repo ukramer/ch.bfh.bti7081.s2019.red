@@ -1,14 +1,16 @@
 package ch.bfh.red.backend.models;
 
-import org.hibernate.annotations.Cascade;
-
 import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.Cascade;
 
 @Entity
 public class SingleSession extends AbstractSession<SingleSession> {
-	
+	private static final long serialVersionUID = 8992909023275704028L;
+
 	@ManyToOne
 	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private Patient patient;

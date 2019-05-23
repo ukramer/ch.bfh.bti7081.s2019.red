@@ -1,12 +1,16 @@
 package ch.bfh.red.backend.models;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 @Entity
-public class AcademicTitle implements Comparable<AcademicTitle> {
-	
+public class AcademicTitle implements Comparable<AcademicTitle>, Serializable {
+	private static final long serialVersionUID = 8562816131184724910L;
+
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(nullable = false)
 	private int id;
 	
 	private String prefix;

@@ -7,16 +7,21 @@ import javax.persistence.*;
 
 @Entity
 public class GroupSession extends AbstractSession<GroupSession> {
-	
-	@ManyToMany
+	private static final long serialVersionUID = -383961605951531556L;
+
+	@ManyToMany(fetch = FetchType.LAZY)
 	private Collection<Patient> patients;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	private Collection<Therapist> therapists;
 
 	public GroupSession() {}
 	
-	public GroupSession(Collection<Patient> patients, Collection<Therapist> therapists, Therapist leader, Date startDate, Date endDate,
+	public GroupSession(Collection<Patient> patients, 
+	                    Collection<Therapist> therapists, 
+	                    Therapist leader, 
+	                    Date startDate, 
+	                    Date endDate,
 			SessionType sessionType) {
 		super(leader, startDate, endDate, sessionType);
 		this.patients = patients;

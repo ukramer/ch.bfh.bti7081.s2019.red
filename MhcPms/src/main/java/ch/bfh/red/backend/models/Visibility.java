@@ -1,16 +1,22 @@
 package ch.bfh.red.backend.models;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 @Entity
-public class Visibility implements Comparable<Visibility> {
-	
+public class Visibility implements Comparable<Visibility>, Serializable {
+	private static final long serialVersionUID = -6591104470141483754L;
+
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(nullable = false)
 	private int id;
 	
+	@Column(nullable = false)
 	private String name;
 	
+	@Column(nullable = true)
 	private String description;
 
 	public Visibility() {}
