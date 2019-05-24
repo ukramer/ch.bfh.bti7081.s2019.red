@@ -23,7 +23,7 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 	@Column(nullable = false)
 	private Date endDate;
 	
-	@OneToOne
+	@ManyToOne
 	private SessionType sessionType;
 
 	public AbstractSession() {}
