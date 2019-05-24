@@ -14,7 +14,7 @@ public class Address implements Comparable<Address>, Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private Integer id;
 	
 	@Column(nullable = false)

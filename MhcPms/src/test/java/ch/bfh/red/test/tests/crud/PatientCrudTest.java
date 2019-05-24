@@ -14,7 +14,7 @@ public class PatientCrudTest extends CrudTest<Patient> {
 	protected Patient createInstance() {
 		Address address = new Address("Langstrasse", "12k", 7777, "Burgdorf");
 		addressService.add(address);
-		return new Patient("Jürgen", "", address);
+		return new Patient("Jürgen", "Müller", address);
 	}
 
 	@Override
