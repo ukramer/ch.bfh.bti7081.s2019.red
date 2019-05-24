@@ -1,11 +1,15 @@
 package ch.bfh.red.backend.services;
 
+import ch.bfh.red.backend.models.GroupSession;
+import ch.bfh.red.backend.models.SingleSession;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ch.bfh.red.backend.models.Therapy;
 import ch.bfh.red.backend.repositories.TherapyRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -17,6 +21,22 @@ public class TherapyService implements IService<Therapy> {
     private TherapyRepository repository;
 
     private static DateToStringEncoder dateToStringEncoder = new DateToStringEncoder();
+
+    @Transactional
+    public Therapy getByIdWithAllAssociations(Integer id) {
+        Therapy therapy = getRepository().findById(id).get();
+        Hibernate.initialize(therapy.getSingleSessions());
+        Hibernate.initialize(therapy.getGroupSessions());
+        Hibernate.initialize(therapy.getTherapistNotes());
+        Hibernate.initialize(therapy.getPatientNotes());
+
+        for (GroupSession groupSession: therapy.getGroupSessions()) {
+            Hibernate.initialize(groupSession.getPatients());
+            Hibernate.initialize(groupSession.getTherapists());
+        }
+
+        return therapy;
+    }
 
     @Override
     public TherapyRepository getRepository() {

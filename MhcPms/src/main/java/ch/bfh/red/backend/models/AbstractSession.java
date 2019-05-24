@@ -35,10 +35,11 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 
 	public AbstractSession() {}
 	
-	public AbstractSession(Date startDate, Date endDate, SessionType sessionType) {
+	public AbstractSession(Date startDate, Date endDate, SessionType sessionType, Therapist therapist) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.sessionType = sessionType;
+		this.therapist = therapist;
 	}
 
 	public Date getStartDate() {
@@ -65,6 +66,14 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 		this.sessionType = sessionType;
 	}
 
+	public Therapist getTherapist() {
+		return therapist;
+	}
+
+	public void setTherapist(Therapist therapist) {
+		this.therapist = therapist;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -77,6 +86,7 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((therapist == null) ? 0 : therapist.hashCode());
 		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
 		result = prime * result + ((sessionType == null) ? 0 : sessionType.hashCode());
 		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
@@ -106,6 +116,11 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 			if (other.startDate != null)
 				return false;
 		} else if (!startDate.equals(other.startDate))
+			return false;
+		if (therapist == null) {
+			if (other.therapist != null)
+				return false;
+		} else if (!therapist.equals(other.therapist))
 			return false;
 		return true;
 	}

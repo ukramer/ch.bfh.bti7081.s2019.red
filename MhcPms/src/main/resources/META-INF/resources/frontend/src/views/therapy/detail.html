@@ -1,7 +1,6 @@
 <!-- Dependency resources -->
 <link rel="import" href="../../../bower_components/polymer/polymer-element.html">
 <!-- Added Web Component dependencies to make Vaadin Designer preview work -->
-<link rel="import" href="../../../bower_components/vaadin-ordered-layout/vaadin-vertical-layout.html">
 <link rel="import" href="../../../bower_components/vaadin-ordered-layout/vaadin-horizontal-layout.html">
 <link rel="import" href="../../../bower_components/vaadin-text-field/vaadin-text-field.html">
 <link rel="import" href="../../../bower_components/vaadin-button/vaadin-button.html">
@@ -20,23 +19,21 @@
 
 
             <vaadin-horizontal-layout>
-                <div>
+                <div style="width: 50%; padding-right: 20px;">
                     <vaadin-form-layout>
-                        <vaadin-date-picker id="startDate" label="Startdatum" required immediate></vaadin-date-picker>
-                        <br />
-                        <vaadin-checkbox id="finished">Diese Therapie ist abgeschlossen.</vaadin-checkbox>
-
-                        <br/><vaadin-button theme="success" on-click="save">Speichern</vaadin-button>
+                        <vaadin-date-picker id="startDate" label="Startdatum" required immediate colspan="2"></vaadin-date-picker>
+                        <vaadin-checkbox id="finished" colspan="2">Diese Therapie ist abgeschlossen.</vaadin-checkbox>
+                        <vaadin-button theme="success" on-click="save">Speichern</vaadin-button>
                     </vaadin-form-layout>
                 </div>
                 <div>
                     <h2>Patient</h2>
-                    [[patient.firstName]] [[patient.lastName]]<br />
+                    [[patient.lastName]] [[patient.firstName]]<br />
                     [[patient.address.street]] [[patient.address.streetNumber]]<br />
                     [[patient.address.postalCode]] [[patient.address.city]]
 
                     <h2>Therapeut</h2>
-                    [[therapy.therapist.acadmicTitle.prefix]] [[therapy.therapist.firstName]] [[therapy.therapist.lastName]]
+                    [[therapist.academicTitle.prefix]] [[therapist.lastName]] [[therapist.firstName]]
                 </div>
             </vaadin-horizontal-layout>
 
@@ -51,7 +48,7 @@
                     <vaadin-grid-column header="Typ" path="sessionType.name"></vaadin-grid-column>
                     <vaadin-grid-sort-column header="Von / Bis">
                         <template>
-                            [[item.startDate]] - [[item.endDate]]
+                            [[item.startDate]] -<br />[[item.endDate]]
                         </template>
                     </vaadin-grid-sort-column>
                     <vaadin-grid-sort-column header="Patient">
@@ -66,7 +63,7 @@
                     </vaadin-grid-sort-column>
                     <vaadin-grid-column>
                         <template>
-                            <vaadin-button theme="error tertiary" on-click="delete">Löschen</vaadin-button>
+                            <vaadin-button theme="success tertiary" on-click="showSingleSession">Anzeigen</vaadin-button>
                         </template>
                     </vaadin-grid-column>
                 </vaadin-grid>
@@ -83,22 +80,31 @@
                     <vaadin-grid-column header="Typ" path="sessionType.name"></vaadin-grid-column>
                     <vaadin-grid-sort-column header="Von / Bis">
                         <template>
-                            [[item.startDate]] - [[item.endDate]]
+                            [[item.startDate]] -<br />[[item.endDate]]
                         </template>
                     </vaadin-grid-sort-column>
                     <vaadin-grid-column header="Patienten">
                         <template>
-                            [[item.patient.lastName]] [[item.patient.firstName]]
+                            <dom-repeat items="[[item.patients]]">
+                                <template>
+                                    <div>[[item.lastName]] [[item.firstName]]</div>
+                                </template>
+                            </dom-repeat>
                         </template>
                     </vaadin-grid-column>
-                    <vaadin-grid-column header="Therapeut">
+                    <vaadin-grid-column header="Therapeuten">
                         <template>
-                            [[item.therapist.academicTitle.prefix]] [[item.therapist.lastName]] [[item.therapist.firstName]]
+                            <div><b>[[item.therapist.academicTitle.prefix]] [[item.therapist.lastName]] [[item.therapist.firstName]]</b></div>
+                            <dom-repeat items="[[item.therapists]]">
+                                <template>
+                                    <div>[[item.academicTitle.prefix]] [[item.lastName]] [[item.firstName]]</div>
+                                </template>
+                            </dom-repeat>
                         </template>
                     </vaadin-grid-column>
                     <vaadin-grid-column>
                         <template>
-                            <vaadin-button theme="error tertiary" on-click="delete">Löschen</vaadin-button>
+                            <vaadin-button theme="success tertiary" on-click="showGroupSession">Anzeigen</vaadin-button>
                         </template>
                     </vaadin-grid-column>
                 </vaadin-grid>

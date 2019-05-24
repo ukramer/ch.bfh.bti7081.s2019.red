@@ -1,5 +1,8 @@
 package ch.bfh.red.backend.models;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -14,6 +17,7 @@ public class Therapist extends AbstractUser<Therapist> {
     private static final long serialVersionUID = 3328637872951953081L;
 
     @ManyToOne
+	@Cascade(CascadeType.PERSIST) // @todo: remove
 	private AcademicTitle academicTitle;
 	
 	@ManyToMany(fetch = FetchType.LAZY)

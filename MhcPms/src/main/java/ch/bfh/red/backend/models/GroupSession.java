@@ -2,6 +2,7 @@ package ch.bfh.red.backend.models;
 
 import org.hibernate.annotations.Cascade;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,8 +24,9 @@ public class GroupSession extends AbstractSession<GroupSession> {
 	
 	public GroupSession(List<Patient> patients, List<Therapist> therapists, Therapist leader, Date startDate, Date endDate,
 			SessionType sessionType) {
-		super(startDate, endDate, sessionType);
+		super(startDate, endDate, sessionType, leader);
 		this.patients = patients;
+		this.therapists = therapists;
 	}
 
 	public List<Patient> getPatients() {
@@ -36,7 +38,15 @@ public class GroupSession extends AbstractSession<GroupSession> {
 	}
 
 	public List<Therapist> getTherapists() {
-		return this.therapists;
+		List<Therapist> therapists = new ArrayList<>();
+		for (Therapist therapist : this.therapists) {
+			// iff therapist is the leader, don't want him in this List anymore
+			if (therapist.equals(this.getTherapist())) {
+				continue;
+			}
+			therapists.add(therapist);
+		}
+		return therapists;
 	}
 
 	public void setTherapists(List<Therapist> therapists) {

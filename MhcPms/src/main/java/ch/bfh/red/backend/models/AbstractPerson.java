@@ -24,6 +24,7 @@ public abstract class AbstractPerson<T extends AbstractPerson<T>> implements Com
 	private String lastName;
 	
 	@OneToOne
+	@Cascade(CascadeType.PERSIST)
 	private Address address;
 
 	public AbstractPerson() {}

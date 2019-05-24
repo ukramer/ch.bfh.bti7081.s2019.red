@@ -7,7 +7,6 @@ import ch.bfh.red.ui.views.Therapy.ListView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -51,9 +50,11 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
 
     @Override
     public void load(Integer therapyId) {
-        loadedTherapy = getService().getById(therapyId);
+        loadedTherapy = getService().getByIdWithAllAssociations(therapyId);
+
         detailView.setTherapy(loadedTherapy);
         detailView.setPatient(loadedTherapy.getPatient());
+        detailView.setTherapist(loadedTherapy.getTherapist());
 
         detailView.setSingleSessions(loadedTherapy.getSingleSessions());
         detailView.setGroupSessions(loadedTherapy.getGroupSessions());
@@ -115,6 +116,16 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
         List<SingleSession> singleSessions = new ArrayList<>();
         singleSessions.add(singleSession);
         therapy.setSingleSessions(singleSessions);
+
+        List<GroupSession> groupSessions = new ArrayList<>();
+        List<Patient> patients = new ArrayList<>();
+        patients.add(patient);
+        List<Therapist> therapists = new ArrayList<>();
+        therapists.add(therapist);
+        groupSessions.add(new GroupSession(patients, therapists, therapist, new Date(), new Date(), new SessionType("Gruppe", "Gruppe")));
+        therapy.setGroupSessions(groupSessions);
+
+
         therapyService.add(therapy);
 
 
