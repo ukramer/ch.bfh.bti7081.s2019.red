@@ -1,22 +1,26 @@
 package ch.bfh.red.backend.models;
 
-import org.hibernate.annotations.Cascade;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Therapist extends AbstractUser<Therapist> {
-	private static final long serialVersionUID = -2504605470636085302L;
+    private static final long serialVersionUID = 3328637872951953081L;
 
-	@OneToOne
-	@Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @OneToOne
 	private AcademicTitle academicTitle;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	private Collection<Patient> patients = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "therapist")
+    private Collection<SingleSession> singleSessions = new ArrayList<>();
 	
 	@ManyToMany
 	private Collection<GroupSession> groupSessions = new ArrayList<>();
@@ -48,7 +52,15 @@ public class Therapist extends AbstractUser<Therapist> {
 		this.patients = patients;
 	}
 
-	public Collection<GroupSession> getGroupSessions() {
+	public Collection<SingleSession> getSingleSessions() {
+        return singleSessions;
+    }
+
+    public void setSingleSessions(Collection<SingleSession> singleSessions) {
+        this.singleSessions = singleSessions;
+    }
+
+    public Collection<GroupSession> getGroupSessions() {
 		return groupSessions;
 	}
 

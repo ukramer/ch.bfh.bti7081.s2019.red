@@ -18,12 +18,11 @@ public class GroupSession extends AbstractSession<GroupSession> {
 	public GroupSession() {}
 	
 	public GroupSession(Collection<Patient> patients, 
-	                    Collection<Therapist> therapists, 
-	                    Therapist leader, 
+	                    Collection<Therapist> therapists,
 	                    Date startDate, 
 	                    Date endDate,
 			SessionType sessionType) {
-		super(leader, startDate, endDate, sessionType);
+		super(startDate, endDate, sessionType);
 		this.patients = patients;
 	}
 

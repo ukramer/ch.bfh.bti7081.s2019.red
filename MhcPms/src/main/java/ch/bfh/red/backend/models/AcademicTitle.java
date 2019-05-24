@@ -13,6 +13,7 @@ public class AcademicTitle implements Comparable<AcademicTitle>, Serializable {
 	@Column(nullable = false)
 	private int id;
 	
+	@Column(nullable = false)
 	private String prefix;
 	
 	private String description;

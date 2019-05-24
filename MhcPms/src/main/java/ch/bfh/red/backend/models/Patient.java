@@ -18,10 +18,10 @@ public class Patient extends AbstractPerson<Patient> {
 	@OneToMany(mappedBy = "patient")
 	private Collection<Therapy> therapies = new ArrayList<>();
 	
-	@OneToMany
+	@OneToMany(mappedBy = "patient")
 	private Collection<SingleSession> singleSessions = new ArrayList<>();
 	
-	@OneToMany
+	@ManyToMany
 	private Collection<GroupSession> groupSessions = new ArrayList<>();
 
 	public Patient() {}
