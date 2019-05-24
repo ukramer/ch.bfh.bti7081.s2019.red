@@ -6,14 +6,14 @@ import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 public class Therapist extends AbstractUser<Therapist> {
     private static final long serialVersionUID = 3328637872951953081L;
 
-    @OneToOne
+    @ManyToOne
 	private AcademicTitle academicTitle;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
