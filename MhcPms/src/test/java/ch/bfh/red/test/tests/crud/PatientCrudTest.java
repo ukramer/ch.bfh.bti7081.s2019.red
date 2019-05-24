@@ -13,8 +13,8 @@ public class PatientCrudTest extends CrudTest<Patient> {
 	@Override
 	protected Patient createInstance() {
 		Address address = new Address("Langstrasse", "12k", 7777, "Burgdorf");
-		addressService.add(address);
-		return new Patient("Jürgen", "", address);
+		address = addressService.add(address);
+		return new Patient("Jürgen", "Müller", address);
 	}
 
 	@Override

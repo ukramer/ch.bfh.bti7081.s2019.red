@@ -9,12 +9,13 @@ import javax.persistence.*;
 
 @Entity
 public class GroupSession extends AbstractSession<GroupSession> {
-	
-	@ManyToMany
+	private static final long serialVersionUID = -383961605951531556L;
+
+	@ManyToMany(fetch = FetchType.LAZY)
 	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
 	private List<Patient> patients;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
 	private List<Therapist> therapists;
 
@@ -22,7 +23,7 @@ public class GroupSession extends AbstractSession<GroupSession> {
 	
 	public GroupSession(List<Patient> patients, List<Therapist> therapists, Therapist leader, Date startDate, Date endDate,
 			SessionType sessionType) {
-		super(leader, startDate, endDate, sessionType);
+		super(startDate, endDate, sessionType);
 		this.patients = patients;
 	}
 

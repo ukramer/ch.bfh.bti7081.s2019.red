@@ -1,14 +1,14 @@
 package ch.bfh.red.backend.models;
 
-import org.hibernate.annotations.Cascade;
-
 import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class SingleSession extends AbstractSession<SingleSession> {
-	
+	private static final long serialVersionUID = 8992909023275704028L;
+
 	@ManyToOne
 	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
 	private Patient patient;
@@ -21,8 +21,9 @@ public class SingleSession extends AbstractSession<SingleSession> {
 	
 	public SingleSession(Patient patient, Therapist therapist, Date startDate,
 			Date endDate, SessionType sessionType) {
-		super(therapist, startDate, endDate, sessionType);
+		super(startDate, endDate, sessionType);
 		this.patient = patient;
+		this.therapist = therapist;
 	}
 	
 	public Patient getPatient() {

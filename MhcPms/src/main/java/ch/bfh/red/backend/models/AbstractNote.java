@@ -1,22 +1,28 @@
 package ch.bfh.red.backend.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.*;
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class AbstractNote<T extends AbstractNote<T>> implements Comparable<T>  {
+public abstract class AbstractNote<T extends AbstractNote<T>> implements Comparable<T>, Serializable  {
+	private static final long serialVersionUID = 7401678212507566844L;
+
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(nullable = false, unique=true)
 	private int id;
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false)
 	private Date date;
 	
+	@Column(nullable = false)
 	private String text;
 	
-	@OneToOne
+	@ManyToOne
 	private Visibility visibility;
 
 	public AbstractNote() {}
