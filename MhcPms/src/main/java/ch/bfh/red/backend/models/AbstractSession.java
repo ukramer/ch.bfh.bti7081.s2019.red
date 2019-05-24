@@ -1,5 +1,7 @@
 package ch.bfh.red.backend.models;
 
+import org.hibernate.annotations.Cascade;
+
 import java.util.Date;
 
 import javax.persistence.*;
@@ -12,7 +14,8 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 	@GeneratedValue
 	private int id;
 	
-	@OneToOne
+	@ManyToOne
+	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
 	private Therapist therapist;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -21,7 +24,8 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date endDate;
 	
-	@OneToOne
+	@ManyToOne
+	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
 	private SessionType sessionType;
 
 	public AbstractSession() {}

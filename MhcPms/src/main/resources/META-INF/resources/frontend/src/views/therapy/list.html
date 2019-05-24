@@ -41,7 +41,7 @@
             </div>
 
             <div hidden="{{_isEmpty(therapies)}}">
-                <vaadin-grid theme="no-border" items="[[therapies]]" on-select="showDetails">
+                <vaadin-grid theme="no-border" items="[[therapies]]">
                     <vaadin-grid-sort-column header="Startdatum" path="startDate" direction="desc"></vaadin-grid-sort-column>
                     <vaadin-grid-sort-column header="Patient">
                         <template>

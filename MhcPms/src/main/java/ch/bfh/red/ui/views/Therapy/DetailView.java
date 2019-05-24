@@ -1,6 +1,8 @@
 package ch.bfh.red.ui.views.Therapy;
 
 import ch.bfh.red.MainLayout;
+import ch.bfh.red.backend.models.GroupSession;
+import ch.bfh.red.backend.models.SingleSession;
 import ch.bfh.red.backend.models.Therapy;
 import ch.bfh.red.ui.components.ConfirmationDialog;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
@@ -124,6 +126,15 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
         } else {
             header.setText("Therapie #" + therapy.getId());
         }
+        getModel().setTherapy(therapy);
+    }
+
+    public void setSingleSessions(List<SingleSession> singleSessions) {
+        getModel().setSingleSessions(singleSessions);
+    }
+
+    public void setGroupSessions(List<GroupSession> groupSessions) {
+        getModel().setGroupSessions(groupSessions);
     }
 
     @Override
@@ -151,5 +162,17 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
         @Encode(value = DateToStringEncoder.class, path = "startDate")
         @Include({"id", "startDate", "finished"})
         void setTherapy(Therapy therapy);
+
+        @Encode(value = IntegerToStringEncoder.class, path = "id")
+        @Encode(value = DateToStringEncoder.class, path = "startDate")
+        @Encode(value = DateToStringEncoder.class, path = "endDate")
+        @Include({"id", "startDate", "endDate", "sessionType.name", "patient.firstName", "patient.lastName", "therapist.academicTitle.prefix", "therapist.firstName", "therapist.lastName"})
+        void setSingleSessions(List<SingleSession> singleSessions);
+
+        @Encode(value = IntegerToStringEncoder.class, path = "id")
+        @Encode(value = DateToStringEncoder.class, path = "startDate")
+        @Encode(value = DateToStringEncoder.class, path = "endDate")
+        @Include({"id", "startDate", "endDate", "sessionType.name", "patients.firstName", "patients.lastName", "therapists.academicTitle.prefix", "therapists.firstName", "therapists.lastName"})
+        void setGroupSessions(List<GroupSession> groupSessions);
     }
 }

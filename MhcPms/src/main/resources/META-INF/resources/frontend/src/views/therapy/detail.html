@@ -1,6 +1,7 @@
 <!-- Dependency resources -->
 <link rel="import" href="../../../bower_components/polymer/polymer-element.html">
 <!-- Added Web Component dependencies to make Vaadin Designer preview work -->
+<link rel="import" href="../../../bower_components/vaadin-ordered-layout/vaadin-vertical-layout.html">
 <link rel="import" href="../../../bower_components/vaadin-ordered-layout/vaadin-horizontal-layout.html">
 <link rel="import" href="../../../bower_components/vaadin-text-field/vaadin-text-field.html">
 <link rel="import" href="../../../bower_components/vaadin-button/vaadin-button.html">
@@ -17,6 +18,7 @@
         <div class="view-container">
             <h2 id="header"></h2>
 
+
             <vaadin-horizontal-layout>
                 <div>
                     <vaadin-form-layout>
@@ -30,6 +32,80 @@
                 <div>
                 </div>
             </vaadin-horizontal-layout>
+
+            <h2>Einzelsitzungen</h2>
+
+            <div hidden="{{!_isEmpty(singleSessions)}}">
+                Keine Einzelsitzung vorhanden.
+                <vaadin-button on-click="addSingleSession" theme="success">Einzelsitzung erfassen</vaadin-button>
+            </div>
+            <div hidden="{{_isEmpty(singleSessions)}}">
+                <vaadin-grid theme="no-border" items="[[singleSessions]]">
+                    <vaadin-grid-column header="Typ" path="sessionType.name"></vaadin-grid-column>
+                    <vaadin-grid-sort-column header="Von / Bis">
+                        <template>
+                            [[item.startDate]] - [[item.endDate]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Patient">
+                        <template>
+                            [[item.patient.lastName]] [[item.patient.firstName]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Therapeut">
+                        <template>
+                            [[item.therapist.academicTitle.prefix]] [[item.therapist.lastName]] [[item.therapist.firstName]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="tertiary" on-click="edit">Bearbeiten</vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="error tertiary" on-click="delete">Löschen</vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                </vaadin-grid>
+            </div>
+
+            <h2>Gruppensitzungen</h2>
+
+            <div hidden="{{!_isEmpty(groupSessions)}}">
+                Keine Gruppensitzung vorhanden.
+                <vaadin-button on-click="addGroupSession" theme="success">Gruppensitzung erfassen</vaadin-button>
+            </div>
+            <div hidden="{{_isEmpty(groupSessions)}}">
+                <vaadin-grid theme="no-border" items="[[groupSessions]]">
+                    <vaadin-grid-column header="Typ" path="sessionType.name"></vaadin-grid-column>
+                    <vaadin-grid-sort-column header="Von / Bis">
+                        <template>
+                            [[item.startDate]] - [[item.endDate]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-column header="Patienten">
+                        <template>
+                            [[item.patient.lastName]] [[item.patient.firstName]]
+                        </template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-column header="Therapeut">
+                        <template>
+                            [[item.therapist.academicTitle.prefix]] [[item.therapist.lastName]] [[item.therapist.firstName]]
+                        </template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="tertiary" on-click="edit">Bearbeiten</vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="error tertiary" on-click="delete">Löschen</vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                </vaadin-grid>
+            </div>
         </div>
     </template>
 

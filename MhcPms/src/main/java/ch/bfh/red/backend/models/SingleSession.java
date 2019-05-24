@@ -10,11 +10,11 @@ import javax.persistence.*;
 public class SingleSession extends AbstractSession<SingleSession> {
 	
 	@ManyToOne
-	@Cascade(org.hibernate.annotations.CascadeType.ALL)
+	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
 	private Patient patient;
 	
 	@ManyToOne
-	@Cascade(org.hibernate.annotations.CascadeType.ALL)
+	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
 	private Therapist therapist;
 	
 	public SingleSession() {}

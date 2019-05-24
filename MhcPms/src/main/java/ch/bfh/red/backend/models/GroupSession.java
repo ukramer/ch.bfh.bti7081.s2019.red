@@ -1,7 +1,9 @@
 package ch.bfh.red.backend.models;
 
-import java.util.Collection;
+import org.hibernate.annotations.Cascade;
+
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -9,32 +11,34 @@ import javax.persistence.*;
 public class GroupSession extends AbstractSession<GroupSession> {
 	
 	@ManyToMany
-	private Collection<Patient> patients;
+	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+	private List<Patient> patients;
 	
 	@ManyToMany
-	private Collection<Therapist> therapists;
+	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+	private List<Therapist> therapists;
 
 	public GroupSession() {}
 	
-	public GroupSession(Collection<Patient> patients, Collection<Therapist> therapists, Therapist leader, Date startDate, Date endDate,
+	public GroupSession(List<Patient> patients, List<Therapist> therapists, Therapist leader, Date startDate, Date endDate,
 			SessionType sessionType) {
 		super(leader, startDate, endDate, sessionType);
 		this.patients = patients;
 	}
 
-	public Collection<Patient> getPatients() {
+	public List<Patient> getPatients() {
 		return this.patients;
 	}
 
-	public void setPatients(Collection<Patient> patients) {
+	public void setPatients(List<Patient> patients) {
 		this.patients = patients;
 	}
 
-	public Collection<Therapist> getTherapists() {
+	public List<Therapist> getTherapists() {
 		return this.therapists;
 	}
 
-	public void setTherapists(Collection<Therapist> therapists) {
+	public void setTherapists(List<Therapist> therapists) {
 		this.therapists = therapists;
 	}	
 
