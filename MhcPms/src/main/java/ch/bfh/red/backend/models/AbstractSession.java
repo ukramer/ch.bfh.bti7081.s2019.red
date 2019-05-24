@@ -12,7 +12,7 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(nullable = false)
+	@Column(nullable = false, unique=true)
 	private int id;
 	
 	@Temporal(TemporalType.TIMESTAMP)

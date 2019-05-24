@@ -14,7 +14,7 @@ public abstract class AbstractPerson<T extends AbstractPerson<T>> implements Com
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(nullable = false)
+	@Column(nullable = false, unique=true)
 	private int id;
 	
 	@Column(nullable = false)

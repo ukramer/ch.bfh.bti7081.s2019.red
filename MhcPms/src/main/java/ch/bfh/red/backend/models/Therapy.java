@@ -19,7 +19,7 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private int id;
 	
 	@Temporal(TemporalType.TIMESTAMP)

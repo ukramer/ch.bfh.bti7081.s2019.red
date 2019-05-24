@@ -10,7 +10,7 @@ public class SessionType implements Comparable<SessionType>, Serializable {
 
 	@Id
 	@GeneratedValue
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private int id;
 	
 	@Column(nullable = false)

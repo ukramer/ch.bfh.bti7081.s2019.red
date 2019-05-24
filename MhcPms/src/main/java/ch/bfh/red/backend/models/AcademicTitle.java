@@ -10,7 +10,7 @@ public class AcademicTitle implements Comparable<AcademicTitle>, Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private int id;
 	
 	@Column(nullable = false)
