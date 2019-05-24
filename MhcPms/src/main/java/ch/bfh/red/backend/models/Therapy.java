@@ -27,16 +27,13 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 	
 	private boolean finished;
 	
-	@OneToOne
-	@Cascade(org.hibernate.annotations.CascadeType.ALL)
+	@ManyToOne
 	private TherapyType therapyType;
 	
 	@ManyToOne
-	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private Patient patient;
 	
 	@ManyToOne
-	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private Therapist therapist;
 	
 	@ManyToMany
