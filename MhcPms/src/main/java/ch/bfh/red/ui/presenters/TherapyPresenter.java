@@ -53,6 +53,7 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
     public void load(Integer therapyId) {
         loadedTherapy = getService().getById(therapyId);
         detailView.setTherapy(loadedTherapy);
+        detailView.setPatient(loadedTherapy.getPatient());
 
         detailView.setSingleSessions(loadedTherapy.getSingleSessions());
         detailView.setGroupSessions(loadedTherapy.getGroupSessions());

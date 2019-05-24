@@ -2,6 +2,7 @@ package ch.bfh.red.ui.views.Therapy;
 
 import ch.bfh.red.MainLayout;
 import ch.bfh.red.backend.models.GroupSession;
+import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.SingleSession;
 import ch.bfh.red.backend.models.Therapy;
 import ch.bfh.red.ui.components.ConfirmationDialog;
@@ -31,6 +32,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Route(value = "therapy/detail", layout = MainLayout.class)
@@ -72,7 +74,9 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
         } else {
             try {
                 listener.load(integer);
-            } catch (Exception e) {
+            } catch (NoSuchElementException e) {
+                // means that there is no element available with the id
+                UI.getCurrent().navigate(ListView.class);
             }
         }
     }
@@ -129,6 +133,10 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
         getModel().setTherapy(therapy);
     }
 
+    public void setPatient(Patient patient) {
+        getModel().setPatient(patient);
+    }
+
     public void setSingleSessions(List<SingleSession> singleSessions) {
         getModel().setSingleSessions(singleSessions);
     }
@@ -160,8 +168,13 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
 
         @Encode(value = IntegerToStringEncoder.class, path = "id")
         @Encode(value = DateToStringEncoder.class, path = "startDate")
-        @Include({"id", "startDate", "finished"})
+        @Include({"id", "startDate", "finished", "therapist.academicTitle.prefix", "therapist.firstName", "therapist.lastName"})
         void setTherapy(Therapy therapy);
+
+        @Encode(value = IntegerToStringEncoder.class, path = "id")
+        @Encode(value = IntegerToStringEncoder.class, path = "address.postalCode")
+        @Include({"id", "firstName", "lastName", "address.street", "address.streetNumber", "address.postalCode", "address.city"})
+        void setPatient(Patient patient);
 
         @Encode(value = IntegerToStringEncoder.class, path = "id")
         @Encode(value = DateToStringEncoder.class, path = "startDate")

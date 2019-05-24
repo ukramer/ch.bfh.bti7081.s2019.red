@@ -35,19 +35,22 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
 	private Therapist therapist;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@OneToMany
+	@JoinColumn(name="THERAPY_ID") // necessary to avoid join table
 	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
 	private List<SingleSession> singleSessions;
 
 	@ManyToMany
 	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
 	private List<GroupSession> groupSessions;
-	
-	@ManyToMany
+
+	@OneToMany
+	@JoinColumn(name="THERAPY_ID") // necessary to avoid join table
 	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
 	private List<PatientNote> patientNotes;
-	
-	@ManyToMany
+
+	@OneToMany
+	@JoinColumn(name="THERAPY_ID") // necessary to avoid join table
 	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
 	private List<TherapistNote> therapistNotes;
 	

@@ -30,6 +30,13 @@
                     </vaadin-form-layout>
                 </div>
                 <div>
+                    <h2>Patient</h2>
+                    [[patient.firstName]] [[patient.lastName]]<br />
+                    [[patient.address.street]] [[patient.address.streetNumber]]<br />
+                    [[patient.address.postalCode]] [[patient.address.city]]
+
+                    <h2>Therapeut</h2>
+                    [[therapy.therapist.acadmicTitle.prefix]] [[therapy.therapist.firstName]] [[therapy.therapist.lastName]]
                 </div>
             </vaadin-horizontal-layout>
 
@@ -57,11 +64,6 @@
                             [[item.therapist.academicTitle.prefix]] [[item.therapist.lastName]] [[item.therapist.firstName]]
                         </template>
                     </vaadin-grid-sort-column>
-                    <vaadin-grid-column>
-                        <template>
-                            <vaadin-button theme="tertiary" on-click="edit">Bearbeiten</vaadin-button>
-                        </template>
-                    </vaadin-grid-column>
                     <vaadin-grid-column>
                         <template>
                             <vaadin-button theme="error tertiary" on-click="delete">Löschen</vaadin-button>
@@ -92,11 +94,6 @@
                     <vaadin-grid-column header="Therapeut">
                         <template>
                             [[item.therapist.academicTitle.prefix]] [[item.therapist.lastName]] [[item.therapist.firstName]]
-                        </template>
-                    </vaadin-grid-column>
-                    <vaadin-grid-column>
-                        <template>
-                            <vaadin-button theme="tertiary" on-click="edit">Bearbeiten</vaadin-button>
                         </template>
                     </vaadin-grid-column>
                     <vaadin-grid-column>
