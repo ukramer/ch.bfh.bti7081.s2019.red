@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import ch.bfh.red.MhcPmsApplication;
 
+/**
+ * Used for SpringRunnerTest in StartupTest
+ */
 @SpringBootApplication
 public class TestApplication {
 

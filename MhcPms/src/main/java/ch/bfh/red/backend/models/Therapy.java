@@ -15,9 +15,11 @@ import javax.persistence.*;
 
 @Entity
 public class Therapy implements Comparable<Therapy>, Serializable {
-	
+	private static final long serialVersionUID = 3832801113638175718L;
+
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(nullable = false, unique = true)
 	private int id;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -25,16 +27,13 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 	
 	private boolean finished;
 	
-	@OneToOne
-	@Cascade(org.hibernate.annotations.CascadeType.ALL)
+	@ManyToOne
 	private TherapyType therapyType;
 	
 	@ManyToOne
-	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private Patient patient;
 	
 	@ManyToOne
-	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private Therapist therapist;
 	
 	@ManyToMany

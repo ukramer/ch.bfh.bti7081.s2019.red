@@ -1,33 +1,34 @@
 package ch.bfh.red.backend.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.*;
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class AbstractSession<T extends AbstractSession<T>> implements Comparable<T> {
-	
+public abstract class AbstractSession<T extends AbstractSession<T>> implements Comparable<T>, Serializable {
+	private static final long serialVersionUID = -5765831140092626255L;
+
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(nullable = false, unique=true)
 	private int id;
 	
-	@OneToOne
-	private Therapist therapist;
-	
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false)
 	private Date startDate;
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false)
 	private Date endDate;
 	
-	@OneToOne
+	@ManyToOne
 	private SessionType sessionType;
 
 	public AbstractSession() {}
 	
-	public AbstractSession(Therapist therapist, Date startDate, Date endDate, SessionType sessionType) {
-		this.therapist = therapist;
+	public AbstractSession(Date startDate, Date endDate, SessionType sessionType) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.sessionType = sessionType;
@@ -56,14 +57,6 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 	public void setSessionType(SessionType sessionType) {
 		this.sessionType = sessionType;
 	}
-	
-	public Therapist getTherapist() {
-		return therapist;
-	}
-
-	public void setTherapist(Therapist therapist) {
-		this.therapist = therapist;
-	}
 
 	public Integer getId() {
 		return id;
@@ -78,7 +71,6 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
-		result = prime * result + ((therapist == null) ? 0 : therapist.hashCode());
 		result = prime * result + ((sessionType == null) ? 0 : sessionType.hashCode());
 		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
 		return result;
@@ -98,11 +90,6 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 				return false;
 		} else if (!endDate.equals(other.endDate))
 			return false;
-		if (therapist == null) {
-			if (other.therapist != null)
-				return false;
-		} else if (!therapist.equals(other.therapist))
-			return false;
 		if (sessionType == null) {
 			if (other.sessionType != null)
 				return false;
@@ -121,14 +108,12 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 		int i;
 		i = startDate.compareTo(o.getStartDate());
 		if (i != 0) return i;
-		i = sessionType.compareTo(o.getSessionType());
-		if (i != 0) return i;
-		return therapist.compareTo(o.getTherapist());
+		return sessionType.compareTo(o.getSessionType());
 	}
 
 	@Override
 	public String toString() {
-		return "AbstractSession [therapist=" + therapist + ", sessionType=" + sessionType
+		return "AbstractSession [therapist=" + ", sessionType=" + sessionType
 				+ ", startDate=" + startDate + ", endDate=" + endDate + "]";
 	}
 	
