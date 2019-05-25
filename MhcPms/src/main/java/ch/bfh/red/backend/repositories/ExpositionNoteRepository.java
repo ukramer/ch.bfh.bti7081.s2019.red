@@ -1,9 +1,9 @@
 package ch.bfh.red.backend.repositories;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import ch.bfh.red.backend.models.ExpositionNote;
 
 
-public interface ExpositionNoteRepository  extends JpaRepository<ExpositionNote, Long> {
+public interface ExpositionNoteRepository  extends CrudRepository<ExpositionNote, Integer> {
 	
 
 }
