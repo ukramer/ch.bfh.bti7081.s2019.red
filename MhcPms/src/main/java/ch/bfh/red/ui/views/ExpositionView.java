@@ -1,7 +1,9 @@
 package ch.bfh.red.ui.views;
 
 import ch.bfh.red.MainLayout;
+import ch.bfh.red.backend.models.Address;
 import ch.bfh.red.backend.models.ExpositionNote;
+import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.Visibility;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
@@ -32,7 +34,7 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
     private ExpositionViewListener listener;
 
     public interface ExpositionViewModel extends TemplateModel {
-        @Include({"text", "date", "degreeOfExposure"})
+        @Include({"patient.firstName","patient.lastName", "text", "date", "degreeOfExposure"})
         @Encode(value = DateToStringEncoder.class, path = "date")
         @Encode(value = IntegerToStringEncoder.class, path = "degreeOfExposure")
         void setExpositions(List<ExpositionNote> expositions);
@@ -48,9 +50,12 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
     public ExpositionView(@Autowired ExpositionPresenter expositionPresenter) {;
         expositionPresenter.setView(this);
         ArrayList<ExpositionNote> expositions = new ArrayList<>();
+        Address address =  new Address("Elisabethenstrasse", "44", 3014, "Bern");
 
-        ExpositionNote exp1 = new ExpositionNote(new Date(), "Used public transport without washing hands after", new Visibility(), 8);
-        ExpositionNote exp2 = new ExpositionNote(new Date(), "Went to bed without washing ritual", new Visibility(), 9);
+        Patient patient = new Patient("Bruno", "Bernet", address);
+
+        ExpositionNote exp1 = new ExpositionNote(patient, new Date(), "Used public transport without washing hands after", new Visibility("PRIVATE", ""), 8);
+        ExpositionNote exp2 = new ExpositionNote(patient,  new Date(), "Went to bed without washing ritual", new Visibility("PRIVATE", ""), 9);
         expositions.add(exp1);
         expositions.add(exp2);
         getModel().setExpositions(expositions);

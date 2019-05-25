@@ -57,6 +57,14 @@ public abstract class AbstractNote<T extends AbstractNote<T>> implements Compara
 		this.visibility = visibility;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

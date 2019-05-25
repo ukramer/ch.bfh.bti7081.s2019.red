@@ -18,6 +18,22 @@
                     <template class="header">
                         Übersicht Expositionstherapie
                     </template>
+                    <vaadin-grid-column id="patientFirstNameColumn">
+                        <template class="header">
+                            First Name
+                        </template>
+                        <template>
+                            [[item.patient.firstName]]
+                        </template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-column id="patientLastNameColumn">
+                        <template class="header">
+                            Last Name
+                        </template>
+                        <template>
+                            [[item.patient.lastName]]
+                        </template>
+                    </vaadin-grid-column>
                     <vaadin-grid-column id="expositionColumn">
                         <template class="header">
                             Exposition
