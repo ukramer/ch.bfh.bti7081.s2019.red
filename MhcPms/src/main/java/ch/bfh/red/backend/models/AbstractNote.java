@@ -24,7 +24,7 @@ public abstract class AbstractNote<T extends AbstractNote<T>> implements Compara
 	@Column(nullable = false)
 	private String text;
 
-	
+	@Column(nullable = false)
 	@Convert(converter = VisibilityConverter.class)
 	private Visibility visibility;
 

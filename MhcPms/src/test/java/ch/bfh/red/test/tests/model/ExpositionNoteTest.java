@@ -26,14 +26,11 @@ public class ExpositionNoteTest extends StartupTest {
         Patient patient = new Patient("Anne", "Meier", address);
         patientService.add(patient);
 
-        Visibility visibility  = Visibility.PRIVATE;
-        Visibility visibility1 = Visibility.PUBLIC;
-
         ExpositionNote exposition1 = new ExpositionNote(patient, new Date(), "Am Morgen Herd nicht überprüft",
-                visibility, 4);
+                Visibility.PRIVATE, 4);
 
         ExpositionNote exposition2 = new ExpositionNote(patient, new Date(), "Ins Bett ohne Aufräumen",
-                visibility1, 6);
+                Visibility.PUBLIC, 6);
 
 
     }

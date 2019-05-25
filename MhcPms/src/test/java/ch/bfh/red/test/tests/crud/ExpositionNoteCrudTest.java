@@ -23,8 +23,7 @@ public class ExpositionNoteCrudTest extends CrudTest<ExpositionNote> {
         Patient patient = new Patient("Sophie", "", address);
         patientIService.add(patient);
 
-        Visibility visibility = Visibility.PRIVATE;
-        return new ExpositionNote(patient, new Date(), "Went to bed without washing ritual", visibility, 8);
+        return new ExpositionNote(patient, new Date(), "Went to bed without washing ritual", Visibility.PRIVATE, 8);
     }
 
     @Override
