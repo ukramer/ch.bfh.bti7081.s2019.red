@@ -2,6 +2,8 @@ package ch.bfh.red.ui.views;
 
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.templatemodel.TemplateModel;
@@ -15,7 +17,16 @@ public class EditSingleSessionView extends PolymerTemplate<EditSingleSessionView
     private static final long serialVersionUID = 1L;
     
     private EditSingleSessionListener listener;
+    
+    @Id("header")
+    private H2 header;
 
+    public EditSingleSessionView() {
+    	 header.setText("Edit Single Session");
+    	
+    	
+    }
+    
     public interface EditSingleSessionListener {
         
     }

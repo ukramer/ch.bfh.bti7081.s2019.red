@@ -14,9 +14,26 @@
 	<template>
 		<style include="lumo-color lumo-typography lumo-badge view-styles"></style>
 		<div class="view-container">
-	
+			<h2 id="header"></h2>
+            <vaadin-text-field label="Therapeut" value="{{singleSession.therapist::input}}"></vaadin-text-field>
+            <br/>
+            <vaadin-text-field label="Patient" value="{{singleSession.patient::input}}"></vaadin-text-field>
+            <br/>
+            <vaadin-text-field label="Typ" value="{{singleSession.sessionType::input}}"></vaadin-text-field>
+            
+            
 		</div>
 
 	</template>
+	
+	<script>
+        class EditSingleSessionElement extends Polymer.Element {
+            static get is() {
+                return 'editsinglesession-element'
+            }
+        }
+
+        customElements.define(EditSingleSessionElement.is, EditSingleSessionElement);
+    </script>        
 
 </dom-module>
