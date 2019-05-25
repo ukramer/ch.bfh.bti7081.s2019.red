@@ -10,13 +10,12 @@ public class ExpositionNoteCrudTest extends CrudTest<ExpositionNote> {
 
     @Autowired
     private IService<Address> addressIService;
+    
     @Autowired
     private IService<Patient> patientIService;
 
-
     @Override
     protected ExpositionNote createInstance() {
-
         Address address = new Address("Amselstrasse", "16a", 4104, "Oberwil");
         addressIService.add(address);
 

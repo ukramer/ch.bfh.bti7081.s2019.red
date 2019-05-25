@@ -1,11 +1,19 @@
 package ch.bfh.red.backend.models;
 
-import ch.bfh.red.ui.converters.VisibilityConverter;
-
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -25,7 +33,7 @@ public abstract class AbstractNote<T extends AbstractNote<T>> implements Compara
 	private String text;
 
 	@Column(nullable = false)
-	@Convert(converter = VisibilityConverter.class)
+	@Enumerated(EnumType.STRING)
 	private Visibility visibility;
 
 	public AbstractNote() {}
