@@ -1,5 +1,7 @@
 package ch.bfh.red.backend.models;
 
+import ch.bfh.red.ui.converters.VisibilityConverter;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -21,8 +23,9 @@ public abstract class AbstractNote<T extends AbstractNote<T>> implements Compara
 	
 	@Column(nullable = false)
 	private String text;
+
 	
-	@Enumerated(EnumType.STRING)
+	@Convert(converter = VisibilityConverter.class)
 	private Visibility visibility;
 
 	public AbstractNote() {}
@@ -71,7 +74,7 @@ public abstract class AbstractNote<T extends AbstractNote<T>> implements Compara
 		int result = 1;
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + ((text == null) ? 0 : text.hashCode());
-		result = prime * result + ((visibility == null) ? 0 : visibility.hashCode());
+		result = prime * result + visibility.ordinal();
 		return result;
 	}
 

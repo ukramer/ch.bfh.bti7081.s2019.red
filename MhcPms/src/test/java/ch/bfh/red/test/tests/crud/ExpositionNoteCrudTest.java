@@ -12,8 +12,7 @@ public class ExpositionNoteCrudTest extends CrudTest<ExpositionNote> {
     private IService<Address> addressIService;
     @Autowired
     private IService<Patient> patientIService;
-    @Autowired
-    private IService<Visibility> visibilityIService;
+
 
     @Override
     protected ExpositionNote createInstance() {
@@ -24,9 +23,7 @@ public class ExpositionNoteCrudTest extends CrudTest<ExpositionNote> {
         Patient patient = new Patient("Sophie", "", address);
         patientIService.add(patient);
 
-        Visibility visibility = new Visibility("PRIVATE", "only for therapist");
-        visibilityIService.add(visibility);
-
+        Visibility visibility = Visibility.PRIVATE;
         return new ExpositionNote(patient, new Date(), "Went to bed without washing ritual", visibility, 8);
     }
 
@@ -41,3 +38,4 @@ public class ExpositionNoteCrudTest extends CrudTest<ExpositionNote> {
     }
 
 }
+

@@ -54,8 +54,8 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
 
         Patient patient = new Patient("Bruno", "Bernet", address);
 
-        ExpositionNote exp1 = new ExpositionNote(patient, new Date(), "Used public transport without washing hands after", new Visibility("PRIVATE", ""), 8);
-        ExpositionNote exp2 = new ExpositionNote(patient,  new Date(), "Went to bed without washing ritual", new Visibility("PRIVATE", ""), 9);
+        ExpositionNote exp1 = new ExpositionNote(patient, new Date(), "Used public transport without washing hands after", Visibility.PRIVATE, 8);
+        ExpositionNote exp2 = new ExpositionNote(patient,  new Date(), "Went to bed without washing ritual", Visibility.PRIVATE, 9);
         expositions.add(exp1);
         expositions.add(exp2);
         getModel().setExpositions(expositions);
@@ -71,3 +71,4 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
         System.out.println("Adding a new exposition");
     }
 }
+
