@@ -1,5 +1,7 @@
 package ch.bfh.red.backend.models;
 
+import org.hibernate.annotations.Cascade;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -23,6 +25,7 @@ public abstract class AbstractNote<T extends AbstractNote<T>> implements Compara
 	private String text;
 	
 	@ManyToOne
+	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
 	private Visibility visibility;
 
 	public AbstractNote() {}

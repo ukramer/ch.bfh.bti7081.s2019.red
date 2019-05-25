@@ -109,6 +109,26 @@
                     </vaadin-grid-column>
                 </vaadin-grid>
             </div>
+
+            <h2>Notizen von Patienten</h2>
+            <dom-repeat items="[[patientNotes]]">
+                <template>
+                    <div>
+                        <b>[[item.patient.lastName]] [[item.patient.firstName]] <small>am [[item.date]]</small></b><br />
+                        [[item.text]]<br /><br />
+                    </div>
+                </template>
+            </dom-repeat>
+
+            <h2>Notizen von Therapeuten</h2>
+            <dom-repeat items="[[therapistNotes]]">
+                <template>
+                    <div>
+                        <b>[[item.therapist.academicTitle.prefix]] [[item.therapist.lastName]] [[item.therapist.firstName]] <small>am [[item.date]]</small></b><br />
+                        [[item.text]]<br /><br />
+                    </div>
+                </template>
+            </dom-repeat>
         </div>
     </template>
 

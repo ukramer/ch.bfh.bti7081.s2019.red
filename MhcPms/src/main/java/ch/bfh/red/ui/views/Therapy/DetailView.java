@@ -181,6 +181,14 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
         getModel().setGroupSessions(groupSessions);
     }
 
+    public void setPatientNotes(List<PatientNote> patientNotes) {
+        getModel().setPatientNotes(patientNotes);
+    }
+
+    public void setTherapistNotes(List<TherapistNote> therapistNotes) {
+        getModel().setTherapistNotes(therapistNotes);
+    }
+
     @Override
     public void afterNavigation(AfterNavigationEvent afterNavigationEvent) {
         if (binder.getBean() == null) {
@@ -230,5 +238,15 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
                 "therapists.academicTitle.prefix", "therapists.firstName", "therapists.lastName",
                 "therapist.academicTitle.prefix", "therapist.firstName", "therapist.lastName"})
         void setGroupSessions(List<GroupSession> groupSessions);
+
+        @Encode(value = IntegerToStringEncoder.class, path = "id")
+        @Encode(value = DateToStringEncoder.class, path = "date")
+        @Include({"id", "date", "text", "patient.firstName", "patient.lastName"})
+        void setPatientNotes(List<PatientNote> patientNotes);
+
+        @Encode(value = IntegerToStringEncoder.class, path = "id")
+        @Encode(value = DateToStringEncoder.class, path = "date")
+        @Include({"id", "date", "text", "therapist.academicTitle.prefix", "therapist.firstName", "therapist.lastName"})
+        void setTherapistNotes(List<TherapistNote> therapistNotes);
     }
 }
