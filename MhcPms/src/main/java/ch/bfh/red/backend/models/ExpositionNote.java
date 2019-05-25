@@ -6,9 +6,7 @@ import javax.persistence.*;
 
 @Entity
 public class ExpositionNote extends AbstractNote<ExpositionNote> {
-	/*A number indicating the intensity of the exposition from 1 (relatively easy)
-	to 10 (extremely challenging and stressful) */
-
+    
     @ManyToOne
     Patient patient;
 
