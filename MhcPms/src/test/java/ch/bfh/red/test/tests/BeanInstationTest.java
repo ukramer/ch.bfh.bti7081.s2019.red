@@ -4,6 +4,7 @@ import ch.bfh.red.test.tests.beans.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({
@@ -18,8 +19,11 @@ import org.junit.runners.Suite;
         TherapyBeanTest.class,
         TherapyTypeBeanTest.class,
         SessionTypeBeanTest.class,
-        VisibilityBeanTest.class,
         ExpositionNoteBeanTest.class
+
+
+
+
 })
 public class BeanInstationTest {
 

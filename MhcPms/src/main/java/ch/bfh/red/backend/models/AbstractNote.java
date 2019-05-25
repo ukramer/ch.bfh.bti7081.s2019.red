@@ -22,7 +22,7 @@ public abstract class AbstractNote<T extends AbstractNote<T>> implements Compara
 	@Column(nullable = false)
 	private String text;
 	
-	@ManyToOne
+	@Enumerated(EnumType.STRING)
 	private Visibility visibility;
 
 	public AbstractNote() {}
