@@ -1,6 +1,12 @@
 package ch.bfh.red.backend.models;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -24,6 +30,7 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 	private Date endDate;
 	
 	@ManyToOne
+	@Cascade(CascadeType.PERSIST)
 	private SessionType sessionType;
 
 	public AbstractSession() {}
@@ -32,6 +39,24 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.sessionType = sessionType;
+	}
+
+	public LocalDate getStartDateAsLocalDate() {
+		Instant instant = getStartDate().toInstant();
+		return instant.atZone(ZoneId.systemDefault()).toLocalDate();
+	}
+
+	public void setStartDateAsLocalDate(LocalDate startDate) {
+		setStartDate(Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+	}
+
+	public LocalDate getEndDateAsLocalDate() {
+		Instant instant = getEndDate().toInstant();
+		return instant.atZone(ZoneId.systemDefault()).toLocalDate();
+	}
+
+	public void setEndDateAsLocalDate(LocalDate endDate) {
+		setEndDate(Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 	}
 
 	public Date getStartDate() {

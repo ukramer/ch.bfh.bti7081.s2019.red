@@ -2,12 +2,14 @@ package ch.bfh.red.backend.services;
 
 import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.repositories.PatientRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -56,5 +58,15 @@ public class PatientService implements IService<Patient> {
 		Predicate finalPredicate = cb.and(predicates.toArray(new Predicate[predicates.size()]));
 		cq.where(finalPredicate);
 		return em.createQuery(cq).getResultList();
+	}
+
+	@Transactional
+	public Patient getByIdWithAssociations(Integer id){
+		Patient patient = getRepository().findById(id).get();
+		Hibernate.initialize(patient.getTherapies());
+		Hibernate.initialize(patient.getGroupSessions());
+		Hibernate.initialize(patient.getSingleSessions());
+		Hibernate.initialize(patient.getTherapists());
+		return patient;
 	}
 }

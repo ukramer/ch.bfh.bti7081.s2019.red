@@ -3,11 +3,17 @@ package ch.bfh.red.ui.views;
 import ch.bfh.red.MainLayout;
 import ch.bfh.red.backend.models.Address;
 import ch.bfh.red.backend.models.Patient;
+import ch.bfh.red.backend.models.SingleSession;
+import ch.bfh.red.backend.models.Therapy;
 import ch.bfh.red.backend.services.PatientService;
+import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
+import ch.bfh.red.ui.encoders.LocalDateToStringEncoder;
 import ch.bfh.red.ui.presenters.PatientPresenter;
+import com.vaadin.flow.component.EventData;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.polymertemplate.EventHandler;
@@ -21,6 +27,8 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
+import com.vaadin.flow.templatemodel.Encode;
+import com.vaadin.flow.templatemodel.Include;
 import com.vaadin.flow.templatemodel.TemplateModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -63,9 +71,14 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
         if (patientId == null) {
             header.setText("Neuer Patient erfassen");
             binder.setBean(new Patient("", "", new Address()));
+            getModel().setTherapies(new ArrayList<>());
+            getModel().setSingleSessions(new ArrayList<>());
         } else {
             header.setText("Patient bearbeiten");
-            binder.setBean(listener.loadPatient(patientId));
+            Patient patient = listener.loadPatient(patientId);
+            getModel().setTherapies((List<Therapy>) patient.getTherapies());
+            getModel().setSingleSessions((List<SingleSession>)patient.getSingleSessions());
+            binder.setBean(patient);
         }
     }
 
@@ -73,6 +86,20 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
      * View Model Interface
      **/
     public interface EditPatientModel extends TemplateModel {
+        List<Therapy> getTherapies();
+
+        @Include({"id", "therapyType.name", "therapyType.description", "startDateAsLocalDate"})
+        @Encode(value = IntegerToStringEncoder.class, path = "id")
+        @Encode(value = LocalDateToStringEncoder.class, path = "startDateAsLocalDate")
+        void setTherapies(List<Therapy> therapies);
+
+        List<SingleSession> getSingleSessions();
+
+        @Include({"id", "sessionType.name", "sessionType.description", "startDateAsLocalDate", "endDateAsLocalDate"})
+        @Encode(value = IntegerToStringEncoder.class, path = "id")
+        @Encode(value = LocalDateToStringEncoder.class, path = "startDateAsLocalDate")
+        @Encode(value = LocalDateToStringEncoder.class, path = "endDateAsLocalDate")
+        void setSingleSessions(List<SingleSession> singleSessions);
     }
 
     public interface EditPatientViewListener {
@@ -111,7 +138,6 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
         binder.forField(city).asRequired("Stadt fehlt")
                 .bind(person -> person.getAddress().getCity(),
                         (person, city) -> person.getAddress().setCity(city));
-
     }
 
     @Override
@@ -135,6 +161,16 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
     @EventHandler
     private void cancel() {
         UI.getCurrent().navigate(ListPatientView.class);
+    }
+
+    @EventHandler
+    public void editTherapy(@EventData("event.model.item.id") int id) {
+        System.out.println("edit therapy with id: " + id);
+    }
+
+    @EventHandler
+    public void editSingleSession(@EventData("event.model.item.id") int id){
+        System.out.println("edit single session with id: " + id);
     }
 
 

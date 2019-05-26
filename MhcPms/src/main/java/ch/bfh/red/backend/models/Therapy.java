@@ -28,6 +28,7 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 	private boolean finished;
 	
 	@ManyToOne
+	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
 	private TherapyType therapyType;
 	
 	@ManyToOne
