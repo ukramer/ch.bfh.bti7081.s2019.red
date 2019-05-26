@@ -16,8 +16,8 @@ import javax.persistence.OneToMany;
 public class Therapist extends AbstractUser<Therapist> {
     private static final long serialVersionUID = 3328637872951953081L;
 
-    @ManyToOne
-	@Cascade(CascadeType.MERGE) // @todo: remove
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private AcademicTitle academicTitle;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
