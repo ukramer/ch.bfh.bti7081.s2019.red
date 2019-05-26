@@ -8,36 +8,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class PatientFactory {
+public class PatientFactory extends AbstractFactory<Patient> {
 
-    private Faker faker;
+    private final Faker faker;
+    private final AddressFactory addressFactory;
 
-
+    
     public PatientFactory() {
-        faker = new Faker(new Locale("de-ch"));
-
+    	this(new Locale("de-ch"));
     }
 
+    public PatientFactory(Locale locale) {
+        this.faker = new Faker(locale);
+        this.addressFactory = new AddressFactory(locale);
 
-    public Patient generatePatient(Address address){
-
-        String firstName = faker.name().firstName();
+    }
+    
+	@Override
+	public Patient create() {
+		Address address = addressFactory.create();
+    	String firstName = faker.name().firstName();
         String lastName = faker.name().lastName();
 
         Patient patient = new Patient(firstName, lastName, address);
         return patient;
+	}
 
-    }
-
-    public List<Patient> generatePatients(List<Address> addresses) {
-        ArrayList<Patient> patients = new ArrayList<>();
-        for (int i = 0; i < addresses.size(); i++) {
-
-            patients.add(generatePatient(addresses.get(i)));
-
-        }
-        return patients;
-    }
 }
 
 

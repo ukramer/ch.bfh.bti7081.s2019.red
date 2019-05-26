@@ -48,9 +48,9 @@ public class DataBaseSeeder {
 
     public void seedPatientTable(){
         AddressFactory addressFactory = new AddressFactory();
-        List<Address> addressList = addressFactory.generateAddresses(200);
+        List<Address> addressList = addressFactory.create(200);
         PatientFactory patientFactory = new PatientFactory();
-        List<Patient> patientList  = patientFactory.generatePatients(addressList);
+        List<Patient> patientList  = patientFactory.create(200);
         addressRepository.saveAll(addressList);
         patientRepository.saveAll(patientList);
     }
