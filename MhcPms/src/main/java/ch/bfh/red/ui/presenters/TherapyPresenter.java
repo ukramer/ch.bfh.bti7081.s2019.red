@@ -136,7 +136,7 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
         therapists.add(therapist);
         groupSessions.add(new GroupSession(patients, therapists, therapist, new Date(), new Date(), new SessionType("Gruppe", "Gruppe")));
         therapy.setGroupSessions(groupSessions);
-        PatientNote note = new PatientNote(patient, new Date(), "Dieser Text", new Visibility("Test", "test"));
+        PatientNote note = new PatientNote(patient, new Date(), "Dieser Text", Visibility.PUBLIC);
         List<PatientNote> notes = new ArrayList<>();
         notes.add(note);
         therapy.setPatientNotes(notes);
