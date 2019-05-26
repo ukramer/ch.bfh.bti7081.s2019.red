@@ -51,6 +51,8 @@ public class DataBaseSeeder {
         List<Address> addressList = addressFactory.create(200);
         PatientFactory patientFactory = new PatientFactory();
         List<Patient> patientList  = patientFactory.create(200);
+        
+        // TODO Persist items with EntityManager or similar for recursive persist mechanisme.
         addressRepository.saveAll(addressList);
         patientRepository.saveAll(patientList);
     }
