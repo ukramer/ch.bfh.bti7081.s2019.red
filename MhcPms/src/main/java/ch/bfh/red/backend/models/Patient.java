@@ -1,17 +1,21 @@
 package ch.bfh.red.backend.models;
 
+import org.hibernate.annotations.Cascade;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.*;
 
 @Entity
-public class Patient extends AbstractPerson<Patient> {
+public class Patient extends AbstractPerson<Patient> implements Serializable {
 
 	@ManyToMany
 	private Collection<Therapist> therapists = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "patient")
+	@Cascade(org.hibernate.annotations.CascadeType.ALL)
 	private Collection<Therapy> therapies = new ArrayList<>();
 	
 	@OneToMany

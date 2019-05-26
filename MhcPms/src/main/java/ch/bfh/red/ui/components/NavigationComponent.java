@@ -31,12 +31,6 @@ public class NavigationComponent extends Component {
         patientList.setHighlightCondition(HighlightConditions.sameLocation());
         add(patientList);
 
-        RouterLink addPatient = new RouterLink(null, EditPatientView.class);
-        addPatient.add(new Icon(VaadinIcon.PLUS), new Text("Add Patient"));
-        addPatient.addClassName("main-layout__nav-item");
-        addPatient.setHighlightCondition(HighlightConditions.sameLocation());
-        add(addPatient);
-
         RouterLink editGroupSession = new RouterLink(null, EditGroupSessionView.class);
         editGroupSession.add(new Icon(VaadinIcon.PENCIL), new Text("Edit Group Session"));
         editGroupSession.addClassName("main-layout__nav-item");

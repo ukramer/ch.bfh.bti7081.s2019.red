@@ -16,6 +16,7 @@
 package ch.bfh.red.ui.encoders;
 
 import com.vaadin.flow.templatemodel.ModelEncoder;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Vaadin Ltd
@@ -32,9 +33,10 @@ public class LongToStringEncoder implements ModelEncoder<Long, String> {
 
     @Override
     public Long decode(String presentationValue) {
-        if (presentationValue == null)
-            return null;
-        return Long.parseLong(presentationValue);
+        if (StringUtils.isNotBlank(presentationValue)){
+            return Long.parseLong(presentationValue);
+        }
+        return null;
     }
 
 }

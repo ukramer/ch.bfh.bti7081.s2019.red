@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table(name = "ADDRESSES")
 public class Address implements Comparable<Address>, Serializable {
 	private static final long serialVersionUID = 8153106662017090155L;
-	
+
 	@Id
 	@GeneratedValue
 	@Column(name = "ID")
@@ -25,14 +25,14 @@ public class Address implements Comparable<Address>, Serializable {
 	private String streetNumber;
 	
 	@Column(name = "POSTAL_CODE")
-	private int postalCode;
+	private Integer postalCode;
 	
 	@Column(name = "CITY")
 	private String city;
 	
 	public Address() {}
 
-	public Address(String street, String streetNumber, int postalCode, String city) {
+	public Address(String street, String streetNumber, Integer postalCode, String city) {
 		this.street = street;
 		this.streetNumber = streetNumber;
 		this.postalCode = postalCode;
@@ -47,7 +47,7 @@ public class Address implements Comparable<Address>, Serializable {
 		return streetNumber;
 	}
 
-	public int getPostalCode() {
+	public Integer getPostalCode() {
 		return postalCode;
 	}
 
@@ -63,7 +63,7 @@ public class Address implements Comparable<Address>, Serializable {
 		this.streetNumber = streetNumber;
 	}
 
-	public void setPostalCode(int postalCode) {
+	public void setPostalCode(Integer postalCode) {
 		this.postalCode = postalCode;
 	}
 

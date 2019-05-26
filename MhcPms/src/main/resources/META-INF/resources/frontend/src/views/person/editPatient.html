@@ -13,12 +13,12 @@
         <style include="lumo-color lumo-typography lumo-badge view-styles"></style>
         <div class="view-container">
             <h2 id="header"></h2>
-            <vaadin-text-field label="Vorname" value="{{patient.firstName::input}}"></vaadin-text-field>
-            <vaadin-text-field label="Nachname" value="{{patient.lastName::input}}"></vaadin-text-field><br/>
-            <vaadin-text-field label="Strasse" value="{{patient.address.street::input}}"></vaadin-text-field>
-            <vaadin-text-field label="Hausnummer" value="{{patient.address.streetNumber::input}}"></vaadin-text-field>
-            <vaadin-text-field label="PLZ" value="{{patient.address.postalCode::input}}"></vaadin-text-field>
-            <vaadin-text-field label="Stadt" value="{{patient.address.city::input}}"></vaadin-text-field>
+            <vaadin-text-field id="firstName" label="Vorname" value="{{patient.firstName::input}}"></vaadin-text-field>
+            <vaadin-text-field id="lastName" label="Nachname" value="{{patient.lastName::input}}"></vaadin-text-field><br/>
+            <vaadin-text-field id="street" label="Strasse" value="{{patient.address.street::input}}"></vaadin-text-field>
+            <vaadin-text-field id="streetNr" label="Hausnummer" value="{{patient.address.streetNumber::input}}"></vaadin-text-field>
+            <vaadin-text-field id="postalCode" label="PLZ" value="{{patient.address.postalCode::input}}"></vaadin-text-field>
+            <vaadin-text-field id="city" label="Stadt" value="{{patient.address.city::input}}"></vaadin-text-field>
             <br/><vaadin-button on-click="save">Speichern</vaadin-button>
             <vaadin-button on-click="cancel">Abbrechen</vaadin-button>
         </div>

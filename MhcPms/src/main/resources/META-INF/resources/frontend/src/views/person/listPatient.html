@@ -15,13 +15,15 @@
         <style include="lumo-color lumo-typography lumo-badge view-styles"></style>
         <div class="view-container">
             <h2 id="header"></h2>
-            <vaadin-text-field label="Vorname" value="{{patientSearchBean.firstName::input}}"></vaadin-text-field>
-            <vaadin-text-field label="Nachname" value="{{patientSearchBean.lastName::input}}"></vaadin-text-field><br/>
-            <vaadin-text-field label="Strasse" value="{{patientSearchBean.street::input}}"></vaadin-text-field>
-            <vaadin-text-field label="Hausnummer" value="{{patientSearchBean.streetNr::input}}"></vaadin-text-field>
-            <vaadin-text-field label="PLZ" value="{{patientSearchBean.postalCode::input}}"></vaadin-text-field>
-            <vaadin-text-field label="Stadt" value="{{patientSearchBean.city::input}}"></vaadin-text-field>
-            <br/><vaadin-button on-click="search">Suchen</vaadin-button>
+            <vaadin-text-field id="firstName" label="Vorname" value="{{patientSearchBean.firstName::input}}"></vaadin-text-field>
+            <vaadin-text-field id="lastName" label="Nachname" value="{{patientSearchBean.lastName::input}}"></vaadin-text-field><br/>
+            <vaadin-text-field id="street" label="Strasse" value="{{patientSearchBean.street::input}}"></vaadin-text-field>
+            <vaadin-text-field id="streetNr" label="Hausnummer" value="{{patientSearchBean.streetNr::input}}"></vaadin-text-field>
+            <vaadin-text-field id="postalCode" label="PLZ" value="{{patientSearchBean.postalCode::input}}"></vaadin-text-field>
+            <vaadin-text-field id="city" label="Stadt" value="{{patientSearchBean.city::input}}"></vaadin-text-field>
+            <br/>
+            <vaadin-button on-click="addPatient" theme="success">Patient hinzufügen</vaadin-button>
+            <vaadin-button on-click="search">Suchen</vaadin-button>
             <vaadin-grid id="gridPatienten" items=[[patients]] theme="no-border" style="width:1100px" column-reordering-allowed multi-sort>
                 <vaadin-grid-column>
                     <template class="header">#</template>

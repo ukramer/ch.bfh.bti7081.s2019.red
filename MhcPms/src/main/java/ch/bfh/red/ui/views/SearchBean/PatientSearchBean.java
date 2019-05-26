@@ -5,7 +5,7 @@ public class PatientSearchBean {
     private String lastName;
     private String street;
     private String streetNr;
-    private String postalCode;
+    private Integer postalCode;
     private String city;
 
     public PatientSearchBean() {
@@ -43,11 +43,11 @@ public class PatientSearchBean {
         this.streetNr = streetNr;
     }
 
-    public String getPostalCode() {
+    public Integer getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(String postalCode) {
+    public void setPostalCode(Integer postalCode) {
         this.postalCode = postalCode;
     }
 
