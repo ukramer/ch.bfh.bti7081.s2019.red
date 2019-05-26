@@ -6,8 +6,9 @@ import javax.persistence.*;
 
 @Entity
 public class PatientNote extends AbstractNote<PatientNote> {
+	private static final long serialVersionUID = 719492010950146695L;
 	
-	@OneToOne
+	@ManyToOne
 	private Patient patient;
 
 	public PatientNote() {}

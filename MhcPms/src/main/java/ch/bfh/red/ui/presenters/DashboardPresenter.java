@@ -10,6 +10,6 @@ public class DashboardPresenter implements DashboardView.DashboardViewListener {
     public DashboardPresenter(DashboardView view) {
         this.view  = view;
 
-        view.addListener(this);
+        view.setListener(this);
     }
 }

@@ -1,22 +1,39 @@
 package ch.bfh.red.backend.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class AbstractNote<T extends AbstractNote<T>> implements Comparable<T>  {
+public abstract class AbstractNote<T extends AbstractNote<T>> implements Comparable<T>, Serializable  {
+	private static final long serialVersionUID = 7401678212507566844L;
+
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(nullable = false, unique=true)
 	private int id;
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false)
 	private Date date;
 	
+	@Column(nullable = false)
 	private String text;
-	
-	@OneToOne
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Visibility visibility;
 
 	public AbstractNote() {}
@@ -51,13 +68,21 @@ public abstract class AbstractNote<T extends AbstractNote<T>> implements Compara
 		this.visibility = visibility;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + ((text == null) ? 0 : text.hashCode());
-		result = prime * result + ((visibility == null) ? 0 : visibility.hashCode());
+		result = prime * result + visibility.ordinal();
 		return result;
 	}
 

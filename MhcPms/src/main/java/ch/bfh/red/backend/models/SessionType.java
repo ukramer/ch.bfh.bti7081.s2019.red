@@ -1,16 +1,22 @@
 package ch.bfh.red.backend.models;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 @Entity
-public class SessionType implements Comparable<SessionType> {
-	
+public class SessionType implements Comparable<SessionType>, Serializable {
+	private static final long serialVersionUID = -588062357147068741L;
+
 	@Id
 	@GeneratedValue
+	@Column(nullable = false, unique = true)
 	private int id;
 	
+	@Column(nullable = false)
 	private String name;
 	
+	@Column(nullable = false)
 	private String description;
 
 	public SessionType() {}

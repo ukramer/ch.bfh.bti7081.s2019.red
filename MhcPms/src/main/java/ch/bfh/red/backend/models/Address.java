@@ -5,29 +5,28 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "ADDRESSES")
 public class Address implements Comparable<Address>, Serializable {
 	private static final long serialVersionUID = 8153106662017090155L;
-
+	
 	@Id
-	@GeneratedValue
-	@Column(name = "ID")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(nullable = false, unique = true)
 	private Integer id;
 	
-	@Column(name = "STREET")
+	@Column(nullable = false)
 	private String street;
 	
-	@Column(name = "STREET_NUMBER")
+	@Column(nullable = false)
 	private String streetNumber;
 	
-	@Column(name = "POSTAL_CODE")
+	@Column(nullable = false)
 	private Integer postalCode;
 	
-	@Column(name = "CITY")
+	@Column(nullable = false)
 	private String city;
 	
 	public Address() {}

@@ -20,8 +20,8 @@ public interface IService<T> {
 		return obj;
 	}
 	
-	default void update(T t) {
-		getRepository().save(t);
+	default T update(T t) {
+		return getRepository().save(t);
 		
 	}
 	
@@ -33,9 +33,8 @@ public interface IService<T> {
 		getRepository().delete(t);
 	}
 	
-	default boolean add(T t) {
-		getRepository().save(t);
-		return true;
+	default T add(T t) {
+		return getRepository().save(t);
 	}
 	
 	default Boolean existById(Integer id) {
