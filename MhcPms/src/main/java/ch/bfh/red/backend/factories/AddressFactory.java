@@ -8,14 +8,19 @@ import com.github.javafaker.Faker;
 
 import ch.bfh.red.backend.models.Address;
 
-public class AddressFactory {
+public class AddressFactory extends AbstractFactory<Address> {
     private final Faker faker;
 
     public AddressFactory(){
-        faker = new Faker(new Locale("d-ch"));
+        this(new Locale("de-ch"));
+    }
+    
+    public AddressFactory(Locale locale) {
+    	faker = new Faker(locale);
     }
 
-    public Address generateAddress(){
+    @Override
+    public Address create(){
 
         String streetName = faker.address().streetName();
         String number = faker.address().buildingNumber();
@@ -29,12 +34,4 @@ public class AddressFactory {
 
     }
 
-    public List<Address> generateAddresses(int count){
-        ArrayList<Address> addresses = new ArrayList<>();
-        for(int i=0; i<count; ++i){
-            addresses.add(generateAddress());
-        }
-        return addresses;
-
-    }
 }
