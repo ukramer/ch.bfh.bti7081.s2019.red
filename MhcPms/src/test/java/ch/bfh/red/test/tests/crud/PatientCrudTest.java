@@ -2,11 +2,13 @@ package ch.bfh.red.test.tests.crud;
 
 import ch.bfh.red.backend.models.Address;
 import ch.bfh.red.backend.models.Patient;
+import ch.bfh.red.backend.persistence.PersistenceManager;
 import ch.bfh.red.backend.services.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class PatientCrudTest extends CrudTest<Patient> {
 
+	// TODO remove
 	@Autowired
 	private IService<Address> addressService;
 
@@ -25,6 +27,12 @@ public class PatientCrudTest extends CrudTest<Patient> {
 	@Override
 	protected void setAnUpdateValue(Patient instance) {
 		instance.setFirstName("Karl");
+	}
+
+	@Override
+	protected PersistenceManager<Patient> getPersistenceManager() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

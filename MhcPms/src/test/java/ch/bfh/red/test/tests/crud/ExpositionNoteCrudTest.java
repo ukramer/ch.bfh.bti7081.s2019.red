@@ -1,6 +1,7 @@
 package ch.bfh.red.test.tests.crud;
 
 import ch.bfh.red.backend.models.*;
+import ch.bfh.red.backend.persistence.PersistenceManager;
 import ch.bfh.red.backend.services.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -8,9 +9,11 @@ import java.util.Date;
 
 public class ExpositionNoteCrudTest extends CrudTest<ExpositionNote> {
 
+	// TODO remove
     @Autowired
     private IService<Address> addressIService;
     
+    // TODO remove
     @Autowired
     private IService<Patient> patientIService;
 
@@ -34,6 +37,12 @@ public class ExpositionNoteCrudTest extends CrudTest<ExpositionNote> {
     protected void setAnUpdateValue(ExpositionNote instance) {
         instance.setDegreeOfExposure(9);
     }
+
+	@Override
+	protected PersistenceManager<ExpositionNote> getPersistenceManager() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
 

@@ -3,14 +3,17 @@ package ch.bfh.red.test.tests.crud;
 import ch.bfh.red.backend.models.AcademicTitle;
 import ch.bfh.red.backend.models.Address;
 import ch.bfh.red.backend.models.Therapist;
+import ch.bfh.red.backend.persistence.PersistenceManager;
 import ch.bfh.red.backend.services.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TherapistCrudTest extends CrudTest<Therapist> {
 
+	// TODO remove
 	@Autowired
 	private IService<Address> addressIService;
 
+	// TODO remove
 	@Autowired
 	private IService<AcademicTitle> academicTitleIService;
 
@@ -32,6 +35,12 @@ public class TherapistCrudTest extends CrudTest<Therapist> {
 	@Override
 	protected void setAnUpdateValue(Therapist instance) {
 		instance.setUsername("ott81");
+	}
+
+	@Override
+	protected PersistenceManager<Therapist> getPersistenceManager() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

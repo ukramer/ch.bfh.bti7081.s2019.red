@@ -1,12 +1,16 @@
 package ch.bfh.red.test.tests.crud;
 
+import ch.bfh.red.backend.factories.AddressFactory;
 import ch.bfh.red.backend.models.Address;
+import ch.bfh.red.backend.persistence.PersistenceManager;
 
 public class AddressCrudTest extends CrudTest<Address> {
 
+	AddressFactory factory = new AddressFactory();
+	
 	@Override
 	protected Address createInstance() {
-		return new Address("Kirchbergstrasse", "23", 3456, "Thun");
+		return factory.create();
 	}
 
 	@Override
@@ -17,6 +21,12 @@ public class AddressCrudTest extends CrudTest<Address> {
 	@Override
 	protected void setAnUpdateValue(Address instance) {
 		instance.setPostalCode(2198);
+	}
+
+	@Override
+	protected PersistenceManager<Address> getPersistenceManager() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
