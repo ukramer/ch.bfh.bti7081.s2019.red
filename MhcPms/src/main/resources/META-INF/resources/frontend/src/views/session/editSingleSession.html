@@ -20,8 +20,8 @@
             <vaadin-text-field id="patient" label="Patient" value="{{singleSession.patient::input}}"></vaadin-text-field>
             <br/>
             <vaadin-text-field id="sessionType" label="Typ" value="{{singleSession.sessionType::input}}"></vaadin-text-field>
-            
-            
+            <br/>
+            <vaadin-date-picker id="startDateTime" label="Start Zeit" value="{{singleSession.startDate.dateString}}"></vaadin-date-picker>
 		</div>
 
 	</template>
