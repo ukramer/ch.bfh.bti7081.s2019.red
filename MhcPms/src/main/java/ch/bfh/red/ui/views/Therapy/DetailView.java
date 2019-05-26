@@ -21,7 +21,6 @@ import com.vaadin.flow.component.polymertemplate.EventHandler;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.ModelItem;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
-import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
 import com.vaadin.flow.data.provider.DataProvider;
@@ -70,8 +69,15 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
 
         binder.forField(startDate).asRequired("Es muss ein Startdatum gesetzt sein.").bind(Therapy::getStartDateAsLocalDate, Therapy::setStartDateAsLocalDate);
         binder.forField(finished).bind(Therapy::isFinished, Therapy::setFinished);
-//        binder.forField(patient).asRequired("Es muss ein Patient gesetzt sein.").bind(Therapy::getPatient, Therapy::setPatient);
-//        binder.forField(therapist).asRequired("Es muss ein Therapeut gesetzt sein.").bind(Therapy::getTherapist, Therapy::setTherapist);
+
+        // workaround for https://github.com/vaadin/vaadin-combo-box-flow/issues/235
+        // @todo: to be removed with Vaadin v3.0.14
+        patient.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
+        therapist.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
+        // workaround end
+
+        binder.forField(patient).asRequired("Es muss ein Patient gesetzt sein.").bind(Therapy::getPatient, Therapy::setPatient);
+        binder.forField(therapist).asRequired("Es muss ein Therapeut gesetzt sein.").bind(Therapy::getTherapist, Therapy::setTherapist);
     }
 
     @Override
@@ -181,10 +187,6 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
             header.setText("Therapie #" + therapy.getId());
         }
         getModel().setTherapy(therapy);
-        
-        therapist.setValue(therapy.getTherapist());
-        patient.setValue(therapy.getPatient());
-        
     }
 
     public void setSingleSessions(List<SingleSession> singleSessions) {
@@ -204,11 +206,11 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
     }
 
     public void setPatients(List<Patient> patients) {
-        patient.setDataProvider(DataProvider.ofCollection(patients));
+        patient.setItems(patients);
     }
 
     public void setTherapists(List<Therapist> therapists) {
-        therapist.setDataProvider(DataProvider.ofCollection(therapists));
+        therapist.setItems(therapists);
     }
 
     @Override
