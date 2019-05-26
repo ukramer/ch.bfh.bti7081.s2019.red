@@ -1,21 +1,18 @@
 package ch.bfh.red.backend.factories;
 
-import ch.bfh.red.backend.models.Address;
-import com.github.javafaker.Faker;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import com.github.javafaker.Faker;
+
+import ch.bfh.red.backend.models.Address;
+
 public class AddressFactory {
-
-    private Faker faker;
-
+    private final Faker faker;
 
     public AddressFactory(){
-
         faker = new Faker(new Locale("d-ch"));
-
     }
 
     public Address generateAddress(){
