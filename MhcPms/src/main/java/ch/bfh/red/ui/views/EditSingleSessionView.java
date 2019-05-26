@@ -1,5 +1,9 @@
 package ch.bfh.red.ui.views;
 
+import java.util.Date;
+
+import org.springframework.stereotype.Component;
+
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.html.H2;
@@ -13,6 +17,7 @@ import com.vaadin.flow.templatemodel.TemplateModel;
 
 import ch.bfh.red.MainLayout;
 import ch.bfh.red.backend.models.SingleSession;
+import ch.bfh.red.ui.encoders.DateTimeBean;
 import ch.bfh.red.ui.encoders.DateToDateBeanEncoder;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.DateToTimeInHoursMinutesStringConverter;
@@ -52,12 +57,14 @@ public class EditSingleSessionView
 		
 	}
 	
+	
+	
 	public interface EditSingleSessionModel extends TemplateModel {
 		@Include({ 
-			"startDate.dateString"
-			, 
-//			"startDate.timeString", "endDate.dateString",
-//				"endDate.timeString", "sessionType"
+//			"startDate"
+//			, 
+//			"startDate", "endDate",
+//				"endDate", "sessionType"
 //			,
 			"patient", "therapist" 
 				})
@@ -68,6 +75,15 @@ public class EditSingleSessionView
 		@Encode(value = PatientToNameStringConverter.class, path = "patient")
 		@Encode(value = TherapistToNameStringConverter.class, path = "therapist")
 		void setSingleSession(SingleSession singleSession);
+		
+//		@Include({
+//			"startDate"
+//		})
+		@Encode(value = DateToDateBeanEncoder.class, path = "startDate")
+//		@Encode(value = DateToDateBeanEncoder.class, path = "startDate.timeString")
+		void setStartDate(DateTimeBean date);
+//		
+//		void setStartDate()
 		
 	}
 	

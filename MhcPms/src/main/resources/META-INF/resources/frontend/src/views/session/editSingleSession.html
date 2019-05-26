@@ -2,6 +2,7 @@
 <link rel="import" href="../../../bower_components/polymer/polymer-element.html">
 <!-- Added Web Component dependencies to make Vaadin Designer preview work -->
 <link rel="import" href="../../../bower_components/vaadin-text-field/vaadin-text-field.html">
+<link rel="import" href="../../../bower_components/vaadin-date-picker/vaadin-date-picker.html">
 <link rel="import" href="../../../bower_components/vaadin-button/vaadin-button.html">
 <link rel="import" href="../../../bower_components/vaadin-grid/all-imports.html">
 <link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
@@ -21,7 +22,7 @@
             <br/>
             <vaadin-text-field id="sessionType" label="Typ" value="{{singleSession.sessionType::input}}"></vaadin-text-field>
             <br/>
-            <vaadin-date-picker id="startDateTime" label="Start Zeit" value="{{singleSession.startDate.dateString}}"></vaadin-date-picker>
+            <vaadin-date-picker id="startDateTime" label="Start Zeit" value="{{startDate.date}}"></vaadin-date-picker>
 		</div>
 
 	</template>

@@ -7,7 +7,7 @@ import java.util.GregorianCalendar;
 
 import com.vaadin.flow.templatemodel.ModelEncoder;
 
-public class DateToDateBeanEncoder implements ModelEncoder<Date, DateTimeBean> {
+public class DateToDateBeanEncoder implements ModelEncoder<DateTimeBean, String> {
 
 	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	
@@ -15,19 +15,23 @@ public class DateToDateBeanEncoder implements ModelEncoder<Date, DateTimeBean> {
 	
 	
 	@Override
-	public DateTimeBean encode(Date modelValue) {
+	public String encode(DateTimeBean modelValue) {
 		if (modelValue == null)
 			return null;
-		DateTimeBean bean = new DateTimeBean(modelValue);
-		return bean;
+		DateTimeBean bean = new DateTimeBean();
+		bean.setDate(dateFormat.format(modelValue));
+		bean.setTime(timeFormat.format(modelValue));
+		return bean.getDate();
 	}
 
 	@Override
-	public Date decode(DateTimeBean presentationValue) {
+	public DateTimeBean decode(String presentationValue) {
 		if (presentationValue == null)
 			return null;
 
-		return presentationValue.toDate();
+		return new DateTimeBean();
+//		return presentationValue.toDate();
+//		throw new UnsupportedOperationException();
 	}
 	
 }
