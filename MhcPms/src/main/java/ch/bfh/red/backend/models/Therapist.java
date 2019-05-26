@@ -82,10 +82,6 @@ public class Therapist extends AbstractUser<Therapist> {
 		int result = super.hashCode();
 		result = prime * result
 				+ ((academicTitle == null) ? 0 : academicTitle.hashCode());
-		result = prime * result
-				+ ((groupSessions == null) ? 0 : groupSessions.hashCode());
-		result = prime * result + ((patients == null) ? 0 : patients.hashCode());
-		result = prime * result + ((therapies == null) ? 0 : therapies.hashCode());
 		return result;
 	}
 
