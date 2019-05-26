@@ -8,10 +8,10 @@ public abstract class AbstractFactory<T> {
 	public abstract T create();
 	
 	public List<T> create(int count) {
-    	ArrayList<T> patients = new ArrayList<>();
+    	ArrayList<T> entities = new ArrayList<>();
         for (int i = 0; i < count; i++)
-            patients.add(create());
-        return patients;
+            entities.add(create());
+        return entities;
     }
 	
 }

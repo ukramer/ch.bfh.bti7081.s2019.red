@@ -19,7 +19,7 @@ public class TherapistCrudTest extends CrudTest<Therapist> {
 
 	@Override
 	protected Therapist createInstance() {
-		AcademicTitle title = new AcademicTitle("Dr.", "");
+		AcademicTitle title = AcademicTitle.DOCTOR;
 		academicTitleIService.add(title);
 
 		Address address = new Address("Winkelstrasse", "A", 2387, "Bülach");

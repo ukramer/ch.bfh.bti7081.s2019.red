@@ -26,7 +26,6 @@ public class AddressFactory extends AbstractFactory<Address> {
         String number = faker.address().buildingNumber();
         String city = faker.address().city();
         //zipCode seems to return "-" even for locale "d-ch". Therefore, numerify is used.
-        // Annoying problem to be solved: postalCode has to correspond to city!
         String postalCode = faker.numerify("####");
 
         Address address = new Address(streetName, number, Integer.parseInt(postalCode), city);

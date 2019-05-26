@@ -42,7 +42,7 @@ public class SingleSessionTest extends StartupTest {
         Patient patient = new Patient("Ueli", "Kramer", address);
         patientService.add(patient);
         
-        AcademicTitle title = new AcademicTitle("Dr.", "-");
+        AcademicTitle title = AcademicTitle.DOCTOR;
         academicTitleIService.add(title);
         
         Therapist therapist = new Therapist("marle34", "1234", title, "Marlies", "Lotti", address);
