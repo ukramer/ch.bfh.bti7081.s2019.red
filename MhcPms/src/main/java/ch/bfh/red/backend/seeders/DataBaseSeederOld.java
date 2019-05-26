@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class DataBaseSeeder {
+public class DataBaseSeederOld {
 
 
     private AddressRepository addressRepository;
@@ -26,7 +26,7 @@ public class DataBaseSeeder {
     private AcademicTitleRepository academicTitleRepository;
 
     @Autowired
-    public DataBaseSeeder(AddressRepository addressRepository,
+    public DataBaseSeederOld(AddressRepository addressRepository,
             PatientRepository patientRepository,
             TherapistRepository therapistRepository,
             AcademicTitleRepository academicTitleRepository){

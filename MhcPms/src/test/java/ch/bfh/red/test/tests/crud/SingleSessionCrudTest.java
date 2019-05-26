@@ -8,23 +8,29 @@ import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.SessionType;
 import ch.bfh.red.backend.models.SingleSession;
 import ch.bfh.red.backend.models.Therapist;
+import ch.bfh.red.backend.persistence.PersistenceManager;
 import ch.bfh.red.backend.services.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class SingleSessionCrudTest extends CrudTest<SingleSession> {
 
+	// TODO remove
 	@Autowired
 	private IService<Therapist> therapistIService;
 
+	// TODO remove
 	@Autowired
 	private IService<SessionType> sessionTypeIService;
 
+	// TODO remove
 	@Autowired
 	private IService<AcademicTitle> academicTitleIService;
 
+	// TODO remove
 	@Autowired
 	private IService<Patient> patientIService;
 
+	// TODO remove
 	@Autowired
 	private IService<Address> addressIService;
 
@@ -60,6 +66,12 @@ public class SingleSessionCrudTest extends CrudTest<SingleSession> {
 		SessionType sessionType = new SessionType("Other", "");
 		sessionTypeIService.add(sessionType);
 		instance.setSessionType(sessionType);
+	}
+
+	@Override
+	protected PersistenceManager<SingleSession> getPersistenceManager() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
