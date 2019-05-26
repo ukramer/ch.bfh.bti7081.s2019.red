@@ -1,16 +1,16 @@
 package ch.bfh.red.backend.services;
 
-import ch.bfh.red.backend.models.GroupSession;
-import ch.bfh.red.backend.models.SingleSession;
+import ch.bfh.red.backend.models.*;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.bfh.red.backend.models.Therapy;
 import ch.bfh.red.backend.repositories.TherapyRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +21,9 @@ public class TherapyService implements IService<Therapy> {
     private TherapyRepository repository;
 
     private static DateToStringEncoder dateToStringEncoder = new DateToStringEncoder();
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Transactional
     public Therapy getByIdWithAllAssociations(Integer id) {
@@ -81,5 +84,13 @@ public class TherapyService implements IService<Therapy> {
     public List<Therapy> getByFinishedAndEndDate(boolean finished, String end) {
         Date endDate = dateToStringEncoder.decode(end);
         return getRepository().findByFinishedAndEndDate(finished, endDate);
+    }
+
+    @Override
+    @Transactional
+    public Therapy update(Therapy therapy) {
+        therapy.setPatient(entityManager.getReference(Patient.class, therapy.getPatient().getId()));
+        therapy.setTherapist(entityManager.getReference(Therapist.class, therapy.getTherapist().getId()));
+        return getRepository().save(therapy);
     }
 }

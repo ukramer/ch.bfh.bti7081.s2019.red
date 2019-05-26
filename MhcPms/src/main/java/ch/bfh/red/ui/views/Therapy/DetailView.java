@@ -20,8 +20,10 @@ import com.vaadin.flow.component.polymertemplate.EventHandler;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.ModelItem;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
+import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.templatemodel.Encode;
@@ -50,6 +52,12 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
     @Id("finished")
     private Checkbox finished;
 
+    @Id("patient")
+    private Select<Patient> patient;
+
+    @Id("therapist")
+    private Select<Therapist> therapist;
+
     private ConfirmationDialog<Therapy> confirmationDialog = new ConfirmationDialog<>();
 
     private TherapyPresenter therapyPresenter;
@@ -61,6 +69,8 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
 
         binder.forField(startDate).asRequired("Es muss ein Startdatum gesetzt sein.").bind(Therapy::getStartDateAsLocalDate, Therapy::setStartDateAsLocalDate);
         binder.forField(finished).bind(Therapy::isFinished, Therapy::setFinished);
+        binder.forField(patient).asRequired("Es muss ein Patient gesetzt sein.").bind(Therapy::getPatient, Therapy::setPatient);
+        binder.forField(therapist).asRequired("Es muss ein Therapeut gesetzt sein.").bind(Therapy::getTherapist, Therapy::setTherapist);
     }
 
     @Override
@@ -142,8 +152,15 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
         BinderValidationStatus<Therapy> validate = binder.validate();
         if (validate.isOk()) {
             try {
-                listener.save(binder.getBean());
-                Notification.show("Die Therapie wurde erfolgreich aktualisiert.");
+                Therapy therapy = binder.getBean();
+                boolean isNew = therapy.getId() == 0;
+                listener.save(therapy);
+                if (isNew) {
+                    Notification.show("Die Therapie wurde erfolgreich hinzugefügt.");
+                    UI.getCurrent().navigate(ListView.class);
+                } else {
+                    Notification.show("Die Therapie wurde erfolgreich aktualisiert.");
+                }
             } catch (Exception e) {
                 Notification.show(e.getMessage());
             }
@@ -165,14 +182,6 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
         getModel().setTherapy(therapy);
     }
 
-    public void setPatient(Patient patient) {
-        getModel().setPatient(patient);
-    }
-
-    public void setTherapist(Therapist therapist) {
-        getModel().setTherapist(therapist);
-    }
-
     public void setSingleSessions(List<SingleSession> singleSessions) {
         getModel().setSingleSessions(singleSessions);
     }
@@ -187,6 +196,14 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
 
     public void setTherapistNotes(List<TherapistNote> therapistNotes) {
         getModel().setTherapistNotes(therapistNotes);
+    }
+
+    public void setPatients(List<Patient> patients) {
+        patient.setDataProvider(DataProvider.ofCollection(patients));
+    }
+
+    public void setTherapists(List<Therapist> therapists) {
+        therapist.setDataProvider(DataProvider.ofCollection(therapists));
     }
 
     @Override
@@ -214,15 +231,6 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
         @Encode(value = DateToStringEncoder.class, path = "startDate")
         @Include({"id", "startDate", "finished"})
         void setTherapy(Therapy therapy);
-
-        @Encode(value = IntegerToStringEncoder.class, path = "id")
-        @Encode(value = IntegerToStringEncoder.class, path = "address.postalCode")
-        @Include({"id", "firstName", "lastName", "address.street", "address.streetNumber", "address.postalCode", "address.city"})
-        void setPatient(Patient patient);
-
-        @Encode(value = IntegerToStringEncoder.class, path = "id")
-        @Include({"id", "academicTitle.prefix", "firstName", "lastName"})
-        void setTherapist(Therapist therapist);
 
         @Encode(value = IntegerToStringEncoder.class, path = "id")
         @Encode(value = DateToStringEncoder.class, path = "startDate")

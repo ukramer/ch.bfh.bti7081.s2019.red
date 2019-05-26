@@ -22,7 +22,6 @@ public interface IService<T> {
 	
 	default T update(T t) {
 		return getRepository().save(t);
-		
 	}
 	
 	default void delete(Integer id) {

@@ -1,7 +1,6 @@
 package ch.bfh.red.backend.models;
 
 import org.hibernate.annotations.Cascade;
-import org.springframework.data.repository.cdi.Eager;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -156,7 +155,7 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(patient, startDate, therapyType);
+		return Objects.hash(patient, therapist, startDate, therapyType);
 	}
 
 	@Override

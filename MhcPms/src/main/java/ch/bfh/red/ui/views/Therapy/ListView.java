@@ -10,6 +10,7 @@ import ch.bfh.red.ui.presenters.TherapyPresenter;
 import ch.bfh.red.ui.views.View;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.html.H2;
@@ -48,6 +49,9 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
     @Id("end")
     private DatePicker end;
 
+    @Id("showFinished")
+    private Checkbox showFinished;
+
     private ConfirmationDialog<Therapy> confirmationDialog = new ConfirmationDialog<>();
 
     private Patient currentPatientFilter;
@@ -55,6 +59,8 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
     private LocalDate currentStartFilter;
 
     private LocalDate currentEndFilter;
+
+    private boolean currentShowFinished;
 
     private TherapyPresenter therapyPresenter;
 
@@ -101,20 +107,20 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
         if (therapy == null) return;
         listener.delete(therapy);
         Notification.show("Die Therapie wurde erfolgreich gelöscht.");
-        listener.updateList(false, currentPatientFilter, currentStartFilter, currentEndFilter);
+        listener.updateList(currentShowFinished, currentPatientFilter, currentStartFilter, currentEndFilter);
     }
 
     @EventHandler
     public void patientFilter(@ModelItem Patient patient) {
         currentPatientFilter = patient;
-        listener.updateList(false, currentPatientFilter, currentStartFilter, currentEndFilter);
+        listener.updateList(currentShowFinished, currentPatientFilter, currentStartFilter, currentEndFilter);
     }
 
     @EventHandler
     public void dateFilter() {
         currentStartFilter = start.getValue();
         currentEndFilter = end.getValue();
-        listener.updateList(false, currentPatientFilter, currentStartFilter, currentEndFilter);
+        listener.updateList(currentShowFinished, currentPatientFilter, currentStartFilter, currentEndFilter);
     }
 
     @EventHandler
@@ -128,8 +134,19 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
     }
 
     @EventHandler
+    public void showFinished() {
+        currentShowFinished = showFinished.getValue();
+        listener.updateList(currentShowFinished, currentPatientFilter, currentStartFilter, currentEndFilter);
+    }
+
+    @EventHandler
     public void edit(@ModelItem Therapy therapy) {
         UI.getCurrent().navigate(DetailView.class, therapy.getId());
+    }
+
+    @EventHandler
+    public void add() {
+        UI.getCurrent().navigate(DetailView.class);
     }
 
     public interface ListViewListener {

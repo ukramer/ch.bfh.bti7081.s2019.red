@@ -27,108 +27,105 @@
                     </vaadin-form-layout>
                 </div>
                 <div>
-                    <h2>Patient</h2>
-                    [[patient.lastName]] [[patient.firstName]]<br />
-                    [[patient.address.street]] [[patient.address.streetNumber]]<br />
-                    [[patient.address.postalCode]] [[patient.address.city]]
-
-                    <h2>Therapeut</h2>
-                    [[therapist.academicTitle.prefix]] [[therapist.lastName]] [[therapist.firstName]]
+                    <vaadin-select label="Patient" placeholder="Patient wählen" id="patient"></vaadin-select>
+                    <vaadin-select label="Therapeut" placeholder="Therapeut wählen" id="therapist"></vaadin-select>
                 </div>
             </vaadin-horizontal-layout>
+            <div hidden="{{isNew()}}">
 
-            <h2>Einzelsitzungen</h2>
+                <h2>Einzelsitzungen</h2>
 
-            <div hidden="{{!_isEmpty(singleSessions)}}">
-                Keine Einzelsitzung vorhanden.
-                <vaadin-button on-click="addSingleSession" theme="success">Einzelsitzung erfassen</vaadin-button>
+                <div hidden="{{!_isEmpty(singleSessions)}}">
+                    Keine Einzelsitzung vorhanden.
+                    <vaadin-button on-click="addSingleSession" theme="success">Einzelsitzung erfassen</vaadin-button>
+                </div>
+                <div hidden="{{_isEmpty(singleSessions)}}">
+                    <vaadin-grid theme="no-border" items="[[singleSessions]]">
+                        <vaadin-grid-column header="Typ" path="sessionType.name"></vaadin-grid-column>
+                        <vaadin-grid-sort-column header="Von / Bis">
+                            <template>
+                                [[item.startDate]] -<br />[[item.endDate]]
+                            </template>
+                        </vaadin-grid-sort-column>
+                        <vaadin-grid-sort-column header="Patient">
+                            <template>
+                                [[item.patient.lastName]] [[item.patient.firstName]]
+                            </template>
+                        </vaadin-grid-sort-column>
+                        <vaadin-grid-sort-column header="Therapeut">
+                            <template>
+                                [[item.therapist.academicTitle.prefix]] [[item.therapist.lastName]] [[item.therapist.firstName]]
+                            </template>
+                        </vaadin-grid-sort-column>
+                        <vaadin-grid-column>
+                            <template>
+                                <vaadin-button theme="success tertiary" on-click="showSingleSession">Anzeigen</vaadin-button>
+                            </template>
+                        </vaadin-grid-column>
+                    </vaadin-grid>
+                </div>
+
+                <h2>Gruppensitzungen</h2>
+
+                <div hidden="{{!_isEmpty(groupSessions)}}">
+                    Keine Gruppensitzung vorhanden.
+                    <vaadin-button on-click="addGroupSession" theme="success">Gruppensitzung erfassen</vaadin-button>
+                </div>
+                <div hidden="{{_isEmpty(groupSessions)}}">
+                    <vaadin-grid theme="no-border" items="[[groupSessions]]">
+                        <vaadin-grid-column header="Typ" path="sessionType.name"></vaadin-grid-column>
+                        <vaadin-grid-sort-column header="Von / Bis">
+                            <template>
+                                [[item.startDate]] -<br />[[item.endDate]]
+                            </template>
+                        </vaadin-grid-sort-column>
+                        <vaadin-grid-column header="Patienten">
+                            <template>
+                                <dom-repeat items="[[item.patients]]">
+                                    <template>
+                                        <div>[[item.lastName]] [[item.firstName]]</div>
+                                    </template>
+                                </dom-repeat>
+                            </template>
+                        </vaadin-grid-column>
+                        <vaadin-grid-column header="Therapeuten">
+                            <template>
+                                <div><b>[[item.therapist.academicTitle.prefix]] [[item.therapist.lastName]] [[item.therapist.firstName]]</b></div>
+                                <dom-repeat items="[[item.therapists]]">
+                                    <template>
+                                        <div>[[item.academicTitle.prefix]] [[item.lastName]] [[item.firstName]]</div>
+                                    </template>
+                                </dom-repeat>
+                            </template>
+                        </vaadin-grid-column>
+                        <vaadin-grid-column>
+                            <template>
+                                <vaadin-button theme="success tertiary" on-click="showGroupSession">Anzeigen</vaadin-button>
+                            </template>
+                        </vaadin-grid-column>
+                    </vaadin-grid>
+                </div>
+
+                <h2>Notizen von Patienten</h2>
+                <dom-repeat items="[[patientNotes]]">
+                    <template>
+                        <div>
+                            <b>[[item.patient.lastName]] [[item.patient.firstName]] <small>am [[item.date]]</small></b><br />
+                            [[item.text]]<br /><br />
+                        </div>
+                    </template>
+                </dom-repeat>
+
+                <h2>Notizen von Therapeuten</h2>
+                <dom-repeat items="[[therapistNotes]]">
+                    <template>
+                        <div>
+                            <b>[[item.therapist.academicTitle.prefix]] [[item.therapist.lastName]] [[item.therapist.firstName]] <small>am [[item.date]]</small></b><br />
+                            [[item.text]]<br /><br />
+                        </div>
+                    </template>
+                </dom-repeat>
             </div>
-            <div hidden="{{_isEmpty(singleSessions)}}">
-                <vaadin-grid theme="no-border" items="[[singleSessions]]">
-                    <vaadin-grid-column header="Typ" path="sessionType.name"></vaadin-grid-column>
-                    <vaadin-grid-sort-column header="Von / Bis">
-                        <template>
-                            [[item.startDate]] -<br />[[item.endDate]]
-                        </template>
-                    </vaadin-grid-sort-column>
-                    <vaadin-grid-sort-column header="Patient">
-                        <template>
-                            [[item.patient.lastName]] [[item.patient.firstName]]
-                        </template>
-                    </vaadin-grid-sort-column>
-                    <vaadin-grid-sort-column header="Therapeut">
-                        <template>
-                            [[item.therapist.academicTitle.prefix]] [[item.therapist.lastName]] [[item.therapist.firstName]]
-                        </template>
-                    </vaadin-grid-sort-column>
-                    <vaadin-grid-column>
-                        <template>
-                            <vaadin-button theme="success tertiary" on-click="showSingleSession">Anzeigen</vaadin-button>
-                        </template>
-                    </vaadin-grid-column>
-                </vaadin-grid>
-            </div>
-
-            <h2>Gruppensitzungen</h2>
-
-            <div hidden="{{!_isEmpty(groupSessions)}}">
-                Keine Gruppensitzung vorhanden.
-                <vaadin-button on-click="addGroupSession" theme="success">Gruppensitzung erfassen</vaadin-button>
-            </div>
-            <div hidden="{{_isEmpty(groupSessions)}}">
-                <vaadin-grid theme="no-border" items="[[groupSessions]]">
-                    <vaadin-grid-column header="Typ" path="sessionType.name"></vaadin-grid-column>
-                    <vaadin-grid-sort-column header="Von / Bis">
-                        <template>
-                            [[item.startDate]] -<br />[[item.endDate]]
-                        </template>
-                    </vaadin-grid-sort-column>
-                    <vaadin-grid-column header="Patienten">
-                        <template>
-                            <dom-repeat items="[[item.patients]]">
-                                <template>
-                                    <div>[[item.lastName]] [[item.firstName]]</div>
-                                </template>
-                            </dom-repeat>
-                        </template>
-                    </vaadin-grid-column>
-                    <vaadin-grid-column header="Therapeuten">
-                        <template>
-                            <div><b>[[item.therapist.academicTitle.prefix]] [[item.therapist.lastName]] [[item.therapist.firstName]]</b></div>
-                            <dom-repeat items="[[item.therapists]]">
-                                <template>
-                                    <div>[[item.academicTitle.prefix]] [[item.lastName]] [[item.firstName]]</div>
-                                </template>
-                            </dom-repeat>
-                        </template>
-                    </vaadin-grid-column>
-                    <vaadin-grid-column>
-                        <template>
-                            <vaadin-button theme="success tertiary" on-click="showGroupSession">Anzeigen</vaadin-button>
-                        </template>
-                    </vaadin-grid-column>
-                </vaadin-grid>
-            </div>
-
-            <h2>Notizen von Patienten</h2>
-            <dom-repeat items="[[patientNotes]]">
-                <template>
-                    <div>
-                        <b>[[item.patient.lastName]] [[item.patient.firstName]] <small>am [[item.date]]</small></b><br />
-                        [[item.text]]<br /><br />
-                    </div>
-                </template>
-            </dom-repeat>
-
-            <h2>Notizen von Therapeuten</h2>
-            <dom-repeat items="[[therapistNotes]]">
-                <template>
-                    <div>
-                        <b>[[item.therapist.academicTitle.prefix]] [[item.therapist.lastName]] [[item.therapist.firstName]] <small>am [[item.date]]</small></b><br />
-                        [[item.text]]<br /><br />
-                    </div>
-                </template>
-            </dom-repeat>
         </div>
     </template>
 
@@ -140,6 +137,10 @@
 
             _isEmpty(array) {
                 return array.length == 0;
+            }
+
+            isNew() {
+                return this.therapy.id == 0;
             }
         }
         customElements.define(TherapyDetail.is, TherapyDetail);
