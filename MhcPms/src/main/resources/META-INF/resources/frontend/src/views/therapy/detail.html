@@ -8,6 +8,7 @@
 <link rel="import" href="../../../bower_components/vaadin-date-picker/vaadin-date-picker.html">
 <link rel="import" href="../../../bower_components/vaadin-form-layout/vaadin-form-layout.html">
 <link rel="import" href="../../../bower_components/vaadin-checkbox/vaadin-checkbox.html">
+<link rel="import" href="../../../bower_components/vaadin-combo-box/src/vaadin-combo-box.html">
 <!-- TODO Needed to show icons in Vaadin Designer preview mode for now, but can be removed soon -->
 <link rel="import" href="../../../bower_components/vaadin-lumo-styles/icons.html">
 
@@ -27,8 +28,8 @@
                     </vaadin-form-layout>
                 </div>
                 <div>
-                    <vaadin-select label="Patient" placeholder="Patient wählen" id="patient"></vaadin-select>
-                    <vaadin-select label="Therapeut" placeholder="Therapeut wählen" id="therapist"></vaadin-select>
+                    <vaadin-combo-box label="Patient" placeholder="Patient wählen" id="patient"></vaadin-combo-box>
+                    <vaadin-combo-box label="Therapeut" placeholder="Therapeut wählen" id="therapist"></vaadin-combo-box>
                 </div>
             </vaadin-horizontal-layout>
             <div hidden="{{isNew()}}">

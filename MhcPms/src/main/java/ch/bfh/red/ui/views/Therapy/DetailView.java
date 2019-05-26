@@ -12,6 +12,7 @@ import ch.bfh.red.ui.views.View;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.html.H2;
@@ -53,10 +54,10 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
     private Checkbox finished;
 
     @Id("patient")
-    private Select<Patient> patient;
+    private ComboBox<Patient> patient;
 
     @Id("therapist")
-    private Select<Therapist> therapist;
+    private ComboBox<Therapist> therapist;
 
     private ConfirmationDialog<Therapy> confirmationDialog = new ConfirmationDialog<>();
 
@@ -69,8 +70,8 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
 
         binder.forField(startDate).asRequired("Es muss ein Startdatum gesetzt sein.").bind(Therapy::getStartDateAsLocalDate, Therapy::setStartDateAsLocalDate);
         binder.forField(finished).bind(Therapy::isFinished, Therapy::setFinished);
-        binder.forField(patient).asRequired("Es muss ein Patient gesetzt sein.").bind(Therapy::getPatient, Therapy::setPatient);
-        binder.forField(therapist).asRequired("Es muss ein Therapeut gesetzt sein.").bind(Therapy::getTherapist, Therapy::setTherapist);
+//        binder.forField(patient).asRequired("Es muss ein Patient gesetzt sein.").bind(Therapy::getPatient, Therapy::setPatient);
+//        binder.forField(therapist).asRequired("Es muss ein Therapeut gesetzt sein.").bind(Therapy::getTherapist, Therapy::setTherapist);
     }
 
     @Override
@@ -180,6 +181,10 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
             header.setText("Therapie #" + therapy.getId());
         }
         getModel().setTherapy(therapy);
+        
+        therapist.setValue(therapy.getTherapist());
+        patient.setValue(therapy.getPatient());
+        
     }
 
     public void setSingleSessions(List<SingleSession> singleSessions) {
