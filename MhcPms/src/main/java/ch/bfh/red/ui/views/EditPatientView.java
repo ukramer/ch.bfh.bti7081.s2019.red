@@ -115,7 +115,7 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
     }
 
     @Override
-    public void addListener(EditPatientViewListener listener) {
+    public void setListener(EditPatientViewListener listener) {
         this.listener = listener;
     }
 

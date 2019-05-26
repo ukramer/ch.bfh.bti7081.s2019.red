@@ -99,7 +99,7 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
     }
 
     @Override
-    public void addListener(ListPatientViewListener listener) {
+    public void setListener(ListPatientViewListener listener) {
         this.listener = listener;
     }
 

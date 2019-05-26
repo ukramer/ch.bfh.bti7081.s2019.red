@@ -16,14 +16,12 @@ public class PatientPresenter implements EditPatientView.EditPatientViewListener
     public PatientPresenter(EditPatientView editPatientView, PatientService patientService) {
         this.editPatientView = editPatientView;
         this.patientService = patientService;
-        editPatientView.addListener(this);
         editPatientView.setListener(this);
     }
 
     public PatientPresenter(ListPatientView listPatientView, PatientService patientService) {
         this.listPatientView = listPatientView;
         this.patientService = patientService;
-        listPatientView.addListener(this);
         listPatientView.setListener(this);
     }
 
