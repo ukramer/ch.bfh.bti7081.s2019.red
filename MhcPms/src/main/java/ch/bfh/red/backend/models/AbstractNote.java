@@ -5,7 +5,17 @@ import org.hibernate.annotations.Cascade;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -23,8 +33,9 @@ public abstract class AbstractNote<T extends AbstractNote<T>> implements Compara
 	
 	@Column(nullable = false)
 	private String text;
-	
-	@ManyToOne
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
 	private Visibility visibility;
 
@@ -60,13 +71,21 @@ public abstract class AbstractNote<T extends AbstractNote<T>> implements Compara
 		this.visibility = visibility;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + ((text == null) ? 0 : text.hashCode());
-		result = prime * result + ((visibility == null) ? 0 : visibility.hashCode());
+		result = prime * result + visibility.ordinal();
 		return result;
 	}
 
