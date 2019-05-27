@@ -13,6 +13,7 @@ public class TherapistFactory extends AbstractFactory<Therapist> {
 
     private final Faker faker;
     private final AddressFactory addressFactory;
+    private Random random;
 
 
     public TherapistFactory() {
@@ -22,6 +23,7 @@ public class TherapistFactory extends AbstractFactory<Therapist> {
     public TherapistFactory(Locale locale) {
         this.faker = new Faker(locale);
         this.addressFactory = new AddressFactory(locale);
+        this.random = new Random();
 
     }
 
@@ -30,16 +32,13 @@ public class TherapistFactory extends AbstractFactory<Therapist> {
         Address address = addressFactory.create();
         String firstName = faker.name().firstName();
         String lastName = faker.name().lastName();
-        AcademicTitle title = getRandomAcademicTitle();
+
         String username = lastName.toLowerCase();
         String password = faker.regexify("[a-z1-9]{8}");
 
 
-        return new Therapist(username, password, title, firstName, lastName, address);
+        return new Therapist(username, password, AcademicTitle.values()[random.nextInt(AcademicTitle.values().length)],
+                firstName, lastName, address);
     }
 
-    public static AcademicTitle getRandomAcademicTitle() {
-        Random random = new Random();
-        return AcademicTitle.values()[random.nextInt(AcademicTitle.values().length)];
-    }
 }
