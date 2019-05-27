@@ -12,18 +12,20 @@ import java.util.concurrent.TimeUnit;
 
 public class SingleSessionFactory extends AbstractFactory<SingleSession>{
 
-    private Faker faker;
+    private final Faker faker;
     private final TherapistFactory therapistFactory;
     private final PatientFactory patientFactory;
+    private final Random random;
 
     public SingleSessionFactory(){
         this(new Locale("de-ch"));
     }
+
     public SingleSessionFactory(Locale locale){
         faker = new Faker();
         therapistFactory = new TherapistFactory(locale);
         patientFactory = new PatientFactory(locale);
-
+        random = new Random();
 
     }
     @Override
@@ -36,12 +38,9 @@ public class SingleSessionFactory extends AbstractFactory<SingleSession>{
         Date startDate = dateAndTime.past(1000, TimeUnit.DAYS);
         Date endDate = dateAndTime.past(365, TimeUnit.DAYS);
 
-        return new SingleSession(patient, therapist, startDate, endDate, getRandomSessionType());
+        return new SingleSession(patient, therapist, startDate, endDate, SessionType.values()[random.nextInt(SessionType.values().length)]);
 
     }
 
-    public static SessionType getRandomSessionType() {
-        Random random = new Random();
-        return SessionType.values()[random.nextInt(SessionType.values().length)];
-    }
+
 }
