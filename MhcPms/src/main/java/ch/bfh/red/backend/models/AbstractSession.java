@@ -18,7 +18,7 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 	private int id;
 	
 	@ManyToOne
-	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private Therapist therapist;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -30,7 +30,7 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 	private Date endDate;
 	
 	@ManyToOne
-	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private SessionType sessionType;
 
 	public AbstractSession() {}

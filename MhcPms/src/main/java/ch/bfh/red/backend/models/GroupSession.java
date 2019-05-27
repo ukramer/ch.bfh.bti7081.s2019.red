@@ -13,11 +13,11 @@ public class GroupSession extends AbstractSession<GroupSession> {
 	private static final long serialVersionUID = -383961605951531556L;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private List<Patient> patients;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
-	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private List<Therapist> therapists;
 
 	public GroupSession() {}

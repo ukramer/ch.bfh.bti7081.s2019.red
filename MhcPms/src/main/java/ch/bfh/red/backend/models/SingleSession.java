@@ -12,7 +12,7 @@ public class SingleSession extends AbstractSession<SingleSession> {
 	private static final long serialVersionUID = 8992909023275704028L;
 
 	@ManyToOne
-	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private Patient patient;
 	
 	public SingleSession() {}

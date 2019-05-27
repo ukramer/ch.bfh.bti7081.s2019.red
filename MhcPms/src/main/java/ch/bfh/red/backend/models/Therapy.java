@@ -25,34 +25,34 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 	private boolean finished;
 	
 	@ManyToOne
-	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private TherapyType therapyType;
 	
 	@ManyToOne
-	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private Patient patient;
 	
 	@ManyToOne
-	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private Therapist therapist;
 
 	@OneToMany
 	@JoinColumn(name="THERAPY_ID") // necessary to avoid join table
-	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private List<SingleSession> singleSessions;
 
 	@ManyToMany
-	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private List<GroupSession> groupSessions;
 
 	@OneToMany
 	@JoinColumn(name="THERAPY_ID") // necessary to avoid join table
-	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private List<PatientNote> patientNotes;
 
 	@OneToMany
 	@JoinColumn(name="THERAPY_ID") // necessary to avoid join table
-	@Cascade({org.hibernate.annotations.CascadeType.PERSIST})
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private List<TherapistNote> therapistNotes;
 	
 	public Therapy() {}

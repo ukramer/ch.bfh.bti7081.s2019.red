@@ -89,8 +89,8 @@ public class TherapyService implements IService<Therapy> {
     @Override
     @Transactional
     public Therapy update(Therapy therapy) {
-        therapy.setPatient(entityManager.getReference(Patient.class, therapy.getPatient().getId()));
-        therapy.setTherapist(entityManager.getReference(Therapist.class, therapy.getTherapist().getId()));
+        /*therapy.setPatient(entityManager.getReference(Patient.class, therapy.getPatient().getId()));
+        therapy.setTherapist(entityManager.getReference(Therapist.class, therapy.getTherapist().getId()));*/
         return getRepository().save(therapy);
     }
 }
