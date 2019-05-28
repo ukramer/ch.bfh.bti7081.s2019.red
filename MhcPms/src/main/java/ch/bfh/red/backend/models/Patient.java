@@ -69,7 +69,16 @@ public class Patient extends AbstractPerson<Patient> {
 
 	@Override
 	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
 		return super.equals(obj);
+	}
+
+	@Override
+	public String toString() {
+		return getLastName() + " " + getFirstName();
 	}
 	
 }

@@ -65,11 +65,11 @@ public class AcademicTitle implements Comparable<AcademicTitle>, Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+
 		AcademicTitle other = (AcademicTitle) obj;
-		if (prefix == null) {
-			if (other.prefix != null)
-				return false;
-		} else if (!prefix.equals(other.prefix))
+		if (prefix == null && other.prefix != null)
+			return false;
+		if (!prefix.equals(other.prefix))
 			return false;
 		return true;
 	}

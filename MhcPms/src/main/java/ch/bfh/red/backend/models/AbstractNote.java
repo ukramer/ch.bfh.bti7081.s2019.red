@@ -1,5 +1,7 @@
 package ch.bfh.red.backend.models;
 
+import org.hibernate.annotations.Cascade;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -34,6 +36,7 @@ public abstract class AbstractNote<T extends AbstractNote<T>> implements Compara
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private Visibility visibility;
 
 	public AbstractNote() {}

@@ -1,5 +1,8 @@
 package ch.bfh.red.backend.models;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -14,6 +17,7 @@ public class Therapist extends AbstractUser<Therapist> {
     private static final long serialVersionUID = 3328637872951953081L;
 
     @ManyToOne
+	@Cascade(CascadeType.MERGE) // @todo: remove
 	private AcademicTitle academicTitle;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -91,29 +95,22 @@ public class Therapist extends AbstractUser<Therapist> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+
 		Therapist other = (Therapist) obj;
-		if (academicTitle == null) {
-			if (other.academicTitle != null)
-				return false;
-		} else if (!academicTitle.equals(other.academicTitle))
+		if (academicTitle == null && other.academicTitle != null)
+			return false;
+		if (!academicTitle.equals(other.academicTitle))
 			return false;
 		return super.equals(obj);
-	}
-	
-	@Override
-	public int compareTo(Therapist o) {
-		return super.compareTo(o);
 	}
 
 	@Override
 	public String toString() {
-		return "Therapist [academicTitle=" + academicTitle +", " +super.toString() +"]";
+		return (academicTitle != null ? academicTitle.getPrefix() + " " : "") + getLastName() + " " + getFirstName();
 	}
 	
 }

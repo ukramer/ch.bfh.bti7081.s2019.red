@@ -24,6 +24,7 @@ public abstract class AbstractPerson<T extends AbstractPerson<T>> implements Com
 	private String lastName;
 	
 	@OneToOne
+	@Cascade(CascadeType.MERGE)
 	private Address address;
 
 	public AbstractPerson() {}
@@ -78,27 +79,21 @@ public abstract class AbstractPerson<T extends AbstractPerson<T>> implements Com
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
 		if (getClass() != obj.getClass())
 			return false;
+
 		AbstractPerson<?> other = (AbstractPerson<?>) obj;
-		if (address == null) {
-			if (other.address != null)
-				return false;
-		} else if (!address.equals(other.address))
+		if (address == null && other.address != null)
 			return false;
-		if (firstName == null) {
-			if (other.firstName != null)
-				return false;
-		} else if (!firstName.equals(other.firstName))
+		if (!address.equals(other.address))
 			return false;
-		if (lastName == null) {
-			if (other.lastName != null)
-				return false;
-		} else if (!lastName.equals(other.lastName))
+		if (firstName == null && other.firstName != null)
+			return false;
+		if (!firstName.equals(other.firstName))
+			return false;
+		if (lastName == null && other.lastName != null)
+			return false;
+		if (!lastName.equals(other.lastName))
 			return false;
 		return true;
 	}
