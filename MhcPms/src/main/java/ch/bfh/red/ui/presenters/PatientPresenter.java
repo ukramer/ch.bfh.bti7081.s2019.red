@@ -26,7 +26,6 @@ public class PatientPresenter implements EditPatientView.EditPatientViewListener
 
     @Override
     public void searchPatients(PatientSearchBean patientSearchBean) {
-        System.out.println(patientSearchBean.toString());
         listPatientView.setPatientList(patientService.findByPatientSearchBean(patientSearchBean));
     }
 

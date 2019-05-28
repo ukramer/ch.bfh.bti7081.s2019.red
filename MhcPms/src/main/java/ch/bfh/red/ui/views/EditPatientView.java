@@ -6,6 +6,7 @@ import ch.bfh.red.backend.services.PatientService;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
 import ch.bfh.red.ui.encoders.LocalDateToStringEncoder;
 import ch.bfh.red.ui.presenters.PatientPresenter;
+import ch.bfh.red.ui.views.Therapy.DetailView;
 import com.vaadin.flow.component.EventData;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
@@ -144,7 +145,7 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
 
     @EventHandler
     public void editTherapy(@EventData("event.model.item.id") int id) {
-        System.out.println("edit therapy with id: " + id);
+        UI.getCurrent().navigate(DetailView.class, id);
     }
 
     @EventHandler
