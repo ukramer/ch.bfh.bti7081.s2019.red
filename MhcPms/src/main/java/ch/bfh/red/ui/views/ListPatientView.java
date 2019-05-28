@@ -2,11 +2,7 @@ package ch.bfh.red.ui.views;
 
 import ch.bfh.red.MainLayout;
 import ch.bfh.red.backend.models.Patient;
-import ch.bfh.red.backend.models.Therapy;
-import ch.bfh.red.backend.services.PatientService;
-import ch.bfh.red.backend.services.SingleSessionService;
-import ch.bfh.red.backend.services.TherapistService;
-import ch.bfh.red.backend.services.TherapyService;
+import ch.bfh.red.backend.services.*;
 import ch.bfh.red.ui.components.ConfirmationDialog;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
 import ch.bfh.red.ui.presenters.PatientPresenter;
@@ -28,7 +24,6 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.templatemodel.Encode;
 import com.vaadin.flow.templatemodel.Include;
 import com.vaadin.flow.templatemodel.TemplateModel;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,7 +37,6 @@ import java.util.List;
 @UIScope
 public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatientModel> implements View<ListPatientView.ListPatientViewListener>, BeforeEnterObserver {
     private ListPatientViewListener listener;
-    private PatientPresenter patientPresenter;
     private Binder<PatientSearchBean> binder = new Binder<>(PatientSearchBean.class);
     private ConfirmationDialog<Integer> confirmationDialog = new ConfirmationDialog<>();
 
@@ -67,15 +61,16 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
     @Id("header")
     private H2 header;
 
+    ListPatientView(@Autowired PatientService patientService) {
+        new PatientPresenter(this, patientService);
+        header.setText("Patienten");
+        initBinder();
+    }
+
     public interface ListPatientViewListener {
         void searchPatients(PatientSearchBean patientSearchBean);
 
         void deletePatient(int id);
-    }
-
-    @Override
-    public void beforeEnter(BeforeEnterEvent event){
-        System.out.println("before enter");
     }
 
     public interface ListPatientModel extends TemplateModel {
@@ -84,6 +79,49 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
         void setPatients(List<Patient> patienten);
 
         List<Patient> getPatients();
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        resetView();
+    }
+
+    @Override
+    public void setListener(ListPatientViewListener listener) {
+        this.listener = listener;
+    }
+
+    public void setPatientList(List<Patient> patientList) {
+        getModel().setPatients(patientList);
+    }
+
+    @EventHandler
+    public void edit(@ModelItem Patient patient) {
+        UI.getCurrent().navigate(EditPatientView.class, patient.getId());
+    }
+
+    @EventHandler
+    public void delete(@EventData("event.model.item.id") int id) {
+        confirmationDialog.open(
+                "Patient wirklich löschen?",
+                "Möchten Sie den Patient wirklich löschen?", "", "Löschen",
+                true, id, this::confirmDelete);
+    }
+
+    public void confirmDelete(int id) {
+        listener.deletePatient(id);
+        Notification.show("Patient konnte erfolgreich gelöscht werden!");
+        listener.searchPatients(binder.getBean());
+    }
+
+    @EventHandler
+    public void search() {
+        listener.searchPatients(binder.getBean());
+    }
+
+    @EventHandler
+    public void addPatient() {
+        UI.getCurrent().navigate(EditPatientView.class);
     }
 
     private void initBinder() {
@@ -113,50 +151,8 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
 
     }
 
-    @Override
-    public void setListener(ListPatientViewListener listener) {
-        this.listener = listener;
-    }
-
-    ListPatientView(@Autowired PatientService patientService, @Autowired TherapyService therapyService, @Autowired SingleSessionService singleSessionService, @Autowired TherapistService therapistService) {
+    private void resetView() {
         setPatientList(new ArrayList<>());
-        this.patientPresenter = new PatientPresenter(this, patientService);
-        patientPresenter.addMockData(therapyService, singleSessionService, therapistService); // TODO: entfernen
-        header.setText("Patienten");
         binder.setBean(new PatientSearchBean());
-        initBinder();
-    }
-
-    public void setPatientList(List<Patient> patientList) {
-        getModel().setPatients(patientList);
-    }
-
-    @EventHandler
-    public void edit(@ModelItem Patient patient) {
-        UI.getCurrent().navigate(EditPatientView.class, patient.getId());
-    }
-
-    @EventHandler
-    public void delete(@EventData("event.model.item.id") int id) {
-        confirmationDialog.open(
-                "Patient wirklich löschen?",
-                "Möchten Sie den Patient wirklich löschen?", "", "Löschen",
-                true, id, this::confirmDelete);
-    }
-
-    public void confirmDelete(int id){
-        listener.deletePatient(id);
-        Notification.show("Patient konnte erfolgreich gelöscht werden!");
-        listener.searchPatients(binder.getBean());
-    }
-
-    @EventHandler
-    public void search() {
-        listener.searchPatients(binder.getBean());
-    }
-
-    @EventHandler
-    public void addPatient() {
-        UI.getCurrent().navigate(EditPatientView.class);
     }
 }

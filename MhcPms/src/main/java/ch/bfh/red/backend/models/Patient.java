@@ -3,73 +3,71 @@ package ch.bfh.red.backend.models;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
 public class Patient extends AbstractPerson<Patient> {
-	private static final long serialVersionUID = 7386032293356521767L;
+    private static final long serialVersionUID = 7386032293356521767L;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	private Collection<Therapist> therapists = new ArrayList<>();
-	
-	@OneToMany(mappedBy = "patient")
-	private Collection<Therapy> therapies = new ArrayList<>();
-	
-	@OneToMany(mappedBy = "patient")
-	private Collection<SingleSession> singleSessions = new ArrayList<>();
-	
-	@ManyToMany
-	private Collection<GroupSession> groupSessions = new ArrayList<>();
+    @ManyToMany
+    private Collection<Therapist> therapists = new ArrayList<>();
 
-	public Patient() {}
-	
-	public Patient(String firstName, String lastName, Address address) {
-		super(firstName, lastName, address);
-	}
-	
-	public Collection<Therapist> getTherapists() {
-		return therapists;
-	}
+    @OneToMany(mappedBy = "patient")
+    private Collection<Therapy> therapies = new ArrayList<>();
 
-	public void setTherapists(Collection<Therapist> therapists) {
-		this.therapists = therapists;
-	}
+    @OneToMany(mappedBy = "patient")
+    private Collection<SingleSession> singleSessions = new ArrayList<>();
 
-	public Collection<Therapy> getTherapies() {
-		return therapies;
-	}
+    @ManyToMany
+    private Collection<GroupSession> groupSessions = new ArrayList<>();
 
-	public void setTherapies(Collection<Therapy> therapies) {
-		this.therapies = therapies;
-	}
+    public Patient() {
+    }
 
-	public Collection<SingleSession> getSingleSessions() {
-		return singleSessions;
-	}
+    public Patient(String firstName, String lastName, Address address) {
+        super(firstName, lastName, address);
+    }
 
-	public void setSingleSessions(Collection<SingleSession> singleSessions) {
-		this.singleSessions = singleSessions;
-	}
+    public Collection<Therapist> getTherapists() {
+        return therapists;
+    }
 
-	public Collection<GroupSession> getGroupSessions() {
-		return groupSessions;
-	}
+    public void setTherapists(Collection<Therapist> therapists) {
+        this.therapists = therapists;
+    }
 
-	public void setGroupSessions(Collection<GroupSession> groupSessions) {
-		this.groupSessions = groupSessions;
-	}
+    public Collection<Therapy> getTherapies() {
+        return therapies;
+    }
 
-	@Override
-	public int hashCode() {
-		return super.hashCode();
-	}
+    public void setTherapies(Collection<Therapy> therapies) {
+        this.therapies = therapies;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		return super.equals(obj);
-	}
-	
+    public Collection<SingleSession> getSingleSessions() {
+        return singleSessions;
+    }
+
+    public void setSingleSessions(Collection<SingleSession> singleSessions) {
+        this.singleSessions = singleSessions;
+    }
+
+    public Collection<GroupSession> getGroupSessions() {
+        return groupSessions;
+    }
+
+    public void setGroupSessions(Collection<GroupSession> groupSessions) {
+        this.groupSessions = groupSessions;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
 }

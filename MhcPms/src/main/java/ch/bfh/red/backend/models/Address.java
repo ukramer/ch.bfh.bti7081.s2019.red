@@ -103,7 +103,7 @@ public class Address implements Comparable<Address>, Serializable {
 				return false;
 		} else if (!city.equals(other.city))
 			return false;
-		if (postalCode != other.postalCode)
+		if (postalCode.intValue() != other.postalCode.intValue())
 			return false;
 		if (street == null) {
 			if (other.street != null)

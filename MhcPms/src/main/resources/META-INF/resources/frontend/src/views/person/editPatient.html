@@ -40,7 +40,7 @@
             </div>
             <div hidden="{{_isEmpty(singleSessions)}}">
                 <h4>Einzelsitzungen</h4>
-                <vaadin-grid id="gridTherapies" items=[[singleSessions]] theme="no-border" column-reordering-allowed multi-sort>
+                <vaadin-grid id="gridSingleSessions" items=[[singleSessions]] theme="no-border" column-reordering-allowed multi-sort>
                     <vaadin-grid-column>
                         <template class="header">#</template>
                         <template>[[index]]</template>
@@ -54,6 +54,36 @@
                             <vaadin-button theme="tertiary" on-click="editSingleSession">Bearbeiten</vaadin-button>
                         </template>
                     </vaadin-grid-column>
+                </vaadin-grid>
+            </div>
+            <div hidden="{{_isEmpty(groupSessions)}}">
+                <h4>Gruppensitzungen</h4>
+                <vaadin-grid id="gridGroupSessions" items=[[groupSessions]] theme="no-border" column-reordering-allowed multi-sort>
+                    <vaadin-grid-column>
+                        <template class="header">#</template>
+                        <template>[[index]]</template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-sort-column header="Startdatum" path="startDateAsLocalDate"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Enddatum" path="endDateAsLocalDate"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Bezeichnung" path="sessionType.name"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Beschreibung" path="sessionType.description"></vaadin-grid-sort-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="tertiary" on-click="editGroupSession">Bearbeiten</vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                </vaadin-grid>
+            </div>
+            <div hidden="{{_isEmpty(therapists)}}">
+                <h4>Therapeuten</h4>
+                <vaadin-grid id="gridTherapists" items=[[therapists]] theme="no-border" column-reordering-allowed multi-sort>
+                    <vaadin-grid-column>
+                        <template class="header">#</template>
+                        <template>[[index]]</template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-sort-column header="Benutzername" path="username"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Vorname" path="firstName"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Nachname" path="lastName"></vaadin-grid-sort-column>
                 </vaadin-grid>
             </div>
         </div>

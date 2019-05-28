@@ -1,5 +1,6 @@
 package ch.bfh.red.backend.services;
 
+import ch.bfh.red.backend.models.GroupSession;
 import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
