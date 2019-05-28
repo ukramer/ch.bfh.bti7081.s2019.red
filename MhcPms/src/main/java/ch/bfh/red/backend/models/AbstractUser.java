@@ -50,17 +50,15 @@ public abstract class AbstractUser<T extends AbstractUser<T>> extends AbstractPe
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
-			return false;
 		if (getClass() != obj.getClass())
 			return false;
+
 		AbstractUser<?> other = (AbstractUser<?>) obj;
-		if (username == null) {
-			if (other.username != null)
-				return false;
-		} else if (!username.equals(other.username))
+		if (username == null && other.username != null)
 			return false;
-		return true;
+		if (!username.equals(other.username))
+			return false;
+		return super.equals(obj);
 	}
 	
 	@Override

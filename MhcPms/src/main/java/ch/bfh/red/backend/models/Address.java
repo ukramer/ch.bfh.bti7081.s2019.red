@@ -97,23 +97,24 @@ public class Address implements Comparable<Address>, Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+
 		Address other = (Address) obj;
-		if (city == null) {
-			if (other.city != null)
-				return false;
-		} else if (!city.equals(other.city))
+		if (city == null && other.city != null)
 			return false;
+		if (!city.equals(other.city))
+			return false;
+
 		if (postalCode.intValue() != other.postalCode.intValue())
 			return false;
-		if (street == null) {
-			if (other.street != null)
-				return false;
-		} else if (!street.equals(other.street))
+
+		if (street == null && other.street != null)
 			return false;
-		if (streetNumber == null) {
-			if (other.streetNumber != null)
-				return false;
-		} else if (!streetNumber.equals(other.streetNumber))
+		if (!street.equals(other.street))
+			return false;
+
+		if (streetNumber == null && other.streetNumber != null)
+			return false;
+		if (!streetNumber.equals(other.streetNumber))
 			return false;
 		return true;
 	}

@@ -1,7 +1,10 @@
 package ch.bfh.red.backend.models;
 
-import java.util.Collection;
+import org.hibernate.annotations.Cascade;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -10,35 +13,43 @@ public class GroupSession extends AbstractSession<GroupSession> {
 	private static final long serialVersionUID = -383961605951531556L;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	private Collection<Patient> patients;
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
+	private List<Patient> patients;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
-	private Collection<Therapist> therapists;
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
+	private List<Therapist> therapists;
 
 	public GroupSession() {}
 	
-	public GroupSession(Collection<Patient> patients, 
-	                    Collection<Therapist> therapists,
-	                    Date startDate, 
-	                    Date endDate,
+	public GroupSession(List<Patient> patients, List<Therapist> therapists, Therapist leader, Date startDate, Date endDate,
 			SessionType sessionType) {
-		super(startDate, endDate, sessionType);
+		super(startDate, endDate, sessionType, leader);
 		this.patients = patients;
+		this.therapists = therapists;
 	}
 
-	public Collection<Patient> getPatients() {
+	public List<Patient> getPatients() {
 		return this.patients;
 	}
 
-	public void setPatients(Collection<Patient> patients) {
+	public void setPatients(List<Patient> patients) {
 		this.patients = patients;
 	}
 
-	public Collection<Therapist> getTherapists() {
-		return this.therapists;
+	public List<Therapist> getTherapists() {
+		List<Therapist> therapists = new ArrayList<>();
+		for (Therapist therapist : this.therapists) {
+			// iff therapist is the leader, don't want him in this List anymore
+			if (therapist.equals(this.getTherapist())) {
+				continue;
+			}
+			therapists.add(therapist);
+		}
+		return therapists;
 	}
 
-	public void setTherapists(Collection<Therapist> therapists) {
+	public void setTherapists(List<Therapist> therapists) {
 		this.therapists = therapists;
 	}	
 
