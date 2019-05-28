@@ -24,14 +24,14 @@ public class Address implements Comparable<Address>, Serializable {
 	private String streetNumber;
 	
 	@Column(nullable = false)
-	private int postalCode;
+	private Integer postalCode;
 	
 	@Column(nullable = false)
 	private String city;
 	
 	public Address() {}
 
-	public Address(String street, String streetNumber, int postalCode, String city) {
+	public Address(String street, String streetNumber, Integer postalCode, String city) {
 		this.street = street;
 		this.streetNumber = streetNumber;
 		this.postalCode = postalCode;
@@ -46,7 +46,7 @@ public class Address implements Comparable<Address>, Serializable {
 		return streetNumber;
 	}
 
-	public int getPostalCode() {
+	public Integer getPostalCode() {
 		return postalCode;
 	}
 
@@ -62,7 +62,7 @@ public class Address implements Comparable<Address>, Serializable {
 		this.streetNumber = streetNumber;
 	}
 
-	public void setPostalCode(int postalCode) {
+	public void setPostalCode(Integer postalCode) {
 		this.postalCode = postalCode;
 	}
 
@@ -104,7 +104,7 @@ public class Address implements Comparable<Address>, Serializable {
 		if (!city.equals(other.city))
 			return false;
 
-		if (postalCode != other.postalCode)
+		if (postalCode.intValue() != other.postalCode.intValue())
 			return false;
 
 		if (street == null && other.street != null)

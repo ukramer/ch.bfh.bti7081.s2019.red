@@ -3,6 +3,9 @@ package ch.bfh.red.backend.models;
 import java.io.Serializable;
 import org.hibernate.annotations.Cascade;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -20,7 +23,7 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 	@ManyToOne
 	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private Therapist therapist;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
 	private Date startDate;
@@ -40,6 +43,24 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 		this.endDate = endDate;
 		this.sessionType = sessionType;
 		this.therapist = therapist;
+	}
+
+	public LocalDate getStartDateAsLocalDate() {
+		Instant instant = getStartDate().toInstant();
+		return instant.atZone(ZoneId.systemDefault()).toLocalDate();
+	}
+
+	public void setStartDateAsLocalDate(LocalDate startDate) {
+		setStartDate(Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+	}
+
+	public LocalDate getEndDateAsLocalDate() {
+		Instant instant = getEndDate().toInstant();
+		return instant.atZone(ZoneId.systemDefault()).toLocalDate();
+	}
+
+	public void setEndDateAsLocalDate(LocalDate endDate) {
+		setEndDate(Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 	}
 
 	public Date getStartDate() {
