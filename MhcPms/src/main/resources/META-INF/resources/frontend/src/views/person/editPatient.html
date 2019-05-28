@@ -13,14 +13,79 @@
         <style include="lumo-color lumo-typography lumo-badge view-styles"></style>
         <div class="view-container">
             <h2 id="header"></h2>
-            <vaadin-text-field label="Vorname" value="{{patient.firstName::input}}"></vaadin-text-field>
-            <vaadin-text-field label="Nachname" value="{{patient.lastName::input}}"></vaadin-text-field><br/>
-            <vaadin-text-field label="Strasse" value="{{patient.address.street::input}}"></vaadin-text-field>
-            <vaadin-text-field label="Hausnummer" value="{{patient.address.streetNumber::input}}"></vaadin-text-field>
-            <vaadin-text-field label="PLZ" value="{{patient.address.postalCode::input}}"></vaadin-text-field>
-            <vaadin-text-field label="Stadt" value="{{patient.address.city::input}}"></vaadin-text-field>
+            <vaadin-text-field id="firstName" label="Vorname" value="{{patient.firstName::input}}"></vaadin-text-field>
+            <vaadin-text-field id="lastName" label="Nachname" value="{{patient.lastName::input}}"></vaadin-text-field><br/>
+            <vaadin-text-field id="street" label="Strasse" value="{{patient.address.street::input}}"></vaadin-text-field>
+            <vaadin-text-field id="streetNr" label="Hausnummer" value="{{patient.address.streetNumber::input}}"></vaadin-text-field>
+            <vaadin-text-field id="postalCode" label="PLZ" value="{{patient.address.postalCode::input}}"></vaadin-text-field>
+            <vaadin-text-field id="city" label="Stadt" value="{{patient.address.city::input}}"></vaadin-text-field>
             <br/><vaadin-button on-click="save">Speichern</vaadin-button>
             <vaadin-button on-click="cancel">Abbrechen</vaadin-button>
+            <div hidden="{{_isEmpty(therapies)}}">
+                <h4>Therapien</h4>
+                <vaadin-grid id="gridTherapies" items=[[therapies]] theme="no-border" column-reordering-allowed multi-sort>
+                    <vaadin-grid-column>
+                        <template class="header">#</template>
+                        <template>[[index]]</template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-sort-column header="Startdatum" path="startDateAsLocalDate"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Therapy Name" path="therapyType.name"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Therapy Beschreibung" path="therapyType.description"></vaadin-grid-sort-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="tertiary" on-click="editTherapy">Bearbeiten</vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                </vaadin-grid>
+            </div>
+            <div hidden="{{_isEmpty(singleSessions)}}">
+                <h4>Einzelsitzungen</h4>
+                <vaadin-grid id="gridSingleSessions" items=[[singleSessions]] theme="no-border" column-reordering-allowed multi-sort>
+                    <vaadin-grid-column>
+                        <template class="header">#</template>
+                        <template>[[index]]</template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-sort-column header="Startdatum" path="startDateAsLocalDate"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Enddatum" path="endDateAsLocalDate"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Bezeichnung" path="sessionType.name"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Beschreibung" path="sessionType.description"></vaadin-grid-sort-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="tertiary" on-click="editSingleSession">Bearbeiten</vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                </vaadin-grid>
+            </div>
+            <div hidden="{{_isEmpty(groupSessions)}}">
+                <h4>Gruppensitzungen</h4>
+                <vaadin-grid id="gridGroupSessions" items=[[groupSessions]] theme="no-border" column-reordering-allowed multi-sort>
+                    <vaadin-grid-column>
+                        <template class="header">#</template>
+                        <template>[[index]]</template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-sort-column header="Startdatum" path="startDateAsLocalDate"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Enddatum" path="endDateAsLocalDate"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Bezeichnung" path="sessionType.name"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Beschreibung" path="sessionType.description"></vaadin-grid-sort-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="tertiary" on-click="editGroupSession">Bearbeiten</vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                </vaadin-grid>
+            </div>
+            <div hidden="{{_isEmpty(therapists)}}">
+                <h4>Therapeuten</h4>
+                <vaadin-grid id="gridTherapists" items=[[therapists]] theme="no-border" column-reordering-allowed multi-sort>
+                    <vaadin-grid-column>
+                        <template class="header">#</template>
+                        <template>[[index]]</template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-sort-column header="Benutzername" path="username"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Vorname" path="firstName"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Nachname" path="lastName"></vaadin-grid-sort-column>
+                </vaadin-grid>
+            </div>
         </div>
     </template>
 

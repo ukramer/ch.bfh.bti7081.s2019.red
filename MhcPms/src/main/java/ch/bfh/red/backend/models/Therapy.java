@@ -6,10 +6,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
 import javax.persistence.*;
 
@@ -23,30 +20,40 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 	private int id;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date startDate;
+	private Date startDate = new Date();
 	
 	private boolean finished;
 	
 	@ManyToOne
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private TherapyType therapyType;
 	
 	@ManyToOne
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private Patient patient;
 	
 	@ManyToOne
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private Therapist therapist;
-	
+
+	@OneToMany
+	@JoinColumn(name="THERAPY_ID") // necessary to avoid join table
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
+	private List<SingleSession> singleSessions;
+
 	@ManyToMany
-	private Collection<SingleSession> singleSessions = new ArrayList<>();
-	
-	@ManyToMany
-	private Collection<GroupSession> groupSessions = new ArrayList<>();
-	
-	@ManyToMany
-	private Collection<PatientNote> patientNotes = new ArrayList<>();
-	
-	@ManyToMany
-	private Collection<TherapistNote> therapistNotes = new ArrayList<>();
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
+	private List<GroupSession> groupSessions;
+
+	@OneToMany
+	@JoinColumn(name="THERAPY_ID") // necessary to avoid join table
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
+	private List<PatientNote> patientNotes;
+
+	@OneToMany
+	@JoinColumn(name="THERAPY_ID") // necessary to avoid join table
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
+	private List<TherapistNote> therapistNotes;
 	
 	public Therapy() {}
 	
@@ -98,35 +105,35 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 		this.patient = patient;
 	}
 
-	public Collection<SingleSession> getSingleSessions() {
+	public List<SingleSession> getSingleSessions() {
 		return singleSessions;
 	}
 
-	public void setSingleSessions(Collection<SingleSession> singleSessions) {
+	public void setSingleSessions(List<SingleSession> singleSessions) {
 		this.singleSessions = singleSessions;
 	}
 
-	public Collection<GroupSession> getGroupSessions() {
+	public List<GroupSession> getGroupSessions() {
 		return groupSessions;
 	}
 
-	public void setGroupSessions(Collection<GroupSession> groupSessions) {
+	public void setGroupSessions(List<GroupSession> groupSessions) {
 		this.groupSessions = groupSessions;
 	}
 
-	public Collection<PatientNote> getPatientNotes() {
+	public List<PatientNote> getPatientNotes() {
 		return patientNotes;
 	}
 
-	public void setPatientNotes(Collection<PatientNote> patientNotes) {
+	public void setPatientNotes(List<PatientNote> patientNotes) {
 		this.patientNotes = patientNotes;
 	}
 
-	public Collection<TherapistNote> getTherapistNotes() {
+	public List<TherapistNote> getTherapistNotes() {
 		return therapistNotes;
 	}
 
-	public void setTherapistNotes(Collection<TherapistNote> therapistNotes) {
+	public void setTherapistNotes(List<TherapistNote> therapistNotes) {
 		this.therapistNotes = therapistNotes;
 	}
 
@@ -148,7 +155,7 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(patient, startDate, therapyType);
+		return Objects.hash(patient, therapist, startDate, therapyType);
 	}
 
 	@Override

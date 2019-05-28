@@ -24,14 +24,14 @@ public class Address implements Comparable<Address>, Serializable {
 	private String streetNumber;
 	
 	@Column(nullable = false)
-	private int postalCode;
+	private Integer postalCode;
 	
 	@Column(nullable = false)
 	private String city;
 	
 	public Address() {}
 
-	public Address(String street, String streetNumber, int postalCode, String city) {
+	public Address(String street, String streetNumber, Integer postalCode, String city) {
 		this.street = street;
 		this.streetNumber = streetNumber;
 		this.postalCode = postalCode;
@@ -46,7 +46,7 @@ public class Address implements Comparable<Address>, Serializable {
 		return streetNumber;
 	}
 
-	public int getPostalCode() {
+	public Integer getPostalCode() {
 		return postalCode;
 	}
 
@@ -62,7 +62,7 @@ public class Address implements Comparable<Address>, Serializable {
 		this.streetNumber = streetNumber;
 	}
 
-	public void setPostalCode(int postalCode) {
+	public void setPostalCode(Integer postalCode) {
 		this.postalCode = postalCode;
 	}
 
@@ -97,23 +97,24 @@ public class Address implements Comparable<Address>, Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+
 		Address other = (Address) obj;
-		if (city == null) {
-			if (other.city != null)
-				return false;
-		} else if (!city.equals(other.city))
+		if (city == null && other.city != null)
 			return false;
-		if (postalCode != other.postalCode)
+		if (!city.equals(other.city))
 			return false;
-		if (street == null) {
-			if (other.street != null)
-				return false;
-		} else if (!street.equals(other.street))
+
+		if (postalCode.intValue() != other.postalCode.intValue())
 			return false;
-		if (streetNumber == null) {
-			if (other.streetNumber != null)
-				return false;
-		} else if (!streetNumber.equals(other.streetNumber))
+
+		if (street == null && other.street != null)
+			return false;
+		if (!street.equals(other.street))
+			return false;
+
+		if (streetNumber == null && other.streetNumber != null)
+			return false;
+		if (!streetNumber.equals(other.streetNumber))
 			return false;
 		return true;
 	}
