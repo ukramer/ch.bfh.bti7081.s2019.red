@@ -7,26 +7,26 @@ import ch.bfh.red.backend.persistence.AddressPersistenceManager;
 
 public class AddressCrudTest extends CrudTest<Address> {
 
-	AddressFactory factory = new AddressFactory();
-	
-	@Override
-	protected Address createInstance() {
-		return factory.create();
-	}
+    AddressFactory factory = new AddressFactory();
 
-	@Override
-	protected Integer getId(Address instance) {
-		return instance.getId();
-	}
+    @Override
+    protected Address createInstance() {
+        return factory.create();
+    }
 
-	@Override
-	protected void setAnUpdateValue(Address instance) {
-		instance.setPostalCode(2198);
-	}
+    @Override
+    protected Integer getId(Address instance) {
+        return instance.getId();
+    }
 
-	@Override
-	protected AbstractPersistenceManager<Address> getPersistenceManager() {
-		return new AddressPersistenceManager(service);
-	}
-	
+    @Override
+    protected void setAnUpdateValue(Address instance) {
+        instance.setPostalCode(2198);
+    }
+
+    @Override
+    protected AbstractPersistenceManager<Address> getPersistenceManager() {
+        return new AddressPersistenceManager(service);
+    }
+
 }
