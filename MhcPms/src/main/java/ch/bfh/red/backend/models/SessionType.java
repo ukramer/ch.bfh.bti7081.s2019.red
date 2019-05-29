@@ -2,7 +2,8 @@ package ch.bfh.red.backend.models;
 
 public enum SessionType {
 	TALK("Talk"),
-	EXPOSITION("Exposition");
+	EXPOSITION("Exposition"),
+	DISCUSSION("Discussion");
 
 
 	private String code;

@@ -1,7 +1,8 @@
 package ch.bfh.red.test.tests.crud;
 
 import ch.bfh.red.backend.models.*;
-import ch.bfh.red.backend.persistence.PersistenceManager;
+import ch.bfh.red.backend.persistence.AbstractPersistenceManager;
+import ch.bfh.red.backend.persistence.ExpositionNotePersistenceManager;
 import ch.bfh.red.backend.services.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,9 +40,8 @@ public class ExpositionNoteCrudTest extends CrudTest<ExpositionNote> {
     }
 
 	@Override
-	protected PersistenceManager<ExpositionNote> getPersistenceManager() {
-		// TODO Auto-generated method stub
-		return null;
+	protected AbstractPersistenceManager<ExpositionNote> getPersistenceManager() {
+		return new ExpositionNotePersistenceManager(service);
 	}
 
 }

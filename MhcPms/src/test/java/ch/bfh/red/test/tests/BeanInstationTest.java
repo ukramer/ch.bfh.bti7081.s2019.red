@@ -8,15 +8,12 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         AddressBeanTest.class,
         PatientBeanTest.class,
-        AcademicTitleBeanTest.class,
         TherapistBeanTest.class,
         SingleSessionBeanTest.class,
         GroupSessionBeanTest.class,
         PatientNoteBeanTest.class,
         TherapistBeanTest.class,
         TherapyBeanTest.class,
-        TherapyTypeBeanTest.class,
-        SessionTypeBeanTest.class,
         ExpositionNoteBeanTest.class
 })
 public class BeanInstationTest {

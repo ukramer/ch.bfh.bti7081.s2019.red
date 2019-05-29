@@ -7,7 +7,7 @@ import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 
-import ch.bfh.red.backend.persistence.PersistenceManager;
+import ch.bfh.red.backend.persistence.AbstractPersistenceManager;
 import ch.bfh.red.backend.services.IService;
 import ch.bfh.red.test.tests.StartupTest;
 
@@ -32,7 +32,7 @@ public abstract class CrudTest<T> extends StartupTest {
     
     protected abstract void setAnUpdateValue(T instance);
     
-    protected abstract PersistenceManager<T> getPersistenceManager();
+    protected abstract AbstractPersistenceManager<T> getPersistenceManager();
     
     @Before
     public void before() {

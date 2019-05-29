@@ -8,7 +8,8 @@ import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.SessionType;
 import ch.bfh.red.backend.models.SingleSession;
 import ch.bfh.red.backend.models.Therapist;
-import ch.bfh.red.backend.persistence.PersistenceManager;
+import ch.bfh.red.backend.persistence.AbstractPersistenceManager;
+import ch.bfh.red.backend.persistence.SingleSessionPersistenceManager;
 import ch.bfh.red.backend.services.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,14 +18,6 @@ public class SingleSessionCrudTest extends CrudTest<SingleSession> {
 	// TODO remove
 	@Autowired
 	private IService<Therapist> therapistIService;
-
-	// TODO remove
-	@Autowired
-	private IService<SessionType> sessionTypeIService;
-
-	// TODO remove
-	@Autowired
-	private IService<AcademicTitle> academicTitleIService;
 
 	// TODO remove
 	@Autowired
@@ -45,14 +38,14 @@ public class SingleSessionCrudTest extends CrudTest<SingleSession> {
 		Patient patient = new Patient("Jürgen", "", address2);
 		patientIService.add(patient);
 
-		AcademicTitle title = new AcademicTitle("Dr.", "");
-		academicTitleIService.add(title);
+		AcademicTitle title = AcademicTitle.DOCTOR;
+
 
 		Therapist therapist = new Therapist("marle34", "1234", title, "Marlies", "Lotti", address);
 		therapistIService.add(therapist);
 
-		SessionType sessionType = new SessionType("SessionType", "");
-		sessionTypeIService.add(sessionType);
+		SessionType sessionType = SessionType.TALK;
+
 		return new SingleSession(patient, therapist, new Date(), new Date(), sessionType);
 	}
 
@@ -63,15 +56,13 @@ public class SingleSessionCrudTest extends CrudTest<SingleSession> {
 
 	@Override
 	protected void setAnUpdateValue(SingleSession instance) {
-		SessionType sessionType = new SessionType("Other", "");
-		sessionTypeIService.add(sessionType);
-		instance.setSessionType(sessionType);
+		SessionType type = SessionType.DISCUSSION;
+		instance.setSessionType(type);
 	}
 
 	@Override
-	protected PersistenceManager<SingleSession> getPersistenceManager() {
-		// TODO Auto-generated method stub
-		return null;
+	protected AbstractPersistenceManager<SingleSession> getPersistenceManager() {
+		return new SingleSessionPersistenceManager(service);
 	}
 	
 }

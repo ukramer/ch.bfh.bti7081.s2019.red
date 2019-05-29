@@ -48,7 +48,7 @@ public class EditSingleSessionView extends FormLayout {
 		Collection<SessionType> sessionTypes = createSessionTypes();
 		sessionTypeComboBox.setItems(sessionTypes);
 		sessionTypeComboBox
-				.setItemLabelGenerator(createItemLabelGenerator(type -> type.getName()));
+				.setItemLabelGenerator(createItemLabelGenerator(type -> type.getCode()));
 		addFormItem(sessionTypeComboBox, "Session type");
 		
 		DatePicker startDatePicker = new DatePicker();
@@ -80,8 +80,8 @@ public class EditSingleSessionView extends FormLayout {
 	
 	private Collection<SessionType> createSessionTypes() {
 		List<SessionType> sessionTypes = new ArrayList<>();
-		sessionTypes.add(new SessionType("Session", ""));
-		sessionTypes.add(new SessionType("Discusssion", ""));
+		sessionTypes.add(SessionType.DISCUSSION);
+		sessionTypes.add(SessionType.TALK);
 		return sessionTypes;
 	}
 	

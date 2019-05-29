@@ -2,7 +2,8 @@ package ch.bfh.red.test.tests.crud;
 
 import ch.bfh.red.backend.factories.AddressFactory;
 import ch.bfh.red.backend.models.Address;
-import ch.bfh.red.backend.persistence.PersistenceManager;
+import ch.bfh.red.backend.persistence.AbstractPersistenceManager;
+import ch.bfh.red.backend.persistence.AddressPersistenceManager;
 
 public class AddressCrudTest extends CrudTest<Address> {
 
@@ -24,9 +25,8 @@ public class AddressCrudTest extends CrudTest<Address> {
 	}
 
 	@Override
-	protected PersistenceManager<Address> getPersistenceManager() {
-		// TODO Auto-generated method stub
-		return null;
+	protected AbstractPersistenceManager<Address> getPersistenceManager() {
+		return new AddressPersistenceManager(service);
 	}
 	
 }

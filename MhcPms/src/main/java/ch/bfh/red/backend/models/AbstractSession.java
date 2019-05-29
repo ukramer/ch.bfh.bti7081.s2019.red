@@ -31,9 +31,9 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
 	private Date endDate;
-	
-	@ManyToOne
-	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private SessionType sessionType;
 
 	public AbstractSession() {}
