@@ -6,11 +6,7 @@ import org.hibernate.annotations.CascadeType;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
 public class Therapist extends AbstractUser<Therapist> {
@@ -106,7 +102,7 @@ public class Therapist extends AbstractUser<Therapist> {
 
 	@Override
 	public String toString() {
-		return (academicTitle != null ? academicTitle.getPrefix() + " " : "") + getLastName() + " " + getFirstName();
+		return (academicTitle != null ? academicTitle.getCode() + " " : "") + getLastName() + " " + getFirstName();
 	}
 	
 }
