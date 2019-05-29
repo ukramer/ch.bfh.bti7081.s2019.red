@@ -1,13 +1,29 @@
 package ch.bfh.red.backend.persistence;
 
 import ch.bfh.red.backend.models.Address;
+import ch.bfh.red.backend.services.AddressServiceImpl;
+import ch.bfh.red.backend.services.IService;
 
-public class AddressPersistenceManager implements PersistenceManager<Address> {
+import java.util.Collection;
 
-	@Override
-	public Address persist(Address model) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+public class AddressPersistenceManager extends AbstractPersistenceManager<Address> {
+
+    public AddressPersistenceManager() {
+        this.service = new AddressServiceImpl();
+    }
+
+
+    public AddressPersistenceManager(IService<Address> service) {
+        this.service = service;
+    }
+
+    @Override
+    public Address persist(Address model) {
+
+        service.add(model);
+        return service.getRepository().findById(model.getId()).get();
+
+    }
+
+
 }

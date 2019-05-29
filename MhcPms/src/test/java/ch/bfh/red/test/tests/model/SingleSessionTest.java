@@ -18,10 +18,7 @@ public class SingleSessionTest extends StartupTest {
     
     @Autowired
     private IService<Address> addressService;
-    
-    @Autowired
-    private IService<SessionType> sessionTypeService;
-    
+
     @Autowired
     private IService<Patient> patientService;
     
@@ -31,8 +28,7 @@ public class SingleSessionTest extends StartupTest {
     @Autowired
     private IService<SingleSession> singleSessionService;
     
-    @Autowired
-    private IService<AcademicTitle> academicTitleIService;
+
     
     @Test
     public void testSessionTypeMapping() {
@@ -43,14 +39,13 @@ public class SingleSessionTest extends StartupTest {
         patientService.add(patient);
         
         AcademicTitle title = AcademicTitle.DOCTOR;
-        academicTitleIService.add(title);
+
         
         Therapist therapist = new Therapist("marle34", "1234", title, "Marlies", "Lotti", address);
         therapistService.add(therapist);
-        
-        SessionType type1 = new SessionType("Talk", "-");
-        sessionTypeService.add(type1);
-        
+
+        SessionType type1 = SessionType.TALK;
+
         SingleSession session1 = new SingleSession(patient, therapist, new Date(),
                 new Date(), type1);
         singleSessionService.add(session1);

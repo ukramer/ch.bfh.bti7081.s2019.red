@@ -23,9 +23,9 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 	private Date startDate = new Date();
 	
 	private boolean finished;
-	
-	@ManyToOne
-	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private TherapyType therapyType;
 	
 	@ManyToOne
