@@ -13,7 +13,7 @@ public class MhcPmsApplication {
 
     public static void main(String[] args) {
     	start(args);
-        browse("http://localhost:8080");
+//        browse("http://localhost:8080");
     }
     
     public static void start(String[] args) {

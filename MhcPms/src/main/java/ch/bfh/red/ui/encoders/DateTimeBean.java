@@ -1,11 +1,14 @@
 package ch.bfh.red.ui.encoders;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class DateTimeBean implements Serializable {
+	
+	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	
 //	private int year;
 //	
@@ -29,6 +32,10 @@ public class DateTimeBean implements Serializable {
     	this.date = date;
     	this.time = time;
     }
+
+	public DateTimeBean(Date startDate) {
+		this.date = dateFormat.format(startDate);
+	}
 
 	public String getDate() {
 		return date;

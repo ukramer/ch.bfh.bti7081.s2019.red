@@ -16,13 +16,13 @@
 		<style include="lumo-color lumo-typography lumo-badge view-styles"></style>
 		<div class="view-container">
 			<h2 id="header"></h2>
-            <vaadin-text-field id="therapist" label="Therapeut" value="{{singleSession.therapist::input}}"></vaadin-text-field>
+            <vaadin-combo-box id="therapist" label="Therapeut" value="{{singleSession.therapist::input}}"></vaadin-combo-box>
             <br/>
-            <vaadin-text-field id="patient" label="Patient" value="{{singleSession.patient::input}}"></vaadin-text-field>
+            <vaadin-combo-box id="patient" label="Patient" value="{{singleSession.patient::input}}"></vaadin-combo-box>
             <br/>
-            <vaadin-text-field id="sessionType" label="Typ" value="{{singleSession.sessionType::input}}"></vaadin-text-field>
+            <vaadin-combo-box id="sessionType" label="Typ" value="{{singleSession.sessionType::input}}"></vaadin-combo-box>
             <br/>
-            <vaadin-date-picker id="startDateTime" label="Start Zeit" value="{{startDate.date}}"></vaadin-date-picker>
+            <vaadin-date-picker id="startDate" label="Start Zeit" value="{{startDate.date}}"></vaadin-date-picker>
 		</div>
 
 	</template>

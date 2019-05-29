@@ -16,19 +16,26 @@ public class DateToDateBeanEncoder implements ModelEncoder<DateTimeBean, String>
 	
 	@Override
 	public String encode(DateTimeBean modelValue) {
+		System.out.println("encode: " +modelValue);
+		
 		if (modelValue == null)
 			return null;
 		DateTimeBean bean = new DateTimeBean();
 		bean.setDate(dateFormat.format(modelValue));
 		bean.setTime(timeFormat.format(modelValue));
+		
+		System.out.println(bean.getDate());
 		return bean.getDate();
 	}
 
 	@Override
 	public DateTimeBean decode(String presentationValue) {
+		System.out.println("decode: " +presentationValue);
+		
 		if (presentationValue == null)
 			return null;
 
+		
 		return new DateTimeBean();
 //		return presentationValue.toDate();
 //		throw new UnsupportedOperationException();
