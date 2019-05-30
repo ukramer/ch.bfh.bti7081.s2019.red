@@ -84,7 +84,20 @@ public class EditSingleSessionView
 		SessionType sessionType = sessionTypes.iterator().next();
 		singleSession = new SingleSession(patient, therapist, new Date(), new Date(), sessionType);
 		
+		startDatePicker.addAttachListener(event -> {
+			System.out.println("attach");
+		});
 		
+		startDatePicker.addBlurListener(event -> {
+			System.out.println("blur");
+		});
+		
+//		final DateToDateBeanEncoder encoder;
+//		startDatePicker.addValueChangeListener(event -> {
+//			System.out.println("value changed");
+//			encoder.
+//			event.getValue()
+//		});
 		
 		this.patientComboBox.setDataProvider(DataProvider.ofCollection(patients));
 		this.therapistComboBox.setDataProvider(DataProvider.ofCollection(therapists));
@@ -111,14 +124,10 @@ public class EditSingleSessionView
 		binder.setBean(singleSession);
 //		getModel().setSingleSession(singleSession);
 		
-		DateToDateBeanEncoder converter = new DateToDateBeanEncoder();
-		
 		DateTimeBean dateTimeBean = new DateTimeBean(singleSession.getStartDate());
-		System.out.println(dateTimeBean.getDate());
-		System.out.println(dateTimeBean.getTime());
-		
 //		getModel().setStartDate(singleSession.getStartDate());
-		getModel().setStartDate(dateTimeBean);
+//		getModel().setStartDate(dateTimeBean);
+		
 //		getModel().setStartTime(dateTimeBean);
 	}
 	
@@ -177,16 +186,19 @@ public class EditSingleSessionView
 //		void setSingleSession(SingleSession singleSession);
 		
 		
-		
-		@Encode(value = DateToDateBeanEncoder.class, path = "startDate")
-//		@Include({"date"})
-		void setStartDate(DateTimeBean date);
-		
-//		@Encode(value = DateToDateBeanEncoder.class, path = "startDate")
-////		@Include({"time"})
-//		void setStartTime(DateTimeBean date);
 //		
-//		void setStartDate()
+//		@Encode(value = DateToDateBeanEncoder.class, path = "startDate")
+//		void setStartDate(DateTimeBean date);
+//		
+//		DateTimeBean getStartDate();
+//		
+//		@Encode(value = DateToDateBeanEncoder.class, path = "endDate")
+////		@Include({"time"})
+//		void setEndTime(DateTimeBean date);
+//		
+//		DateTimeBean getEndTime();
+////		
+////		void setStartDate()
 		
 	}
 	

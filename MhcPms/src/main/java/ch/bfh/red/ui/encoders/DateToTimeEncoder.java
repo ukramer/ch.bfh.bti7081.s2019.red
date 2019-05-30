@@ -6,7 +6,7 @@ import java.util.Date;
 
 import com.vaadin.flow.templatemodel.ModelEncoder;
 
-public class DateToTimeInHoursMinutesStringConverter implements ModelEncoder<Date, String>{
+public class DateToTimeEncoder implements ModelEncoder<Date, String>{
 	
 	public static final SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 
