@@ -10,6 +10,8 @@ public class DateTimeBean implements Serializable {
 	
 	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	
+	public static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+	
 //	private int year;
 //	
 //	private int month;
@@ -35,6 +37,7 @@ public class DateTimeBean implements Serializable {
 
 	public DateTimeBean(Date startDate) {
 		this.date = dateFormat.format(startDate);
+		this.time = timeFormat.format(startDate);
 	}
 
 	public String getDate() {

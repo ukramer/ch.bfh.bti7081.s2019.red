@@ -12,6 +12,7 @@ import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
+import com.vaadin.flow.component.timepicker.TimePicker;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.router.Route;
@@ -51,8 +52,11 @@ public class EditSingleSessionView
 	@Id("sessionType")
 	private ComboBox<SessionType> sessionTypeComboBox;
 	
-	@Id("startDate")
+	@Id("startDate.date")
 	private DatePicker startDatePicker;
+	
+	@Id("startDate.time")
+	private TimePicker startTimePicker;
 	
 	
 	private SingleSession singleSession;
@@ -111,10 +115,11 @@ public class EditSingleSessionView
 		
 		DateTimeBean dateTimeBean = new DateTimeBean(singleSession.getStartDate());
 		System.out.println(dateTimeBean.getDate());
-		
+		System.out.println(dateTimeBean.getTime());
 		
 //		getModel().setStartDate(singleSession.getStartDate());
 		getModel().setStartDate(dateTimeBean);
+		getModel().setStartTime(dateTimeBean);
 	}
 	
 	
@@ -176,6 +181,10 @@ public class EditSingleSessionView
 		@Encode(value = DateToDateBeanEncoder.class, path = "startDate")
 		@Include({"date"})
 		void setStartDate(DateTimeBean date);
+		
+		@Encode(value = DateToDateBeanEncoder.class, path = "startDate")
+		@Include({"time"})
+		void setStartTime(DateTimeBean date);
 //		
 //		void setStartDate()
 		

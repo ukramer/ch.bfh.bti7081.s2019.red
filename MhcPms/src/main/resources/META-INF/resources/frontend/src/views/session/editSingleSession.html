@@ -17,12 +17,11 @@
 		<div class="view-container">
 			<h2 id="header"></h2>
             <vaadin-combo-box id="therapist" label="Therapeut" value="{{singleSession.therapist::input}}"></vaadin-combo-box>
-            <br/>
             <vaadin-combo-box id="patient" label="Patient" value="{{singleSession.patient::input}}"></vaadin-combo-box>
-            <br/>
             <vaadin-combo-box id="sessionType" label="Typ" value="{{singleSession.sessionType::input}}"></vaadin-combo-box>
             <br/>
-            <vaadin-date-picker id="startDate" label="Start Zeit" value="{{startDate.date}}"></vaadin-date-picker>
+            <vaadin-date-picker id="startDate.date" label="Start Datum" value="{{startDate.date::input}}"></vaadin-date-picker>
+            <vaadin-time-picker id="startDate.time" label="Start Zeit" value="{{startDate.time::input}}"></vaadin-time-picker>
 		</div>
 
 	</template>
