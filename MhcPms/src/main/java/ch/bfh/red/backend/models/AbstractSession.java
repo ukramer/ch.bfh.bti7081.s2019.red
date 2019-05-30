@@ -45,20 +45,24 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 		this.therapist = therapist;
 	}
 
+	// TODO remove and use DateTimeUtil instead
 	public LocalDate getStartDateAsLocalDate() {
 		Instant instant = getStartDate().toInstant();
 		return instant.atZone(ZoneId.systemDefault()).toLocalDate();
 	}
 
+	// TODO remove and use DateTimeUtil instead
 	public void setStartDateAsLocalDate(LocalDate startDate) {
 		setStartDate(Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 	}
 
+	// TODO remove and use DateTimeUtil instead
 	public LocalDate getEndDateAsLocalDate() {
 		Instant instant = getEndDate().toInstant();
 		return instant.atZone(ZoneId.systemDefault()).toLocalDate();
 	}
 
+	// TODO remove and use DateTimeUtil instead
 	public void setEndDateAsLocalDate(LocalDate endDate) {
 		setEndDate(Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 	}
