@@ -119,7 +119,7 @@ public class EditSingleSessionView
 		
 //		getModel().setStartDate(singleSession.getStartDate());
 		getModel().setStartDate(dateTimeBean);
-		getModel().setStartTime(dateTimeBean);
+//		getModel().setStartTime(dateTimeBean);
 	}
 	
 	
@@ -179,12 +179,12 @@ public class EditSingleSessionView
 		
 		
 		@Encode(value = DateToDateBeanEncoder.class, path = "startDate")
-		@Include({"date"})
+//		@Include({"date"})
 		void setStartDate(DateTimeBean date);
 		
-		@Encode(value = DateToDateBeanEncoder.class, path = "startDate")
-		@Include({"time"})
-		void setStartTime(DateTimeBean date);
+//		@Encode(value = DateToDateBeanEncoder.class, path = "startDate")
+////		@Include({"time"})
+//		void setStartTime(DateTimeBean date);
 //		
 //		void setStartDate()
 		
