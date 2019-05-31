@@ -1,8 +1,5 @@
 package ch.bfh.red.backend.models;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 import java.io.Serializable;
 
 import javax.persistence.*;
@@ -23,8 +20,7 @@ public abstract class AbstractPerson<T extends AbstractPerson<T>> implements Com
 	@Column(nullable = false)
 	private String lastName;
 	
-	@OneToOne
-	@Cascade(CascadeType.MERGE)
+	@OneToOne(cascade = CascadeType.ALL)
 	private Address address;
 
 	public AbstractPerson() {}

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import ch.bfh.red.backend.models.Address;
 
-@Repository
+@Repository("addressRepository")
 public interface AddressRepository extends CrudRepository<Address, Integer> {
 
 }

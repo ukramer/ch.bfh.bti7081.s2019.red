@@ -3,13 +3,16 @@ package ch.bfh.red.backend.models;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Patient extends AbstractPerson<Patient> {
-    private static final long serialVersionUID = 7386032293356521767L;
+	private static final long serialVersionUID = -6431476383345860703L;
 
-    @ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
     private Collection<Therapist> therapists = new ArrayList<>();
 
     @OneToMany(mappedBy = "patient")
@@ -21,8 +24,7 @@ public class Patient extends AbstractPerson<Patient> {
     @ManyToMany
     private Collection<GroupSession> groupSessions = new ArrayList<>();
 
-    public Patient() {
-    }
+    public Patient() {}
 
     public Patient(String firstName, String lastName, Address address) {
         super(firstName, lastName, address);

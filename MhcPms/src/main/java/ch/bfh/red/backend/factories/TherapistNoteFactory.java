@@ -11,8 +11,6 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class TherapistNoteFactory {
-
-
     private final Faker faker;
     private final TherapistFactory therapistFactory;
     private final Random random;
@@ -28,10 +26,10 @@ public class TherapistNoteFactory {
     }
 
     public TherapistNote create(){
-
         Date date = faker.date().past(100, TimeUnit.DAYS);
         Therapist therapist = therapistFactory.create();
         String text = "This is a note by " + therapist.toString();
-        return new TherapistNote(therapist, date, text, Visibility.values()[random.nextInt(Visibility.values().length)]);
+        Visibility visibility = Visibility.values()[random.nextInt(Visibility.values().length)];
+        return new TherapistNote(therapist, date, text, visibility);
     }
 }

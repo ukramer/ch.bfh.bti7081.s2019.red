@@ -9,8 +9,6 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class PatientNoteFactory {
-
-
     private final Faker faker;
     private final PatientFactory patientFactory;
     private final Random random;
@@ -18,6 +16,7 @@ public class PatientNoteFactory {
     public PatientNoteFactory(){
         this(new Locale("de-ch"));
     }
+    
     public PatientNoteFactory(Locale locale){
         faker = new Faker(locale);
         patientFactory = new PatientFactory(locale);
@@ -25,10 +24,10 @@ public class PatientNoteFactory {
     }
 
     public PatientNote create(){
-
         Date date = faker.date().past(100, TimeUnit.DAYS);
         Patient patient = patientFactory.create();
         String text = "This is a note regarding " + patient.toString();
         return new PatientNote(patient, date, text, Visibility.values()[random.nextInt(Visibility.values().length)]);
     }
+    
 }

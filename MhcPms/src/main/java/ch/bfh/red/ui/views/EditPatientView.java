@@ -2,7 +2,6 @@ package ch.bfh.red.ui.views;
 
 import ch.bfh.red.MainLayout;
 import ch.bfh.red.backend.models.*;
-import ch.bfh.red.backend.services.PatientService;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
 import ch.bfh.red.ui.encoders.LocalDateToStringEncoder;
 import ch.bfh.red.ui.presenters.PatientPresenter;
@@ -63,8 +62,8 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
     @Id("city")
     private TextField city;
 
-    public EditPatientView(@Autowired PatientService patientService) {
-        new PatientPresenter(this, patientService);
+    public EditPatientView() {
+        new PatientPresenter(this);
         initBinder();
     }
 

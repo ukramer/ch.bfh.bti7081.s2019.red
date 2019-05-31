@@ -9,8 +9,6 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class ExpositionNoteFactory {
-
-
     private final Faker faker;
     private final PatientFactory patientFactory;
     private final Random random;
@@ -26,11 +24,11 @@ public class ExpositionNoteFactory {
     }
 
     public ExpositionNote create(){
-
         Date date = faker.date().past(100, TimeUnit.DAYS);
         Patient patient = patientFactory.create();
         String text = "This is an exposition note regarding " + patient.toString();
-        return new ExpositionNote(patient, date, text,
-                Visibility.values()[random.nextInt(Visibility.values().length)], random.nextInt(10));
+        Visibility visibility = Visibility.values()[random.nextInt(Visibility.values().length)]; 
+        return new ExpositionNote(patient, date, text, visibility, random.nextInt(10));
     }
+    
 }
