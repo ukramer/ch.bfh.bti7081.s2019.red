@@ -6,8 +6,7 @@ import ch.bfh.red.backend.models.Patient;
 public class PatientFactoryTest extends FactoryTest<Patient> {
 
 	public PatientFactoryTest() {
-		super();
-		this.factory= new PatientFactory();
+		super(new PatientFactory());
 	}
 	
 }

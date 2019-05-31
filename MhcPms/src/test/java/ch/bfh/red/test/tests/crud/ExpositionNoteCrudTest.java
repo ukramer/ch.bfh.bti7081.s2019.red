@@ -1,30 +1,25 @@
 package ch.bfh.red.test.tests.crud;
 
-import ch.bfh.red.backend.models.*;
-import ch.bfh.red.backend.persistence.AbstractPersistenceManager;
-import ch.bfh.red.backend.persistence.ExpositionNotePersistenceManager;
-import ch.bfh.red.backend.services.IService;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
+import ch.bfh.red.backend.models.Address;
+import ch.bfh.red.backend.models.ExpositionNote;
+import ch.bfh.red.backend.models.Patient;
+import ch.bfh.red.backend.models.Visibility;
+import ch.bfh.red.backend.services.ExpositionNoteService;
+import ch.bfh.red.backend.services.IService;
 
 public class ExpositionNoteCrudTest extends CrudTest<ExpositionNote> {
 
-	// TODO remove
-    @Autowired
-    private IService<Address> addressIService;
-    
-    // TODO remove
-    @Autowired
-    private IService<Patient> patientIService;
-
+	@Autowired
+	private ExpositionNoteService service;
+	
     @Override
     protected ExpositionNote createInstance() {
         Address address = new Address("Amselstrasse", "16a", 4104, "Oberwil");
-        //addressIService.add(address);
-
         Patient patient = new Patient("Sophie", "", address);
-        patientIService.add(patient);
 
         return new ExpositionNote(patient, new Date(), "Went to bed without washing ritual", Visibility.PRIVATE, 8);
     }
@@ -40,8 +35,8 @@ public class ExpositionNoteCrudTest extends CrudTest<ExpositionNote> {
     }
 
 	@Override
-	protected AbstractPersistenceManager<ExpositionNote> getPersistenceManager() {
-		return new ExpositionNotePersistenceManager(service);
+	protected IService<ExpositionNote> getService() {
+		return service;
 	}
 
 }

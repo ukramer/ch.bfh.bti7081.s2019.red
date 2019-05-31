@@ -1,26 +1,22 @@
 package ch.bfh.red.test.tests.crud;
 
-import ch.bfh.red.backend.models.AcademicTitle;
-import ch.bfh.red.backend.models.Address;
-import ch.bfh.red.backend.models.Therapist;
-import ch.bfh.red.backend.persistence.*;
-import ch.bfh.red.backend.services.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import ch.bfh.red.backend.factories.TherapistFactory;
+import ch.bfh.red.backend.models.Therapist;
+import ch.bfh.red.backend.services.IService;
+import ch.bfh.red.backend.services.TherapistService;
+
 public class TherapistCrudTest extends CrudTest<Therapist> {
-
-	// TODO remove
+	
 	@Autowired
-	private IService<Address> addressIService;
-
-
+	private TherapistService service;
+	
+	private TherapistFactory factory = new TherapistFactory();
+	
 	@Override
 	protected Therapist createInstance() {
-		AcademicTitle title = AcademicTitle.DOCTOR;
-
-		Address address = new Address("Winkelstrasse", "A", 2387, "Bülach");
-		//addressIService.add(address);
-		return new Therapist("marle34", "1234", title, "Marlies", "Lotti", address);
+		return factory.create();
 	}
 
 	@Override
@@ -34,8 +30,8 @@ public class TherapistCrudTest extends CrudTest<Therapist> {
 	}
 
 	@Override
-	protected AbstractPersistenceManager<Therapist> getPersistenceManager() {
-		return new TherapistPersistenceManager(service);
+	protected IService<Therapist> getService() {
+		return service;
 	}
 	
 }

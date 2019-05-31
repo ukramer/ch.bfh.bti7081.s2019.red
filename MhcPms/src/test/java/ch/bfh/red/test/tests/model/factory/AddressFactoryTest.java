@@ -10,8 +10,7 @@ import ch.bfh.red.backend.models.Address;
 public class AddressFactoryTest extends FactoryTest<Address> {
 
 	public AddressFactoryTest() {
-		super();
-		this.factory = new AddressFactory();
+		super(new AddressFactory());
 	}
 	
 }

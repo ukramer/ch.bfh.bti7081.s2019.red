@@ -8,7 +8,7 @@ import org.junit.runners.Suite;;
 @Suite.SuiteClasses({
    StartupTest.class,
    BeanInstationTest.class,
-   DbCrudTest.class
+//   DbCrudTest.class
 })
 public class TestSuite {
 	

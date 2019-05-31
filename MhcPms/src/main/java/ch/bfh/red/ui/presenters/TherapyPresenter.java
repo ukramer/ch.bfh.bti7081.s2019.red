@@ -1,7 +1,7 @@
 package ch.bfh.red.ui.presenters;
 
 import ch.bfh.red.backend.models.*;
-import ch.bfh.red.backend.services.PatientService;
+//import ch.bfh.red.backend.services.PatientService;
 import ch.bfh.red.backend.services.TherapistService;
 import ch.bfh.red.backend.services.TherapyService;
 import ch.bfh.red.ui.views.Therapy.DetailView;
@@ -21,7 +21,8 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
     private DetailView detailView;
 
     private final TherapyService therapyService;
-    private final PatientService patientService;
+   
+    
     private final TherapistService therapistService;
 
     private List<Therapy> therapies = new ArrayList<>();
@@ -29,9 +30,8 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
     private Therapy loadedTherapy;
 
     @Autowired
-    public TherapyPresenter(TherapyService therapyService, PatientService patientService, TherapistService therapistService) {
+    public TherapyPresenter(TherapyService therapyService, TherapistService therapistService) {
         this.therapyService = therapyService;
-        this.patientService = patientService;
         this.therapistService = therapistService;
     }
 
@@ -48,8 +48,8 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
         this.detailView = detailView;
         detailView.setListener(this);
 
-        List<Patient> patients = patientService.getAll();
-        detailView.setPatients(patients);
+//        List<Patient> patients = patientService.getAll();
+//        detailView.setPatients(patients);
 
         List<Therapist> therapists = therapistService.getAll();
         detailView.setTherapists(therapists);
@@ -77,7 +77,7 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
         if (therapy.getStartDate() == null) {
             throw new Exception("Es muss ein Startdatum gesetzt sein. Die Therapie wurde nicht aktualisiert");
         }
-        getService().update(therapy);
+        getService().persist(therapy);
     }
 
     @Override

@@ -23,18 +23,18 @@ public class ExpositionNoteTest extends StartupTest {
     @Test
     public void testSessionTypeMapping() {
         Address address = new Address("Emmentalstrasse", "100", 3414, "Oberburg");
-        //addressService.add(address);
+        addressService.persist(address);
 
         Patient patient = new Patient("Anne", "Meier", address);
-        patientService.add(patient);
+        patientService.persist(patient);
 
         ExpositionNote exposition1 = new ExpositionNote(patient, new Date(), "Am Morgen Herd nicht überprüft",
                 Visibility.PRIVATE, 4);
-        expositionNoteService.add(exposition1);
+        expositionNoteService.persist(exposition1);
 
         ExpositionNote exposition2 = new ExpositionNote(patient, new Date(), "Ins Bett ohne Aufräumen",
                 Visibility.PUBLIC, 6);
-        expositionNoteService.add(exposition2);
+        expositionNoteService.persist(exposition2);
     }
 
 }

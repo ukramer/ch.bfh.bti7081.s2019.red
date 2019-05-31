@@ -11,11 +11,9 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class TherapyFactory extends AbstractFactory<Therapy> {
-
     private final Faker faker;
     private final TherapistFactory therapistFactory;
     private final PatientFactory patientFactory;
-    private final Random random;
 
     public TherapyFactory(){
         this(new Locale("de-ch"));
@@ -25,7 +23,6 @@ public class TherapyFactory extends AbstractFactory<Therapy> {
         faker = new Faker(locale);
         therapistFactory = new TherapistFactory(locale);
         patientFactory = new PatientFactory(locale);
-        random = new Random();
     }
 
     public Therapy create(){
@@ -33,6 +30,7 @@ public class TherapyFactory extends AbstractFactory<Therapy> {
         Date startDate =  faker.date().past(1000, TimeUnit.DAYS);
         TherapyType therapyType =  TherapyType.values()[random.nextInt(TherapyType.values().length)];
 
+        // TODO use new constructor
         Therapy therapy = new Therapy(startDate, therapyType);
         therapy.setPatient(patientFactory.create());
         therapy.setTherapist(therapistFactory.create());
