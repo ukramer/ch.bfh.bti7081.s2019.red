@@ -4,6 +4,7 @@ import ch.bfh.red.MainLayout;
 import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.Therapy;
 import ch.bfh.red.ui.components.ConfirmationDialog;
+import ch.bfh.red.ui.encoders.AcademicTitleToStringEncoder;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
 import ch.bfh.red.ui.presenters.TherapyPresenter;
@@ -153,8 +154,9 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
     }
 
     public interface TherapyModel extends TemplateModel {
-        @Include({"id", "startDate", "finished", "patient.firstName", "patient.lastName", "therapist.academicTitle.prefix", "therapist.firstName", "therapist.lastName"})
+        @Include({"id", "startDate", "finished", "patient.firstName", "patient.lastName", "therapist.academicTitle", "therapist.firstName", "therapist.lastName"})
         @Encode(value = IntegerToStringEncoder.class, path = "id")
+        @Encode(value = AcademicTitleToStringEncoder.class, path = "therapist.academicTitle")
         @Encode(value = DateToStringEncoder.class, path = "startDate")
         void setTherapies(List<Therapy> therapies);
 

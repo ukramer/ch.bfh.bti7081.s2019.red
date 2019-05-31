@@ -19,7 +19,7 @@ public class TherapistCrudTest extends CrudTest<Therapist> {
 		AcademicTitle title = AcademicTitle.DOCTOR;
 
 		Address address = new Address("Winkelstrasse", "A", 2387, "Bülach");
-		addressIService.add(address);
+		//addressIService.add(address);
 		return new Therapist("marle34", "1234", title, "Marlies", "Lotti", address);
 	}
 

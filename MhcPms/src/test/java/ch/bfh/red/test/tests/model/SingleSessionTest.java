@@ -33,15 +33,15 @@ public class SingleSessionTest extends StartupTest {
     @Test
     public void testSessionTypeMapping() {
         Address address = new Address("OneToOne funktioniert auch Strasse", ":)", 1234, "Bern");
-        addressService.add(address);
+        //addressService.add(address);
         
         Patient patient = new Patient("Ueli", "Kramer", address);
         patientService.add(patient);
         
         AcademicTitle title = AcademicTitle.DOCTOR;
 
-        
-        Therapist therapist = new Therapist("marle34", "1234", title, "Marlies", "Lotti", address);
+        Address address2 = new Address("Burgerstrasse", "34", 3400, "Burgdorf");
+        Therapist therapist = new Therapist("marle34", "1234", title, "Marlies", "Lotti", address2);
         therapistService.add(therapist);
 
         SessionType type1 = SessionType.TALK;

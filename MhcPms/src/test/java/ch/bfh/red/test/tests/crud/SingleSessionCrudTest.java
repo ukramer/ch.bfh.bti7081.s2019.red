@@ -30,10 +30,10 @@ public class SingleSessionCrudTest extends CrudTest<SingleSession> {
 	@Override
 	protected SingleSession createInstance() {
 		Address address = new Address("Winkelstrasse", "A", 2387, "Bülach");
-		addressIService.add(address);
+		//addressIService.add(address);
 
 		Address address2 = new Address("Langstrasse", "12k", 7777, "Burgdorf");
-		addressIService.add(address2);
+		//addressIService.add(address2);
 
 		Patient patient = new Patient("Jürgen", "", address2);
 		patientIService.add(patient);

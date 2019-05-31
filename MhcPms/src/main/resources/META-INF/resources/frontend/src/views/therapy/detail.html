@@ -42,7 +42,7 @@
                 </div>
                 <div hidden="{{_isEmpty(singleSessions)}}">
                     <vaadin-grid theme="no-border" items="[[singleSessions]]">
-                        <vaadin-grid-column header="Typ" path="sessionType.name"></vaadin-grid-column>
+                        <vaadin-grid-column header="Typ" path="sessionType"></vaadin-grid-column>
                         <vaadin-grid-sort-column header="Von / Bis">
                             <template>
                                 [[item.startDate]] -<br />[[item.endDate]]
@@ -55,7 +55,7 @@
                         </vaadin-grid-sort-column>
                         <vaadin-grid-sort-column header="Therapeut">
                             <template>
-                                [[item.therapist.academicTitle.prefix]] [[item.therapist.lastName]] [[item.therapist.firstName]]
+                                [[item.therapist.academicTitle]] [[item.therapist.lastName]] [[item.therapist.firstName]]
                             </template>
                         </vaadin-grid-sort-column>
                         <vaadin-grid-column>
@@ -74,7 +74,7 @@
                 </div>
                 <div hidden="{{_isEmpty(groupSessions)}}">
                     <vaadin-grid theme="no-border" items="[[groupSessions]]">
-                        <vaadin-grid-column header="Typ" path="sessionType.name"></vaadin-grid-column>
+                        <vaadin-grid-column header="Typ" path="sessionType"></vaadin-grid-column>
                         <vaadin-grid-sort-column header="Von / Bis">
                             <template>
                                 [[item.startDate]] -<br />[[item.endDate]]
@@ -91,10 +91,10 @@
                         </vaadin-grid-column>
                         <vaadin-grid-column header="Therapeuten">
                             <template>
-                                <div><b>[[item.therapist.academicTitle.prefix]] [[item.therapist.lastName]] [[item.therapist.firstName]]</b></div>
+                                <div><b>[[item.therapist.academicTitle]] [[item.therapist.lastName]] [[item.therapist.firstName]]</b></div>
                                 <dom-repeat items="[[item.therapists]]">
                                     <template>
-                                        <div>[[item.academicTitle.prefix]] [[item.lastName]] [[item.firstName]]</div>
+                                        <div>[[item.academicTitle]] [[item.lastName]] [[item.firstName]]</div>
                                     </template>
                                 </dom-repeat>
                             </template>
@@ -121,7 +121,7 @@
                 <dom-repeat items="[[therapistNotes]]">
                     <template>
                         <div>
-                            <b>[[item.therapist.academicTitle.prefix]] [[item.therapist.lastName]] [[item.therapist.firstName]] <small>am [[item.date]]</small></b><br />
+                            <b>[[item.therapist.academicTitle]] [[item.therapist.lastName]] [[item.therapist.firstName]] <small>am [[item.date]]</small></b><br />
                             [[item.text]]<br /><br />
                         </div>
                     </template>

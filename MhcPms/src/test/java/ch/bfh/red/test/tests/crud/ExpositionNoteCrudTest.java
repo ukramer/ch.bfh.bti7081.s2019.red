@@ -21,7 +21,7 @@ public class ExpositionNoteCrudTest extends CrudTest<ExpositionNote> {
     @Override
     protected ExpositionNote createInstance() {
         Address address = new Address("Amselstrasse", "16a", 4104, "Oberwil");
-        addressIService.add(address);
+        //addressIService.add(address);
 
         Patient patient = new Patient("Sophie", "", address);
         patientIService.add(patient);

@@ -23,7 +23,7 @@ public class ExpositionNoteTest extends StartupTest {
     @Test
     public void testSessionTypeMapping() {
         Address address = new Address("Emmentalstrasse", "100", 3414, "Oberburg");
-        addressService.add(address);
+        //addressService.add(address);
 
         Patient patient = new Patient("Anne", "Meier", address);
         patientService.add(patient);
