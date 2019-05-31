@@ -80,8 +80,7 @@ public class Therapist extends AbstractUser<Therapist> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((academicTitle == null) ? 0 : academicTitle.hashCode());
+		result = prime*result + ((academicTitle == null) ? 0 : academicTitle.ordinal());
 		return result;
 	}
 
