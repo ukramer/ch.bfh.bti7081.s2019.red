@@ -13,6 +13,7 @@ public class StartupTest {
 
     @Test
     public void startupTest() {
+//    	TestApplication.main(new String[]{});
     }
 
 }

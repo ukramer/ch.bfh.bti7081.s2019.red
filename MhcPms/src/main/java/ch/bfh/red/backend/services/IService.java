@@ -1,43 +1,39 @@
 package ch.bfh.red.backend.services;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
-
-import org.springframework.data.repository.CrudRepository;
 
 public interface IService<T> {
 	
-	CrudRepository<T, Integer> getRepository();
+	List<T> getAll();
 	
-	default List<T> getAll() {
-		List<T> list = new ArrayList<>();
-		getRepository().findAll().iterator().forEachRemaining(list::add);
-		return list;
-	}
+	T getById(Integer id);
 	
-	default T getById(Integer id) {
-		T obj = getRepository().findById(id).get();
-		return obj;
-	}
-	
-	default T update(T t) {
-		return getRepository().save(t);
-	}
-	
-	default void delete(Integer id) {
-		delete(getById(id));
-	}
+	void delete(Integer id);
 
-	default void delete(T t) {
-		getRepository().delete(t);
-	}
+	void delete(T t);
 	
-	default T add(T t) {
-		return getRepository().save(t);
-	}
+	T persist(T t);
 	
-	default Boolean existById(Integer id) {
-		return getRepository().existsById(id);
-	}
+	Boolean existById(Integer id);
 
+	default Collection<T> persist(Collection<T> models) {
+		if (models == null)
+			return Collections.emptyList();
+		for (T model: models)
+			if (model == null)
+				throw new NullPointerException("At least one item in collection is null");
+		
+        Collection<T> persistedModels = new ArrayList<>();
+        Iterator<T> iterator = models.iterator();
+        while (iterator.hasNext()) {
+            persistedModels.add(persist(iterator.next()));
+        }
+
+        return persistedModels;
+    }
+	
 }

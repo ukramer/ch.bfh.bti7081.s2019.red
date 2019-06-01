@@ -1,9 +1,10 @@
 package ch.bfh.red.backend.repositories;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
 import ch.bfh.red.backend.models.ExpositionNote;
 
-
-public interface ExpositionNoteRepository  extends CrudRepository<ExpositionNote, Integer> {
-	
+@Repository("expositionNoteRepository")
+public interface ExpositionNoteRepository  extends CrudRepository<ExpositionNote, Integer> {	
 
 }

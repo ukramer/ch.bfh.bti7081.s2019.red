@@ -1,28 +1,22 @@
 package ch.bfh.red.test.tests.crud;
 
-import ch.bfh.red.backend.models.*;
-import ch.bfh.red.backend.services.IService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
+import ch.bfh.red.backend.factories.ExpositionNoteFactory;
+import ch.bfh.red.backend.models.ExpositionNote;
+import ch.bfh.red.backend.services.ExpositionNoteService;
+import ch.bfh.red.backend.services.IService;
 
 public class ExpositionNoteCrudTest extends CrudTest<ExpositionNote> {
 
-    @Autowired
-    private IService<Address> addressIService;
-    
-    @Autowired
-    private IService<Patient> patientIService;
-
+	@Autowired
+	private ExpositionNoteService service;
+	
+	private ExpositionNoteFactory factory = new ExpositionNoteFactory();
+	
     @Override
     protected ExpositionNote createInstance() {
-        Address address = new Address("Amselstrasse", "16a", 4104, "Oberwil");
-        addressIService.add(address);
-
-        Patient patient = new Patient("Sophie", "", address);
-        patientIService.add(patient);
-
-        return new ExpositionNote(patient, new Date(), "Went to bed without washing ritual", Visibility.PRIVATE, 8);
+    	return factory.create();
     }
 
     @Override
@@ -34,6 +28,11 @@ public class ExpositionNoteCrudTest extends CrudTest<ExpositionNote> {
     protected void setAnUpdateValue(ExpositionNote instance) {
         instance.setDegreeOfExposure(9);
     }
+
+	@Override
+	protected IService<ExpositionNote> getService() {
+		return service;
+	}
 
 }
 

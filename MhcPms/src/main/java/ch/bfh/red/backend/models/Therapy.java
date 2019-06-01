@@ -12,7 +12,7 @@ import javax.persistence.*;
 
 @Entity
 public class Therapy implements Comparable<Therapy>, Serializable {
-	private static final long serialVersionUID = 3832801113638175718L;
+	private static final long serialVersionUID = 6323530446991755194L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,9 +23,9 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 	private Date startDate = new Date();
 	
 	private boolean finished;
-	
-	@ManyToOne
-	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private TherapyType therapyType;
 	
 	@ManyToOne
@@ -183,6 +183,13 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 		i = startDate.compareTo(startDate);
 		if (i != 0) return i;
 		return therapyType.compareTo(o.therapyType);
+	}
+
+	@Override
+	public String toString() {
+		return "Therapy [startDate=" + startDate + ", finished=" + finished
+				+ ", therapyType=" + therapyType + ", patient=" + patient + ", therapist="
+				+ therapist + "]";
 	}
 	
 }

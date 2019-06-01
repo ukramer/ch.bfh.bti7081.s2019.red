@@ -51,7 +51,7 @@ public class EditGroupSessionView extends FormLayout {
 		Collection<SessionType> sessionTypes = createSessionTypes();
 		sessionTypeComboBox.setItems(sessionTypes);
 		sessionTypeComboBox
-				.setItemLabelGenerator(createItemLabelGenerator(type -> type.getName()));
+				.setItemLabelGenerator(createItemLabelGenerator(type -> type.getCode()));
 		addFormItem(sessionTypeComboBox, "Session type");
 		
 		DatePicker startDatePicker = new DatePicker();
@@ -84,7 +84,7 @@ public class EditGroupSessionView extends FormLayout {
 	
 	private Grid<Therapist> createTherapistGrid() {
 		Grid<Therapist> grid = new Grid<>();
-		Column<Therapist> titleColumn = grid.addColumn(therapist -> therapist.getAcademicTitle().getPrefix());
+		Column<Therapist> titleColumn = grid.addColumn(therapist -> therapist.getAcademicTitle().getCode());
 		titleColumn.setHeader("Title");
 		Column<Therapist> lastNameColumn = grid.addColumn(therapist -> therapist.getLastName());
 		lastNameColumn.setHeader("Last name");
@@ -108,7 +108,7 @@ public class EditGroupSessionView extends FormLayout {
 	
 	private Collection<Therapist> createTherapists() {
 		List<Therapist> persons = new ArrayList<>();
-		AcademicTitle academicTitle = new AcademicTitle("Dr", "");
+		AcademicTitle academicTitle = AcademicTitle.DOCTOR;
 		Address address1 = new Address("Bahnhofstrasse", "2", 1234, "Zürich");
 		Address address2 = new Address("Langstrasse", "40", 1235, "Bern");
 		persons.add(new Therapist("hansiRu", "1234", academicTitle, "Reto", "Bachmann", address1));
@@ -127,8 +127,8 @@ public class EditGroupSessionView extends FormLayout {
 	
 	private Collection<SessionType> createSessionTypes() {
 		List<SessionType> sessionTypes = new ArrayList<>();
-		sessionTypes.add(new SessionType("Session", ""));
-		sessionTypes.add(new SessionType("Discussion", ""));
+		sessionTypes.add(SessionType.EXPOSITION);
+		sessionTypes.add(SessionType.TALK);
 		return sessionTypes;
 	}
 	
