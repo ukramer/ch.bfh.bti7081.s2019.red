@@ -1,16 +1,19 @@
 package ch.bfh.red.backend.models;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Therapist extends AbstractUser<Therapist> {
-    private static final long serialVersionUID = 3328637872951953081L;
+	private static final long serialVersionUID = 1857514061793757176L;
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)

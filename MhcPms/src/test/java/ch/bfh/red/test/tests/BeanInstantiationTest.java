@@ -6,7 +6,6 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        AddressBeanTest.class,
         PatientBeanTest.class,
         TherapistBeanTest.class,
         SingleSessionBeanTest.class,
@@ -16,6 +15,6 @@ import org.junit.runners.Suite;
         TherapyBeanTest.class,
         ExpositionNoteBeanTest.class
 })
-public class BeanInstationTest {
+public class BeanInstantiationTest {
 
 }

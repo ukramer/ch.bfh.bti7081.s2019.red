@@ -8,7 +8,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class PatientNoteFactory {
+public class PatientNoteFactory extends AbstractFactory<PatientNote> {
     private final Faker faker;
     private final PatientFactory patientFactory;
     private final Random random;
@@ -23,6 +23,7 @@ public class PatientNoteFactory {
         random = new Random();
     }
 
+    @Override
     public PatientNote create(){
         Date date = faker.date().past(100, TimeUnit.DAYS);
         Patient patient = patientFactory.create();

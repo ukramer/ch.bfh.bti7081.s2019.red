@@ -25,6 +25,7 @@ public class TherapyFactory extends AbstractFactory<Therapy> {
         patientFactory = new PatientFactory(locale);
     }
 
+    @Override
     public Therapy create(){
         Random random = new Random();
         Date startDate =  faker.date().past(1000, TimeUnit.DAYS);

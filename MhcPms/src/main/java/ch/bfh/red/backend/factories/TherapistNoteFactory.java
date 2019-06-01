@@ -10,7 +10,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class TherapistNoteFactory {
+public class TherapistNoteFactory extends AbstractFactory<TherapistNote> {
     private final Faker faker;
     private final TherapistFactory therapistFactory;
     private final Random random;
@@ -25,6 +25,7 @@ public class TherapistNoteFactory {
         random = new Random();
     }
 
+    @Override
     public TherapistNote create(){
         Date date = faker.date().past(100, TimeUnit.DAYS);
         Therapist therapist = therapistFactory.create();
@@ -32,4 +33,5 @@ public class TherapistNoteFactory {
         Visibility visibility = Visibility.values()[random.nextInt(Visibility.values().length)];
         return new TherapistNote(therapist, date, text, visibility);
     }
+    
 }

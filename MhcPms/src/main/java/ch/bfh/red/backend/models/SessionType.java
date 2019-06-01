@@ -5,17 +5,14 @@ public enum SessionType {
 	EXPOSITION("Exposition"),
 	DISCUSSION("Discussion");
 
-
 	private String code;
 
 	private SessionType(String code) {
 		this.code = code;
-
 	}
 
 	public String getCode() {
 		return code;
 	}
-
 
 }
