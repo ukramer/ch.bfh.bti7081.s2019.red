@@ -68,6 +68,9 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
     @Autowired
     ListView(TherapyPresenter therapyPresenter) {
         this.therapyPresenter = therapyPresenter;
+
+        // @todo: to be removed
+        therapyPresenter.addMockData();
     }
 
     @Override

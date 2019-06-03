@@ -3,6 +3,8 @@ package ch.bfh.red.ui.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.bfh.red.backend.services.PatientService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vaadin.flow.component.EventData;
@@ -70,8 +72,8 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
     @Id("city")
     private TextField city;
 
-    public EditPatientView() {
-        new PatientPresenter(this);
+    public EditPatientView(@Autowired PatientService patientService) {
+        new PatientPresenter(this, patientService);
         initBinder();
     }
 
