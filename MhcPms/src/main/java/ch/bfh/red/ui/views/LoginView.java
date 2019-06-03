@@ -9,10 +9,25 @@ import com.vaadin.flow.templatemodel.TemplateModel;
 
 import ch.bfh.red.MainLayout;
 
+@SuppressWarnings("serial")
 @Tag("login-view")
 @HtmlImport("frontend://src/views/login/login.html")
-@Route(value = "login", layout=MainLayout.class)
+@Route(value = LoginView.ROUTE, layout=MainLayout.class)
 @PageTitle("Login")
 public class LoginView extends PolymerTemplate<TemplateModel> {
+	public static final String ROUTE = "login";
+	
+	/** Listener Interface **/
+	public interface LoginViewListener {
+		
+	}
+	
+	private LoginViewListener listener;
+	
+	public void setListener(LoginViewListener listener) {
+		this.listener = listener;
+	}
+	
+	
 	
 }

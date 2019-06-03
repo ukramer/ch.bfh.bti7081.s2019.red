@@ -1,8 +1,6 @@
 <link rel="import"
 	href="../../bower_components/polymer/polymer-element.html">
 <link rel="import"
-	href="../../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
-<link rel="import"
 	href="../../bower_components/iron-form/iron-form.html">
 <link rel="import"
 	href="../../bower_components/vaadin-button/vaadin-button.html">
@@ -17,21 +15,24 @@
 	href="../../../bower_components/vaadin-lumo-styles/icons.html">
 
 
-<dom-module id="login-view"> <template>
-<style include="lumo-color lumo-typography lumo-badge view-styles"></style>
-<div class="view-container">
-	<iron-form class="login" id="form" allow-redirect>
-	<form method="post" action="login">
-		<vaadin-vertical-layout> <vaadin-text-field
-			id="username" name="username" autofocus required></vaadin-text-field>
-		<vaadin-password-field id="password" required></vaadin-password-field>
-		<vaadin-button on-tap="login">Login</vaadin-button> </vaadin-vertical-layout>
-	</form>
-	</iron-form>
-</div>
-</template>
+<dom-module id="login-view">
+	<template>
+	<style include="lumo-color lumo-typography lumo-badge view-styles"></style>
+		<div class="view-container">
+			<iron-form class="login" id="form" allow-redirect>
+				<form method="post" action="login">
+					<vaadin-vertical-layout>
+					<vaadin-text-field
+						id="username" name="username" autofocus required></vaadin-text-field>
+					<vaadin-password-field id="password" required></vaadin-password-field>
+					<vaadin-button on-tap="login">Login</vaadin-button> 
+					</vaadin-vertical-layout>
+				</form>
+			</iron-form>
+		</div>
+	</template>
 <script>
-	class LoginView extends Polymer.GestureEventListeners(Polymer.Template){
+	class LoginView extends Polymer.Element{
 		static get is() {
 			return 'login-view';
 		}
@@ -47,6 +48,6 @@
 		}
 	}
 	
-	window.customElements.define(LoginView.is, LoginView);
+	customElements.define(LoginView.is, LoginView);
 </script>
 </dom-module>
