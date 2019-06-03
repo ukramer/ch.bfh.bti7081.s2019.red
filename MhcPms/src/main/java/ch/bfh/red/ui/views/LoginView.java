@@ -12,7 +12,7 @@ import ch.bfh.red.MainLayout;
 @SuppressWarnings("serial")
 @Tag("login-view")
 @HtmlImport("frontend://src/views/login/login.html")
-@Route(value = LoginView.ROUTE, layout=MainLayout.class)
+@Route(value = LoginView.ROUTE)
 @PageTitle("Login")
 public class LoginView extends PolymerTemplate<TemplateModel> {
 	public static final String ROUTE = "login";
