@@ -1,16 +1,19 @@
 package ch.bfh.red.ui.presenters;
 
-import ch.bfh.red.backend.models.Address;
-import ch.bfh.red.backend.models.Patient;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import ch.bfh.red.backend.models.*;
+import ch.bfh.red.backend.services.*;
 import ch.bfh.red.ui.views.EditPatientView;
 import ch.bfh.red.ui.views.ListPatientView;
 import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
-import com.vaadin.flow.component.UI;
 
 public class PatientPresenter implements EditPatientView.EditPatientViewListener, ListPatientView.ListPatientViewListener {
-    EditPatientView editPatientView;
-    ListPatientView listPatientView;
-
+    private EditPatientView editPatientView;
+    private ListPatientView listPatientView;
+    
+//    @Autowired
+//    private PatientService patientService;
 
     public PatientPresenter(EditPatientView editPatientView) {
         this.editPatientView = editPatientView;
@@ -23,19 +26,23 @@ public class PatientPresenter implements EditPatientView.EditPatientViewListener
     }
 
     @Override
-    public void onPatientClick(String param) {
-        UI.getCurrent().navigate(EditPatientView.class, param);
+    public void searchPatients(PatientSearchBean patientSearchBean) {
+//        listPatientView.setPatientList(patientService.findByPatientSearchBean(patientSearchBean));
+    }
+
+    @Override
+    public void deletePatient(int id) {
+//        patientService.delete(id);
     }
 
     @Override
     public void save(Patient patient) {
-        System.out.println("save!");
-        System.out.println("Vorname: " + patient.getFirstName());
-        System.out.println("Nachname: " + patient.getLastName());
-        Address a = patient.getAddress();
-        System.out.println("Strasse: " + a.getStreet());
-        System.out.println("Hausnr: " + a.getStreetNumber());
-        System.out.println("Stadt: " + a.getCity());
-        System.out.println("PLZ: " + a.getPostalCode());
+//        patientService.update(patient);
+    }
+
+    @Override
+    public Patient loadPatient(int id) {
+//        return patientService.getByIdWithAssociations(id);
+    	return null;
     }
 }

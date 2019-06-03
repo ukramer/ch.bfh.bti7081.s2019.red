@@ -33,6 +33,7 @@
                     <vaadin-date-picker label="Datumsbereich" id="start" on-change="startChanged"></vaadin-date-picker>
                     <vaadin-date-picker id="end" on-change="endChanged"></vaadin-date-picker>
                 </vaadin-custom-field>
+                <vaadin-checkbox id="showFinished" on-change="showFinished">Abgeschlossene Therapien anzeigen</vaadin-checkbox>
             </vaadin-form-layout>
 
             <div hidden="{{!_isEmpty(therapies)}}">
@@ -41,7 +42,8 @@
             </div>
 
             <div hidden="{{_isEmpty(therapies)}}">
-                <vaadin-grid theme="no-border" items="[[therapies]]" on-select="showDetails">
+                <vaadin-button on-click="add" theme="success">Therapie hinzufügen</vaadin-button>
+                <vaadin-grid theme="no-border" items="[[therapies]]">
                     <vaadin-grid-sort-column header="Startdatum" path="startDate" direction="desc"></vaadin-grid-sort-column>
                     <vaadin-grid-sort-column header="Patient">
                         <template>
@@ -50,7 +52,7 @@
                     </vaadin-grid-sort-column>
                     <vaadin-grid-sort-column header="Therapeut">
                         <template>
-                            [[item.therapist.academicTitle.prefix]] [[item.therapist.lastName]] [[item.therapist.firstName]]
+                            [[item.therapist.academicTitle]] [[item.therapist.lastName]] [[item.therapist.firstName]]
                         </template>
                     </vaadin-grid-sort-column>
                     <vaadin-grid-column>

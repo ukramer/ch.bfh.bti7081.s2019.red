@@ -1,6 +1,11 @@
 package ch.bfh.red.backend.models;
 
 import java.io.Serializable;
+import org.hibernate.annotations.Cascade;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -8,13 +13,17 @@ import javax.persistence.*;
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AbstractSession<T extends AbstractSession<T>> implements Comparable<T>, Serializable {
-	private static final long serialVersionUID = -5765831140092626255L;
+	private static final long serialVersionUID = -7116507327733704390L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(nullable = false, unique=true)
 	private int id;
 	
+	@ManyToOne
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
+	private Therapist therapist;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
 	private Date startDate;
@@ -22,16 +31,36 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
 	private Date endDate;
-	
-	@ManyToOne
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private SessionType sessionType;
 
 	public AbstractSession() {}
 	
-	public AbstractSession(Date startDate, Date endDate, SessionType sessionType) {
+	public AbstractSession(Date startDate, Date endDate, SessionType sessionType, Therapist therapist) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.sessionType = sessionType;
+		this.therapist = therapist;
+	}
+
+	public LocalDate getStartDateAsLocalDate() {
+		Instant instant = getStartDate().toInstant();
+		return instant.atZone(ZoneId.systemDefault()).toLocalDate();
+	}
+
+	public void setStartDateAsLocalDate(LocalDate startDate) {
+		setStartDate(Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+	}
+
+	public LocalDate getEndDateAsLocalDate() {
+		Instant instant = getEndDate().toInstant();
+		return instant.atZone(ZoneId.systemDefault()).toLocalDate();
+	}
+
+	public void setEndDateAsLocalDate(LocalDate endDate) {
+		setEndDate(Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 	}
 
 	public Date getStartDate() {
@@ -58,6 +87,14 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 		this.sessionType = sessionType;
 	}
 
+	public Therapist getTherapist() {
+		return therapist;
+	}
+
+	public void setTherapist(Therapist therapist) {
+		this.therapist = therapist;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -70,6 +107,7 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((therapist == null) ? 0 : therapist.hashCode());
 		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
 		result = prime * result + ((sessionType == null) ? 0 : sessionType.hashCode());
 		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
@@ -99,6 +137,11 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 			if (other.startDate != null)
 				return false;
 		} else if (!startDate.equals(other.startDate))
+			return false;
+		if (therapist == null) {
+			if (other.therapist != null)
+				return false;
+		} else if (!therapist.equals(other.therapist))
 			return false;
 		return true;
 	}
