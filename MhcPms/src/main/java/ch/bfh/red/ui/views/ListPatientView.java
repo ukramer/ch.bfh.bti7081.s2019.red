@@ -60,9 +60,9 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
 
     @Id("header")
     private H2 header;
-    
-    ListPatientView() {
-        new PatientPresenter(this);
+
+    ListPatientView(@Autowired PatientService patientService) {
+        new PatientPresenter(this, patientService);
         header.setText("Patienten");
         initBinder();
     }
