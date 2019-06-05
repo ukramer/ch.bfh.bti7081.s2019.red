@@ -60,6 +60,9 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
     @Id("therapist")
     private ComboBox<Therapist> therapist;
 
+    @Id("therapyType")
+    private ComboBox<TherapyType> therapyType;
+
     private ConfirmationDialog<Therapy> confirmationDialog = new ConfirmationDialog<>();
 
     private TherapyPresenter therapyPresenter;
@@ -74,10 +77,12 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
 
         // workaround for https://github.com/vaadin/vaadin-combo-box-flow/issues/235
         // @todo: to be removed with Vaadin v3.0.14
+        therapyType.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
         patient.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
         therapist.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
         // workaround end
 
+        binder.forField(therapyType).asRequired("Es muss ein Typ gesetzt sein.").bind(Therapy::getTherapyType, Therapy::setTherapyType);
         binder.forField(patient).asRequired("Es muss ein Patient gesetzt sein.").bind(Therapy::getPatient, Therapy::setPatient);
         binder.forField(therapist).asRequired("Es muss ein Therapeut gesetzt sein.").bind(Therapy::getTherapist, Therapy::setTherapist);
     }
@@ -213,6 +218,10 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
 
     public void setTherapists(List<Therapist> therapists) {
         therapist.setItems(therapists);
+    }
+
+    public void setTherapyTypes(List<TherapyType> therapyTypes) {
+        therapyType.setItems(therapyTypes);
     }
 
     @Override
