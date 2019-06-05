@@ -26,7 +26,6 @@ public class ExpositionNoteService implements IService<ExpositionNote> {
 				ExpositionNoteService.class);	
 	}
     
-    @Override
 	public List<ExpositionNote> getAll() {
 		List<ExpositionNote> list = new ArrayList<>();
 		repository.findAll().iterator().forEachRemaining(list::add);

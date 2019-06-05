@@ -30,7 +30,6 @@ public class GroupSessionService implements IService<GroupSession> {
 				GroupSessionService.class);	
 	}
 	
-	@Override
 	public List<GroupSession> getAll() {
 		List<GroupSession> list = new ArrayList<>();
 		repository.findAll().iterator().forEachRemaining(list::add);

@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -36,9 +34,9 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
     public void setView(ListView listView) {
         this.listView = listView;
         listView.setListener(this);
-        updateList(false, null, null, null);
+        updateList(false, new Patient(), null, null);
 
-        List<Patient> patients = therapies.stream().map(Therapy::getPatient).distinct().sorted().collect(Collectors.toList());
+        List<Patient> patients = patientService.getAll().stream().distinct().sorted().collect(Collectors.toList());
         listView.setPatients(patients);
     }
 
@@ -90,27 +88,7 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
     @Override
     public void updateList(boolean finished, Patient patient, LocalDate start, LocalDate end) {
         therapies.clear();
-        if (patient != null) {
-            if (start != null && end != null) {
-                therapies = getService().getByFinishedAndPatientNameAndDateRange(finished, patient.getFirstName(), patient.getLastName(), start.toString(), end.toString());
-            } else if (start != null) {
-                therapies = getService().getByFinishedAndPatientNameAndStartDate(finished, patient.getFirstName(), patient.getLastName(), start.toString());
-            } else if (end != null) {
-                therapies = getService().getByFinishedAndPatientNameAndEndDate(finished, patient.getFirstName(), patient.getLastName(), end.toString());
-            } else {
-                therapies = getService().getByFinishedAndPatientName(finished, patient.getFirstName(), patient.getLastName());
-            }
-        } else {
-            if (start != null && end != null) {
-                therapies = getService().getByFinishedAndDateRange(finished, start.toString(), end.toString());
-            } else if (start != null) {
-                therapies = getService().getByFinishedAndStartDate(finished, start.toString());
-            } else if (end != null) {
-                therapies = getService().getByFinishedAndEndDate(finished, end.toString());
-            } else {
-                therapies = getService().getByFinished(finished);
-            }
-        }
+        therapies = getService().getBy(finished, patient.getFirstName(), patient.getLastName(), start, end);
         listView.setTherapies(therapies);
     }
 
@@ -139,19 +117,5 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
         notes.add(note);
         therapy.setPatientNotes(notes);
         therapyService.persist(therapy);
-
-/*
-
-        Date date = new Date();
-        try {
-            date = (new SimpleDateFormat("yyyy-MM-dd")).parse("2018-01-01");
-        } catch (Exception e) {
-        }
-        Patient patient2 = new Patient("Jürgen", "Test", new Address("Langstrasse", "12k", 7777, "Burgdorf"));
-        Therapy therapy2 = new Therapy(date, new TherapyType("Exposition", ""));
-        therapy2.setTherapist(new Therapist("user", "1234", new AcademicTitle("Dr.", ""), "Ueli", "Kramer", new Address("Burgstrasse", "18", 3600, "Thun")));
-        therapy2.setPatient(patient2);
-        therapyService.add(therapy2);
-        */
     }
 }

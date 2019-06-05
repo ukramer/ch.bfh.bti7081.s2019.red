@@ -26,7 +26,6 @@ public class TherapistNoteService implements IService<TherapistNote> {
 				TherapistNoteService.class);	
 	}
 	
-	@Override
 	public List<TherapistNote> getAll() {
 		List<TherapistNote> list = new ArrayList<>();
 		repository.findAll().iterator().forEachRemaining(list::add);
