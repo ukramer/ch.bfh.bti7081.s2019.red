@@ -17,8 +17,9 @@
         <div class="view-container">
             <h2 id="header"></h2>
 
+            <div>Ohne zu filtern, werden nur die neusten 10 Therapien geladen.</div>
             <vaadin-form-layout>
-                <vaadin-select label="Patient" placeholder="Nach Patient filtern">
+                <vaadin-select id="patient" label="Patient" placeholder="Nach Patient filtern">
                     <template>
                         <vaadin-list-box>
                             <dom-repeat items="[[patients]]">

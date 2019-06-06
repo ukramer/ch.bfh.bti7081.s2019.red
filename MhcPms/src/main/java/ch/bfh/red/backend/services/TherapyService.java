@@ -3,6 +3,7 @@ package ch.bfh.red.backend.services;
 import ch.bfh.red.backend.models.*;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
+import org.hibernate.query.criteria.internal.OrderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -112,8 +113,13 @@ public class TherapyService implements IService<Therapy> {
 
         applyFilter(therapy, cq, finished, firstName, lastName, startDate, endDate);
 
+        boolean filterInactive = StringUtils.isBlank(firstName) && StringUtils.isBlank(lastName) && startDate == null && endDate == null;
+        if (filterInactive) {
+            cq.orderBy(new OrderImpl(therapy.get("startDate"), false));
+        }
+
         TypedQuery<Therapy> query = em.createQuery(cq);
-        if (StringUtils.isBlank(firstName) && StringUtils.isBlank(lastName) && startDate == null && endDate == null) {
+        if (filterInactive) {
             query.setMaxResults(10);
         }
 
