@@ -3,8 +3,10 @@ package ch.bfh.red.ui.views.Therapy;
 import ch.bfh.red.MainLayout;
 import ch.bfh.red.backend.models.*;
 import ch.bfh.red.ui.components.ConfirmationDialog;
+import ch.bfh.red.ui.encoders.AcademicTitleToStringEncoder;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
+import ch.bfh.red.ui.encoders.SessionTypeToStringEncoder;
 import ch.bfh.red.ui.presenters.TherapyPresenter;
 import ch.bfh.red.ui.views.EditGroupSessionView;
 import ch.bfh.red.ui.views.EditSingleSessionView;
@@ -242,16 +244,21 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
         @Encode(value = IntegerToStringEncoder.class, path = "id")
         @Encode(value = DateToStringEncoder.class, path = "startDate")
         @Encode(value = DateToStringEncoder.class, path = "endDate")
-        @Include({"id", "startDate", "endDate", "sessionType.name", "patient.firstName", "patient.lastName", "therapist.academicTitle.prefix", "therapist.firstName", "therapist.lastName"})
+        @Encode(value = SessionTypeToStringEncoder.class, path="sessionType")
+        @Encode(value = AcademicTitleToStringEncoder.class, path = "therapist.academicTitle")
+        @Include({"id", "startDate", "endDate", "sessionType", "patient.firstName", "patient.lastName", "therapist.academicTitle", "therapist.firstName", "therapist.lastName"})
         void setSingleSessions(List<SingleSession> singleSessions);
 
         @Encode(value = IntegerToStringEncoder.class, path = "id")
         @Encode(value = DateToStringEncoder.class, path = "startDate")
         @Encode(value = DateToStringEncoder.class, path = "endDate")
-        @Include({"id", "startDate", "endDate", "sessionType.name",
+        @Encode(value = SessionTypeToStringEncoder.class, path="sessionType")
+        @Encode(value = AcademicTitleToStringEncoder.class, path = "therapists.academicTitle")
+        @Encode(value = AcademicTitleToStringEncoder.class, path = "therapist.academicTitle")
+        @Include({"id", "startDate", "endDate", "sessionType",
                 "patients.firstName", "patients.lastName",
-                "therapists.academicTitle.prefix", "therapists.firstName", "therapists.lastName",
-                "therapist.academicTitle.prefix", "therapist.firstName", "therapist.lastName"})
+                "therapists.academicTitle", "therapists.firstName", "therapists.lastName",
+                "therapist.academicTitle", "therapist.firstName", "therapist.lastName"})
         void setGroupSessions(List<GroupSession> groupSessions);
 
         @Encode(value = IntegerToStringEncoder.class, path = "id")
@@ -261,7 +268,8 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
 
         @Encode(value = IntegerToStringEncoder.class, path = "id")
         @Encode(value = DateToStringEncoder.class, path = "date")
-        @Include({"id", "date", "text", "therapist.academicTitle.prefix", "therapist.firstName", "therapist.lastName"})
+        @Encode(value = AcademicTitleToStringEncoder.class, path = "therapist.academicTitle")
+        @Include({"id", "date", "text", "therapist.academicTitle", "therapist.firstName", "therapist.lastName"})
         void setTherapistNotes(List<TherapistNote> therapistNotes);
     }
 }

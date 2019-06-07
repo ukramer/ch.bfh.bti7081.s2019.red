@@ -1,5 +1,8 @@
 package ch.bfh.red.test.tests.beans;
 
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 
@@ -13,5 +16,11 @@ public abstract class BeanTest<T> extends StartupTest {
 
 	@Autowired
 	protected IService<T> service;
+	
+	@Test
+	public void testAutowiringProcess() {
+		assertNotNull(repository);
+		assertNotNull(service);
+	}
 
 }

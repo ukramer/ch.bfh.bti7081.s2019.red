@@ -14,8 +14,7 @@ public class ExpositionNote extends AbstractNote<ExpositionNote> {
     @Column(nullable = false)
     private Integer degreeOfExposure;
 
-    public ExpositionNote() {
-    }
+    public ExpositionNote() {}
 
     public ExpositionNote(Patient patient, Date date, String text, Visibility visibility, int degreeOfExposure) {
         super(date, text, visibility);

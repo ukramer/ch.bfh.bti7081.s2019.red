@@ -1,12 +1,12 @@
 package ch.bfh.red.ui.views;
 
-import ch.bfh.red.MainLayout;
-import ch.bfh.red.backend.models.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.bfh.red.backend.services.PatientService;
-import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
-import ch.bfh.red.ui.encoders.LocalDateToStringEncoder;
-import ch.bfh.red.ui.presenters.PatientPresenter;
-import ch.bfh.red.ui.views.Therapy.DetailView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.vaadin.flow.component.EventData;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
@@ -27,11 +27,20 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.templatemodel.Encode;
 import com.vaadin.flow.templatemodel.Include;
 import com.vaadin.flow.templatemodel.TemplateModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import ch.bfh.red.MainLayout;
+import ch.bfh.red.backend.models.Address;
+import ch.bfh.red.backend.models.GroupSession;
+import ch.bfh.red.backend.models.Patient;
+import ch.bfh.red.backend.models.SingleSession;
+import ch.bfh.red.backend.models.Therapist;
+import ch.bfh.red.backend.models.Therapy;
+import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
+import ch.bfh.red.ui.encoders.LocalDateToStringEncoder;
+import ch.bfh.red.ui.encoders.SessionTypeToStringEncoder;
+import ch.bfh.red.ui.encoders.TherapyTypeToStringEncoder;
+import ch.bfh.red.ui.presenters.PatientPresenter;
+import ch.bfh.red.ui.views.Therapy.DetailView;
 
 @Route(value = "editpatient", layout = MainLayout.class)
 @Tag("editpatient-element")
@@ -77,23 +86,26 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
     public interface EditPatientModel extends TemplateModel {
         List<Therapy> getTherapies();
 
-        @Include({"id", "therapyType.name", "therapyType.description", "startDateAsLocalDate"})
+        @Include({"id", "therapyType", "startDateAsLocalDate"})
         @Encode(value = IntegerToStringEncoder.class, path = "id")
         @Encode(value = LocalDateToStringEncoder.class, path = "startDateAsLocalDate")
+        @Encode(value = TherapyTypeToStringEncoder.class, path ="therapyType")
         void setTherapies(List<Therapy> therapies);
 
         List<SingleSession> getSingleSessions();
 
-        @Include({"id", "sessionType.name", "sessionType.description", "startDateAsLocalDate", "endDateAsLocalDate"})
+        @Include({"id", "sessionType",  "startDateAsLocalDate", "endDateAsLocalDate"})
         @Encode(value = IntegerToStringEncoder.class, path = "id")
+        @Encode(value = SessionTypeToStringEncoder.class, path="sessionType")
         @Encode(value = LocalDateToStringEncoder.class, path = "startDateAsLocalDate")
         @Encode(value = LocalDateToStringEncoder.class, path = "endDateAsLocalDate")
         void setSingleSessions(List<SingleSession> singleSessions);
 
         List<GroupSession> getGroupSessions();
 
-        @Include({"id", "sessionType.name", "sessionType.description", "startDateAsLocalDate", "endDateAsLocalDate"})
+        @Include({"id", "sessionType.name", "startDateAsLocalDate", "endDateAsLocalDate"})
         @Encode(value = IntegerToStringEncoder.class, path = "id")
+        @Encode(value = SessionTypeToStringEncoder.class, path="sessionType")
         @Encode(value = LocalDateToStringEncoder.class, path = "startDateAsLocalDate")
         @Encode(value = LocalDateToStringEncoder.class, path = "endDateAsLocalDate")
         void setGroupSessions(List<GroupSession> groupSessions);

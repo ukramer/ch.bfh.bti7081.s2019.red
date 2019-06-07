@@ -2,12 +2,14 @@ package ch.bfh.red.backend.repositories;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import ch.bfh.red.backend.models.Therapy;
 
 import java.util.Date;
 import java.util.List;
 
+@Repository("therapyRepository")
 public interface TherapyRepository extends CrudRepository<Therapy, Integer> {
     List<Therapy> findByFinished(boolean finished);
     List<Therapy> findByFinishedAndPatientFirstNameAndPatientLastName(boolean finished, String firstName, String lastName);

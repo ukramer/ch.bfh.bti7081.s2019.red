@@ -1,20 +1,22 @@
 package ch.bfh.red.test.tests.crud;
 
-import ch.bfh.red.backend.models.Address;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import ch.bfh.red.backend.factories.PatientFactory;
 import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.services.IService;
-import org.springframework.beans.factory.annotation.Autowired;
+import ch.bfh.red.backend.services.PatientService;
 
 public class PatientCrudTest extends CrudTest<Patient> {
 
 	@Autowired
-	private IService<Address> addressService;
-
+	private PatientService service;
+	
+	private PatientFactory factory = new PatientFactory();
+	
 	@Override
 	protected Patient createInstance() {
-		Address address = new Address("Langstrasse", "12k", 7777, "Burgdorf");
-		address = addressService.add(address);
-		return new Patient("Jürgen", "Müller", address);
+		return factory.create(); 
 	}
 
 	@Override
@@ -25,6 +27,11 @@ public class PatientCrudTest extends CrudTest<Patient> {
 	@Override
 	protected void setAnUpdateValue(Patient instance) {
 		instance.setFirstName("Karl");
+	}
+
+	@Override
+	protected IService<Patient> getService() {
+		return service;
 	}
 	
 }

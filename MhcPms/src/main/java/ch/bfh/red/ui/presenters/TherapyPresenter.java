@@ -17,19 +17,17 @@ import java.util.stream.Collectors;
 
 @Component
 public class TherapyPresenter implements ListView.ListViewListener, DetailView.DetailViewListener {
-    private ListView listView;
-    private DetailView detailView;
-
     private final TherapyService therapyService;
     private final PatientService patientService;
     private final TherapistService therapistService;
-
+    private ListView listView;
+    private DetailView detailView;
     private List<Therapy> therapies = new ArrayList<>();
 
     private Therapy loadedTherapy;
 
     @Autowired
-    public TherapyPresenter(TherapyService therapyService, PatientService patientService, TherapistService therapistService) {
+    public TherapyPresenter(TherapyService therapyService, TherapistService therapistService, PatientService patientService) {
         this.therapyService = therapyService;
         this.patientService = patientService;
         this.therapistService = therapistService;
@@ -77,7 +75,7 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
         if (therapy.getStartDate() == null) {
             throw new Exception("Es muss ein Startdatum gesetzt sein. Die Therapie wurde nicht aktualisiert");
         }
-        getService().update(therapy);
+        getService().persist(therapy);
     }
 
     @Override
@@ -114,5 +112,46 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
             }
         }
         listView.setTherapies(therapies);
+    }
+
+    public void addMockData() {
+        Patient patient = new Patient("Jürgen", "Test", new Address("Langstrasse", "12k", 7777, "Burgdorf"));
+        Therapy therapy = new Therapy(new Date(), TherapyType.ART);
+        Therapist therapist = new Therapist("user", "1234", AcademicTitle.DOCTOR, "Ueli", "Kramer", new Address("Burgstrasse", "18", 3600, "Thun"));
+
+        therapy.setTherapist(therapist);
+        therapy.setPatient(patient);
+
+        SingleSession singleSession = new SingleSession(patient, therapist, new Date(), new Date(), SessionType.DISCUSSION);
+        List<SingleSession> singleSessions = new ArrayList<>();
+        singleSessions.add(singleSession);
+        therapy.setSingleSessions(singleSessions);
+
+        List<GroupSession> groupSessions = new ArrayList<>();
+        List<Patient> patients = new ArrayList<>();
+        patients.add(patient);
+        List<Therapist> therapists = new ArrayList<>();
+        therapists.add(therapist);
+        groupSessions.add(new GroupSession(patients, therapists, therapist, new Date(), new Date(), SessionType.DISCUSSION));
+        therapy.setGroupSessions(groupSessions);
+        PatientNote note = new PatientNote(patient, new Date(), "Dieser Text", Visibility.PUBLIC);
+        List<PatientNote> notes = new ArrayList<>();
+        notes.add(note);
+        therapy.setPatientNotes(notes);
+        therapyService.persist(therapy);
+
+/*
+
+        Date date = new Date();
+        try {
+            date = (new SimpleDateFormat("yyyy-MM-dd")).parse("2018-01-01");
+        } catch (Exception e) {
+        }
+        Patient patient2 = new Patient("Jürgen", "Test", new Address("Langstrasse", "12k", 7777, "Burgdorf"));
+        Therapy therapy2 = new Therapy(date, new TherapyType("Exposition", ""));
+        therapy2.setTherapist(new Therapist("user", "1234", new AcademicTitle("Dr.", ""), "Ueli", "Kramer", new Address("Burgstrasse", "18", 3600, "Thun")));
+        therapy2.setPatient(patient2);
+        therapyService.add(therapy2);
+        */
     }
 }

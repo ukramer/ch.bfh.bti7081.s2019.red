@@ -13,7 +13,7 @@ import javax.persistence.*;
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AbstractSession<T extends AbstractSession<T>> implements Comparable<T>, Serializable {
-	private static final long serialVersionUID = -5765831140092626255L;
+	private static final long serialVersionUID = -7116507327733704390L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -31,9 +31,9 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
 	private Date endDate;
-	
-	@ManyToOne
-	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private SessionType sessionType;
 
 	public AbstractSession() {}

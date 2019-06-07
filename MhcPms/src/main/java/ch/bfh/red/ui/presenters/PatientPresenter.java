@@ -36,7 +36,7 @@ public class PatientPresenter implements EditPatientView.EditPatientViewListener
 
     @Override
     public void save(Patient patient) {
-        patientService.update(patient);
+        patientService.persist(patient);
     }
 
     @Override

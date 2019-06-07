@@ -1,23 +1,22 @@
 package ch.bfh.red.backend.models;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
 public class Therapist extends AbstractUser<Therapist> {
-    private static final long serialVersionUID = 3328637872951953081L;
+	private static final long serialVersionUID = 1857514061793757176L;
 
-    @ManyToOne
-	@Cascade(CascadeType.MERGE) // @todo: remove
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private AcademicTitle academicTitle;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -84,12 +83,7 @@ public class Therapist extends AbstractUser<Therapist> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result
-				+ ((academicTitle == null) ? 0 : academicTitle.hashCode());
-		result = prime * result
-				+ ((groupSessions == null) ? 0 : groupSessions.hashCode());
-		result = prime * result + ((patients == null) ? 0 : patients.hashCode());
-		result = prime * result + ((therapies == null) ? 0 : therapies.hashCode());
+		result = prime*result + ((academicTitle == null) ? 0 : academicTitle.ordinal());
 		return result;
 	}
 
@@ -110,7 +104,7 @@ public class Therapist extends AbstractUser<Therapist> {
 
 	@Override
 	public String toString() {
-		return (academicTitle != null ? academicTitle.getPrefix() + " " : "") + getLastName() + " " + getFirstName();
+		return (academicTitle != null ? academicTitle.getCode() + " " : "") + getLastName() + " " + getFirstName();
 	}
 	
 }

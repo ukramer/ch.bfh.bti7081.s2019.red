@@ -29,8 +29,7 @@
                         <template>[[index]]</template>
                     </vaadin-grid-column>
                     <vaadin-grid-sort-column header="Startdatum" path="startDateAsLocalDate"></vaadin-grid-sort-column>
-                    <vaadin-grid-sort-column header="Therapy Name" path="therapyType.name"></vaadin-grid-sort-column>
-                    <vaadin-grid-sort-column header="Therapy Beschreibung" path="therapyType.description"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Therapy Name" path="therapyType"></vaadin-grid-sort-column>
                     <vaadin-grid-column>
                         <template>
                             <vaadin-button theme="tertiary" on-click="editTherapy">Bearbeiten</vaadin-button>
@@ -47,8 +46,7 @@
                     </vaadin-grid-column>
                     <vaadin-grid-sort-column header="Startdatum" path="startDateAsLocalDate"></vaadin-grid-sort-column>
                     <vaadin-grid-sort-column header="Enddatum" path="endDateAsLocalDate"></vaadin-grid-sort-column>
-                    <vaadin-grid-sort-column header="Bezeichnung" path="sessionType.name"></vaadin-grid-sort-column>
-                    <vaadin-grid-sort-column header="Beschreibung" path="sessionType.description"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Bezeichnung" path="sessionType"></vaadin-grid-sort-column>
                     <vaadin-grid-column>
                         <template>
                             <vaadin-button theme="tertiary" on-click="editSingleSession">Bearbeiten</vaadin-button>
@@ -65,8 +63,7 @@
                     </vaadin-grid-column>
                     <vaadin-grid-sort-column header="Startdatum" path="startDateAsLocalDate"></vaadin-grid-sort-column>
                     <vaadin-grid-sort-column header="Enddatum" path="endDateAsLocalDate"></vaadin-grid-sort-column>
-                    <vaadin-grid-sort-column header="Bezeichnung" path="sessionType.name"></vaadin-grid-sort-column>
-                    <vaadin-grid-sort-column header="Beschreibung" path="sessionType.description"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Bezeichnung" path="sessionType"></vaadin-grid-sort-column>
                     <vaadin-grid-column>
                         <template>
                             <vaadin-button theme="tertiary" on-click="editGroupSession">Bearbeiten</vaadin-button>

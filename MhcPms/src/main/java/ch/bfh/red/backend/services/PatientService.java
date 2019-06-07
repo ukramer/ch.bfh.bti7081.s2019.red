@@ -1,35 +1,81 @@
 package ch.bfh.red.backend.services;
 
-import ch.bfh.red.backend.models.GroupSession;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import ch.bfh.red.backend.models.Patient;
+import ch.bfh.red.backend.models.Therapist;
 import ch.bfh.red.backend.repositories.PatientRepository;
+import ch.bfh.red.common.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service("patientService")
 public class PatientService implements IService<Patient> {
-	
+
 	@Autowired
 	private PatientRepository repository;
+	
+	@Autowired
+	@Lazy
+	private TherapistService therapistService;
 
 	@PersistenceContext
-	EntityManager em;
+	private EntityManager em;
+	
+	public PatientService() {
+		BeanUtils.checkBeanInstantiation(Thread.currentThread().getStackTrace(), 
+				PatientService.class);	
+	}
+	
+	@Override
+	public List<Patient> getAll() {
+		List<Patient> list = new ArrayList<>();
+		repository.findAll().iterator().forEachRemaining(list::add);
+		return list;
+	}
+	
+	@Override
+	public Patient getById(Integer id) {
+		Patient obj = repository.findById(id).get();
+		return obj;
+	}
+	
+	@Override
+	public void delete(Integer id) {
+		delete(getById(id));
+	}
 
 	@Override
-	public CrudRepository<Patient, Integer> getRepository() {
-		return repository;
+	public void delete(Patient t) {
+		repository.delete(t);
+	}
+	
+	@Override
+	public Patient persist(Patient t) {
+		Collection<Therapist> therapists = t.getTherapists();
+		for (Therapist therapist: therapists)
+			if (!therapistService.existById(therapist.getId())) {
+				therapistService.persist(therapist);
+			}
+		therapistService.persist(t.getTherapists());
+		return repository.save(t);
+	}
+	
+	@Override
+	public Boolean existById(Integer id) {
+		return repository.existsById(id);
 	}
 
 	public List<Patient> findByPatientSearchBean(PatientSearchBean patientSearchBean){
@@ -63,7 +109,7 @@ public class PatientService implements IService<Patient> {
 
 	@Transactional
 	public Patient getByIdWithAssociations(Integer id){
-		Patient patient = getRepository().findById(id).get();
+		Patient patient = repository.findById(id).get();
 		Hibernate.initialize(patient.getTherapies());
 		Hibernate.initialize(patient.getGroupSessions());
 		Hibernate.initialize(patient.getSingleSessions());
