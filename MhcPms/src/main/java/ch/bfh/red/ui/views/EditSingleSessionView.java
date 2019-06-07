@@ -16,8 +16,6 @@ import com.vaadin.flow.component.timepicker.TimePicker;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.templatemodel.Encode;
-import com.vaadin.flow.templatemodel.Include;
 import com.vaadin.flow.templatemodel.TemplateModel;
 
 import ch.bfh.red.MainLayout;
@@ -28,7 +26,6 @@ import ch.bfh.red.backend.models.SessionType;
 import ch.bfh.red.backend.models.SingleSession;
 import ch.bfh.red.backend.models.Therapist;
 import ch.bfh.red.ui.encoders.DateTimeBean;
-import ch.bfh.red.ui.encoders.DateToDateBeanEncoder;
 
 @Route(value = "editSingleSession", layout = MainLayout.class)
 @Tag("editsinglesession-element")
@@ -136,7 +133,7 @@ public class EditSingleSessionView
 	// TODO remove
 	private Collection<Therapist> createTherapists() {
 		List<Therapist> persons = new ArrayList<>();
-		AcademicTitle academicTitle = new AcademicTitle("Dr", "");
+		AcademicTitle academicTitle = AcademicTitle.DOCTOR;
 		Address address1 = new Address("Bahnhofstrasse", "2", 1234, "Zürich");
 		Address address2 = new Address("Langstrasse", "40", 1235, "Bern");
 		persons.add(new Therapist("hansiRu", "1234", academicTitle, "Reto", "Bachmann", address1));
@@ -157,8 +154,8 @@ public class EditSingleSessionView
 	// TODO remove
 	private Collection<SessionType> createSessionTypes() {
 		List<SessionType> sessionTypes = new ArrayList<>();
-		sessionTypes.add(new SessionType("Session", ""));
-		sessionTypes.add(new SessionType("Discusssion", ""));
+		sessionTypes.add(SessionType.TALK);
+		sessionTypes.add(SessionType.DISCUSSION);
 		return sessionTypes;
 	}
 	

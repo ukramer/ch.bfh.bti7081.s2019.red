@@ -10,7 +10,7 @@ public class TherapistToNameStringConverter implements ModelEncoder<Therapist, S
 	public String encode(Therapist modelValue) {
 		if (modelValue == null)
 			return null;
-		return String.format("%s %s %s", modelValue.getAcademicTitle().getPrefix(), modelValue.getFirstName(), modelValue.getLastName());
+		return String.format("%s %s %s", modelValue.getAcademicTitle().getCode(), modelValue.getFirstName(), modelValue.getLastName());
 	}
 
 	@Override

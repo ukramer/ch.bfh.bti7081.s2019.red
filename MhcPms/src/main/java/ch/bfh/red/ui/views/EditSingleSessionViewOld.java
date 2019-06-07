@@ -9,18 +9,13 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.vaadin.flow.component.ItemLabelGenerator;
-import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.timepicker.TimePicker;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.templatemodel.TemplateModel;
 
-import ch.bfh.red.MainLayout;
 import ch.bfh.red.backend.models.Address;
 import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.SessionType;
@@ -48,7 +43,7 @@ public class EditSingleSessionViewOld extends FormLayout {
 		Collection<SessionType> sessionTypes = createSessionTypes();
 		sessionTypeComboBox.setItems(sessionTypes);
 		sessionTypeComboBox
-				.setItemLabelGenerator(createItemLabelGenerator(type -> type.getName()));
+				.setItemLabelGenerator(createItemLabelGenerator(type -> type.getCode()));
 		addFormItem(sessionTypeComboBox, "Session type");
 		
 		DatePicker startDatePicker = new DatePicker();
@@ -80,8 +75,8 @@ public class EditSingleSessionViewOld extends FormLayout {
 	
 	private Collection<SessionType> createSessionTypes() {
 		List<SessionType> sessionTypes = new ArrayList<>();
-		sessionTypes.add(new SessionType("Session", ""));
-		sessionTypes.add(new SessionType("Discusssion", ""));
+		sessionTypes.add(SessionType.DISCUSSION);
+		sessionTypes.add(SessionType.TALK);
 		return sessionTypes;
 	}
 	
