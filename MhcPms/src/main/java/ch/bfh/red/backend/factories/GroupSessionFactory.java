@@ -19,11 +19,11 @@ public class GroupSessionFactory extends AbstractFactory<GroupSession> {
     private final PatientFactory patientFactory;
 
     public GroupSessionFactory(){
-        this(new Locale("de-ch"));
+        this(Locale.getDefault());
     }
 
     public GroupSessionFactory(Locale locale){
-        faker = new Faker();
+        faker = new Faker(locale);
         therapistFactory = new TherapistFactory(locale);
         patientFactory = new PatientFactory(locale);
     }

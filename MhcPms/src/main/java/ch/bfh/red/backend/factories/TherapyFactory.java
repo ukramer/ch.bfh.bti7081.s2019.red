@@ -16,7 +16,7 @@ public class TherapyFactory extends AbstractFactory<Therapy> {
     private final PatientFactory patientFactory;
 
     public TherapyFactory(){
-        this(new Locale("de-ch"));
+        this(Locale.getDefault());
     }
 
     public TherapyFactory(Locale locale){

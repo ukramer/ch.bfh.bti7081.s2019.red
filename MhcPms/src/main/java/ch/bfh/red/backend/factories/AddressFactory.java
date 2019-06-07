@@ -8,9 +8,9 @@ import ch.bfh.red.backend.models.Address;
 
 public class AddressFactory extends AbstractFactory<Address> {
     private final Faker faker;
-
+    
     public AddressFactory(){
-        this(new Locale("de-ch"));
+        this(Locale.getDefault());
     }
     
     public AddressFactory(Locale locale) {

@@ -15,7 +15,7 @@ public class TherapistFactory extends AbstractFactory<Therapist> {
     private Random random;
 
     public TherapistFactory() {
-        this(new Locale("de-ch"));
+        this(Locale.getDefault());
     }
 
     public TherapistFactory(Locale locale) {

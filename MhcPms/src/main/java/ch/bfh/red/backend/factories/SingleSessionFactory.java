@@ -17,11 +17,11 @@ public class SingleSessionFactory extends AbstractFactory<SingleSession>{
     private final Random random;
 
     public SingleSessionFactory(){
-        this(new Locale("de-ch"));
+        this(Locale.getDefault());
     }
 
     public SingleSessionFactory(Locale locale){
-        faker = new Faker();
+        faker = new Faker(locale);
         therapistFactory = new TherapistFactory(locale);
         patientFactory = new PatientFactory(locale);
         random = new Random();

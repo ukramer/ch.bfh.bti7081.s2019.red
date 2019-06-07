@@ -14,7 +14,7 @@ public class ExpositionNoteFactory extends AbstractFactory<ExpositionNote> {
     private final Random random;
 
     public ExpositionNoteFactory(){
-        this(new Locale("d-ch"));
+        this(Locale.getDefault());
     }
 
     public ExpositionNoteFactory(Locale locale){

@@ -12,7 +12,7 @@ public class PatientFactory extends AbstractFactory<Patient> {
     private final AddressFactory addressFactory;
     
     public PatientFactory() {
-    	this(new Locale("de-ch"));
+    	this(Locale.getDefault());
     }
 
     public PatientFactory(Locale locale) {
