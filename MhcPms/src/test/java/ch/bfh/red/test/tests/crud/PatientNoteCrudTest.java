@@ -12,7 +12,7 @@ public class PatientNoteCrudTest extends CrudTest<PatientNote> {
 	@Autowired
 	private PatientNoteService service;
 	
-	private PatientNoteFactory factory;
+	private PatientNoteFactory factory = new PatientNoteFactory();
 
 	@Override
 	protected PatientNote createInstance() {

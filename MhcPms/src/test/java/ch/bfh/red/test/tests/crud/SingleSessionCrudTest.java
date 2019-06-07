@@ -13,7 +13,7 @@ public class SingleSessionCrudTest extends CrudTest<SingleSession> {
 	@Autowired
 	private SingleSessionService service;
 	
-	private SingleSessionFactory factory;
+	private SingleSessionFactory factory = new SingleSessionFactory();
 
 	@Override
 	protected SingleSession createInstance() {

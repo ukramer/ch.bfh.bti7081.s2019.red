@@ -13,7 +13,7 @@ public class GroupSessionCrudTest extends CrudTest<GroupSession> {
 	@Autowired
 	private GroupSessionService service;
 	
-	private GroupSessionFactory factory;
+	private GroupSessionFactory factory = new GroupSessionFactory();
 
 	@Override
 	protected GroupSession createInstance() {

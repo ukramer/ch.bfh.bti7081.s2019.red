@@ -12,7 +12,7 @@ public class TherapistNoteCrudTest extends CrudTest<TherapistNote> {
 	@Autowired
 	private TherapistNoteService service;
 	
-	private TherapistNoteFactory factory;
+	private TherapistNoteFactory factory = new TherapistNoteFactory();
 
 	@Override
 	protected TherapistNote createInstance() {
