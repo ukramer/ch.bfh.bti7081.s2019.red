@@ -1,4 +1,4 @@
-package ch.bfh.red.test.tests.model.factory;
+package ch.bfh.red.test.tests.factory;
 
 import java.util.List;
 
