@@ -56,7 +56,6 @@ public class GroupSessionService implements IService<GroupSession> {
 	@Override
 	public GroupSession persist(GroupSession t) {
 		patientService.persist(t.getPatients());
-    	therapistService.persist(t.getTherapist());
     	therapistService.persist(t.getTherapists());
     	
     	return repository.save(t);

@@ -1,28 +1,36 @@
 package ch.bfh.red.backend.models;
 
 import java.io.Serializable;
-import org.hibernate.annotations.Cascade;
-
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AbstractSession<T extends AbstractSession<T>> implements Comparable<T>, Serializable {
-	private static final long serialVersionUID = -7116507327733704390L;
+    
+    /**
+     * Removed therapist as leader from AbstractSession
+     */
+    private static final long serialVersionUID = 8878471921305886953L;
 
-	@Id
+    @Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(nullable = false, unique=true)
 	private int id;
-	
-	@ManyToOne
-	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
-	private Therapist therapist;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
@@ -38,11 +46,10 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 
 	public AbstractSession() {}
 	
-	public AbstractSession(Date startDate, Date endDate, SessionType sessionType, Therapist therapist) {
+	public AbstractSession(Date startDate, Date endDate, SessionType sessionType) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.sessionType = sessionType;
-		this.therapist = therapist;
 	}
 
 	public LocalDate getStartDateAsLocalDate() {
@@ -87,14 +94,6 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 		this.sessionType = sessionType;
 	}
 
-	public Therapist getTherapist() {
-		return therapist;
-	}
-
-	public void setTherapist(Therapist therapist) {
-		this.therapist = therapist;
-	}
-
 	public Integer getId() {
 		return id;
 	}
@@ -107,7 +106,6 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((therapist == null) ? 0 : therapist.hashCode());
 		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
 		result = prime * result + ((sessionType == null) ? 0 : sessionType.hashCode());
 		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
@@ -137,11 +135,6 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 			if (other.startDate != null)
 				return false;
 		} else if (!startDate.equals(other.startDate))
-			return false;
-		if (therapist == null) {
-			if (other.therapist != null)
-				return false;
-		} else if (!therapist.equals(other.therapist))
 			return false;
 		return true;
 	}
