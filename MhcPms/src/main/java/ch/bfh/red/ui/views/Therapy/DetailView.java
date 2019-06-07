@@ -2,6 +2,7 @@ package ch.bfh.red.ui.views.Therapy;
 
 import ch.bfh.red.MainLayout;
 import ch.bfh.red.backend.models.*;
+import ch.bfh.red.common.DateTimeUtils;
 import ch.bfh.red.ui.components.ConfirmationDialog;
 import ch.bfh.red.ui.encoders.AcademicTitleToStringEncoder;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
@@ -68,8 +69,10 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
 
     DetailView(@Autowired TherapyPresenter therapyPresenter) {
         this.therapyPresenter = therapyPresenter;
-
-        binder.forField(startDate).asRequired("Es muss ein Startdatum gesetzt sein.").bind(Therapy::getStartDateAsLocalDate, Therapy::setStartDateAsLocalDate);
+           
+        binder.forField(startDate).asRequired("Es muss ein Startdatum gesetzt sein.")
+            .bind(therapy -> DateTimeUtils.toLocalDate(therapy.getStartDate()), 
+                    (therapy, localDate) -> DateTimeUtils.toDate(localDate));
         binder.forField(finished).bind(Therapy::isFinished, Therapy::setFinished);
 
         // workaround for https://github.com/vaadin/vaadin-combo-box-flow/issues/235

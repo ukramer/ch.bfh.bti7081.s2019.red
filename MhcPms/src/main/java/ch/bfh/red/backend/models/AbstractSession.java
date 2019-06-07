@@ -1,21 +1,29 @@
 package ch.bfh.red.backend.models;
 
 import java.io.Serializable;
-import org.hibernate.annotations.Cascade;
-
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Cascade;
 
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AbstractSession<T extends AbstractSession<T>> implements Comparable<T>, Serializable {
-	private static final long serialVersionUID = -7116507327733704390L;
+    private static final long serialVersionUID = 8566852873546938031L;
 
-	@Id
+    @Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(nullable = false, unique=true)
 	private int id;
@@ -44,25 +52,7 @@ public abstract class AbstractSession<T extends AbstractSession<T>> implements C
 		this.sessionType = sessionType;
 		this.therapist = therapist;
 	}
-
-	public LocalDate getStartDateAsLocalDate() {
-		Instant instant = getStartDate().toInstant();
-		return instant.atZone(ZoneId.systemDefault()).toLocalDate();
-	}
-
-	public void setStartDateAsLocalDate(LocalDate startDate) {
-		setStartDate(Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-	}
-
-	public LocalDate getEndDateAsLocalDate() {
-		Instant instant = getEndDate().toInstant();
-		return instant.atZone(ZoneId.systemDefault()).toLocalDate();
-	}
-
-	public void setEndDateAsLocalDate(LocalDate endDate) {
-		setEndDate(Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-	}
-
+	
 	public Date getStartDate() {
 		return startDate;
 	}
