@@ -50,6 +50,7 @@ import ch.bfh.red.ui.views.Therapy.DetailView;
 public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatientModel> implements View<EditPatientView.EditPatientViewListener>, HasUrlParameter<Integer> {
     EditPatientViewListener listener;
     private Binder<Patient> binder = new Binder<>(Patient.class);
+    private PatientPresenter patientPresenter;
 
     @Id("header")
     private H2 header;
@@ -72,8 +73,8 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
     @Id("city")
     private TextField city;
 
-    public EditPatientView(@Autowired PatientService patientService) {
-        new PatientPresenter(this, patientService);
+    public EditPatientView(@Autowired PatientPresenter patientPresenter) {
+        this.patientPresenter = patientPresenter;
         initBinder();
     }
 
@@ -119,6 +120,7 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
 
     @Override
     public void setParameter(BeforeEvent beforeEvent, @OptionalParameter Integer patientId) {
+        patientPresenter.setView(this);
         if (patientId == null) {
             header.setText("Neuer Patient erfassen");
             binder.setBean(new Patient("", "", new Address()));

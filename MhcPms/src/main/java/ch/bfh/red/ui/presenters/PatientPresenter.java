@@ -5,23 +5,29 @@ import ch.bfh.red.backend.services.*;
 import ch.bfh.red.ui.views.EditPatientView;
 import ch.bfh.red.ui.views.ListPatientView;
 import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PatientPresenter implements EditPatientView.EditPatientViewListener, ListPatientView.ListPatientViewListener {
     private EditPatientView editPatientView;
     private ListPatientView listPatientView;
     private PatientService patientService;
 
 
-    public PatientPresenter(EditPatientView editPatientView, PatientService patientService) {
-        this.editPatientView = editPatientView;
+    @Autowired
+    public PatientPresenter(PatientService patientService) {
         this.patientService = patientService;
-        editPatientView.setListener(this);
     }
 
-    public PatientPresenter(ListPatientView listPatientView, PatientService patientService) {
+    public void setView(ListPatientView listPatientView){
         this.listPatientView = listPatientView;
-        this.patientService = patientService;
         listPatientView.setListener(this);
+    }
+
+    public void setView(EditPatientView editPatientView){
+        this.editPatientView = editPatientView;
+        editPatientView.setListener(this);
     }
 
     @Override
