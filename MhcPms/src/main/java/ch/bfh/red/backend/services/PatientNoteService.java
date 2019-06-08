@@ -26,7 +26,6 @@ public class PatientNoteService implements IService<PatientNote> {
 				PatientNoteService.class);	
 	}
 	
-	@Override
 	public List<PatientNote> getAll() {
 		List<PatientNote> list = new ArrayList<>();
 		repository.findAll().iterator().forEachRemaining(list::add);
