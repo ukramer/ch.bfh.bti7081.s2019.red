@@ -1,14 +1,25 @@
 package ch.bfh.red.backend.models;
 
-import org.hibernate.annotations.Cascade;
-
 import java.io.Serializable;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Cascade;
 
 @Entity
 public class Therapy implements Comparable<Therapy>, Serializable {
@@ -70,15 +81,6 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
-	}
-
-	public LocalDate getStartDateAsLocalDate() {
-		Instant instant = getStartDate().toInstant();
-		return instant.atZone(ZoneId.systemDefault()).toLocalDate();
-	}
-
-	public void setStartDateAsLocalDate(LocalDate startDate) {
-		setStartDate(Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 	}
 
 	public boolean isFinished() {
