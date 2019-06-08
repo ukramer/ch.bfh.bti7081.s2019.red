@@ -1,24 +1,74 @@
 package ch.bfh.red.ui.presenters;
 
+import ch.bfh.red.backend.models.Address;
+import ch.bfh.red.backend.models.ExpositionNote;
+import ch.bfh.red.backend.models.Patient;
+import ch.bfh.red.backend.models.Visibility;
 import ch.bfh.red.backend.services.ExpositionNoteService;
 import ch.bfh.red.ui.views.ExpositionView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 @Component
 public class ExpositionPresenter implements ExpositionView.ExpositionViewListener {
 
-	private ExpositionView view;
+	private ExpositionView expositionView;
+	private final ExpositionNoteService expositionNoteService;
+	private List<ExpositionNote> expositions = new ArrayList<>();
 
 	@Autowired
-	private ExpositionNoteService expositionNoteService;
+	public ExpositionPresenter(ExpositionNoteService service){
+		this.expositionNoteService = service;
 
-	public void setView(ExpositionView expositionView) {
-		view = expositionView;
-		view.setListener(this);
 	}
-	
-	public ExpositionPresenter() {
+	public void setView(ExpositionView expositionView) {
+		this.expositionView = expositionView;
+		expositionView.setListener(this);
+		expositionView.setExpositions(this.expositions);
+	}
+
+	@Override
+	public void delete(ExpositionNote expositionNote){
+		getService().delete(getService().getById(expositionNote.getId()));
+	}
+
+	@Override
+	public void load(Integer id){
+		expositions.add(getService().getById(id));
+		expositionView.setExpositions(expositions);
+	}
+
+	public void update(){
+		expositions = getService().getAll();
+		expositionView.setExpositions(expositions);
+	}
+	@Override
+	public void save(ExpositionNote expositionNote){
+		getService().persist(expositionNote);
+	}
+
+	public ExpositionNoteService getService(){
+		return expositionNoteService;
+	}
+
+	public void addMockData(){
+
+		Patient patient1 = new Patient("Stefan", "Mosimann",
+				new Address("Flughafenstrasse", "14", 3123, "Belp"));
+		ExpositionNote note1 = new ExpositionNote(patient1, new Date(), "Herd nicht überpüft", Visibility.PRIVATE, 7);
+		expositionNoteService.persist(note1);
+
+		Patient patient2 = new Patient("Annina", "Eigensatz",
+				new Address("Steinhofstrasse", "34", 3400, "Burgdorf"));
+		ExpositionNote note2 = new ExpositionNote(patient2, new Date(), "Ins Bett ohne Putzritual", Visibility.PRIVATE, 9);
+		expositionNoteService.persist(note2);
+
+		//update();
+
 	}
 
 }

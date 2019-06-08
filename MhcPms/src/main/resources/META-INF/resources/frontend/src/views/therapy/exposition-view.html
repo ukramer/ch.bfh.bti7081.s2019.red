@@ -13,6 +13,7 @@
     <template>
         <style include="lumo-color lumo-typography lumo-badge view-styles"></style>
         <vaadin-vertical-layout theme="spacing" style="width: 100%; height: 100%;" id="vaadinVerticalLayout">
+            <h2 id="header"></h2>
             <vaadin-grid items="[[expositions]]" id="vaadinGrid-expositions" page-size="40">
                 <vaadin-grid-column-group id="vaadinGridColumnGroup">
                     <template class="header">
