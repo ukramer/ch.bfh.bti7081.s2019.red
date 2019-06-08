@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -37,9 +34,9 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
     public void setView(ListView listView) {
         this.listView = listView;
         listView.setListener(this);
-        updateList(false, null, null, null);
+        updateList(false, new Patient(), null, null);
 
-        List<Patient> patients = therapies.stream().map(Therapy::getPatient).distinct().sorted().collect(Collectors.toList());
+        List<Patient> patients = patientService.getAll().stream().distinct().sorted().collect(Collectors.toList());
         listView.setPatients(patients);
     }
 
@@ -94,27 +91,7 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
     @Override
     public void updateList(boolean finished, Patient patient, LocalDate start, LocalDate end) {
         therapies.clear();
-        if (patient != null) {
-            if (start != null && end != null) {
-                therapies = getService().getByFinishedAndPatientNameAndDateRange(finished, patient.getFirstName(), patient.getLastName(), start.toString(), end.toString());
-            } else if (start != null) {
-                therapies = getService().getByFinishedAndPatientNameAndStartDate(finished, patient.getFirstName(), patient.getLastName(), start.toString());
-            } else if (end != null) {
-                therapies = getService().getByFinishedAndPatientNameAndEndDate(finished, patient.getFirstName(), patient.getLastName(), end.toString());
-            } else {
-                therapies = getService().getByFinishedAndPatientName(finished, patient.getFirstName(), patient.getLastName());
-            }
-        } else {
-            if (start != null && end != null) {
-                therapies = getService().getByFinishedAndDateRange(finished, start.toString(), end.toString());
-            } else if (start != null) {
-                therapies = getService().getByFinishedAndStartDate(finished, start.toString());
-            } else if (end != null) {
-                therapies = getService().getByFinishedAndEndDate(finished, end.toString());
-            } else {
-                therapies = getService().getByFinished(finished);
-            }
-        }
+        therapies = getService().getBy(finished, patient.getFirstName(), patient.getLastName(), start, end);
         listView.setTherapies(therapies);
     }
 

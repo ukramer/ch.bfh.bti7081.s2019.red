@@ -29,7 +29,6 @@ public class TherapistService implements IService<Therapist> {
 				TherapistService.class);	
 	}
 	
-	@Override
 	public List<Therapist> getAll() {
 		List<Therapist> list = new ArrayList<>();
 		repository.findAll().iterator().forEachRemaining(list::add);

@@ -29,14 +29,13 @@ public class SingleSessionService implements IService<SingleSession> {
 		BeanUtils.checkBeanInstantiation(Thread.currentThread().getStackTrace(), 
 				SingleSessionService.class);	
 	}
-	
-	@Override
+
 	public List<SingleSession> getAll() {
 		List<SingleSession> list = new ArrayList<>();
 		repository.findAll().iterator().forEachRemaining(list::add);
 		return list;
 	}
-	
+
 	@Override
 	public SingleSession getById(Integer id) {
 		SingleSession obj = repository.findById(id).get();
