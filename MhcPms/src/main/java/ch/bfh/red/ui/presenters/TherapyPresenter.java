@@ -49,6 +49,9 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
 
         List<Therapist> therapists = therapistService.getAll();
         detailView.setTherapists(therapists);
+
+        List<TherapyType> therapyTypes = Arrays.asList(TherapyType.values());
+        detailView.setTherapyTypes(therapyTypes);
     }
 
     public void delete(Therapy therapy) {
