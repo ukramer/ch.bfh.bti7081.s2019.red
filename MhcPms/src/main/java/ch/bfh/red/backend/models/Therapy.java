@@ -12,7 +12,10 @@ import javax.persistence.*;
 
 @Entity
 public class Therapy implements Comparable<Therapy>, Serializable {
-	private static final long serialVersionUID = 6323530446991755194L;
+	/**
+	 * Added attributes patient and therapist to constructor
+	 */
+	private static final long serialVersionUID = 5820076385462678441L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,10 +60,11 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 	
 	public Therapy() {}
 	
-	// TODO add patient, therapist, ...
-	public Therapy(Date startDate, TherapyType therapyType) {
+	public Therapy(Date startDate, TherapyType therapyType, Patient patient, Therapist therapist) {
 		this.startDate = startDate;
 		this.therapyType = therapyType;
+		this.patient = patient;
+		this.therapist = therapist;
 		this.finished = false;
 	}
 

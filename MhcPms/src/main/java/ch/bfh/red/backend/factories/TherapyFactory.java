@@ -1,6 +1,8 @@
 package ch.bfh.red.backend.factories;
 
 
+import ch.bfh.red.backend.models.Patient;
+import ch.bfh.red.backend.models.Therapist;
 import ch.bfh.red.backend.models.Therapy;
 import ch.bfh.red.backend.models.TherapyType;
 import com.github.javafaker.Faker;
@@ -31,11 +33,10 @@ public class TherapyFactory extends AbstractFactory<Therapy> {
         Date startDate =  faker.date().past(1000, TimeUnit.DAYS);
         TherapyType therapyType =  TherapyType.values()[random.nextInt(TherapyType.values().length)];
 
-        // TODO use new constructor
-        Therapy therapy = new Therapy(startDate, therapyType);
-        therapy.setPatient(patientFactory.create());
-        therapy.setTherapist(therapistFactory.create());
+        Patient patient = patientFactory.create();
+        Therapist therapist = therapistFactory.create();
+        Therapy therapy = new Therapy(startDate, therapyType, patient, therapist);
         return therapy;
-
     }
+    
 }

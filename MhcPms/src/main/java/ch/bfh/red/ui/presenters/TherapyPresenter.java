@@ -117,8 +117,8 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
 
     public void addMockData() {
         Patient patient = new Patient("Jürgen", "Test", new Address("Langstrasse", "12k", 7777, "Burgdorf"));
-        Therapy therapy = new Therapy(new Date(), TherapyType.ART);
         Therapist therapist = new Therapist("user", "1234", AcademicTitle.DOCTOR, "Ueli", "Kramer", new Address("Burgstrasse", "18", 3600, "Thun"));
+        Therapy therapy = new Therapy(new Date(), TherapyType.ART, patient, therapist);
 
         therapy.setTherapist(therapist);
         therapy.setPatient(patient);
