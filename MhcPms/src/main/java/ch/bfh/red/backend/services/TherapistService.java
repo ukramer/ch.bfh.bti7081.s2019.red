@@ -1,7 +1,6 @@
 package ch.bfh.red.backend.services;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.Therapist;
 import ch.bfh.red.backend.repositories.TherapistRepository;
 import ch.bfh.red.common.BeanUtils;
@@ -55,16 +53,18 @@ public class TherapistService implements IService<Therapist> {
 	@Override
 	@Transactional
 	public Therapist persist(Therapist t) {
-		Collection<Patient> patients = t.getPatients();
-		for (Patient patient: patients)
-			if (!patientService.existById(patient.getId())) {
-				patientService.persist(patient);
-			}
 		return repository.save(t);
 	}
 	
 	@Override
-	public Boolean existById(Integer id) {
+	public Boolean exists(Therapist t) {
+		if (t == null || t.getId() == null) return false;
+		return existsById(t.getId());
+	}
+	
+	@Override
+	public Boolean existsById(Integer id) {
+		if (id == null) return false;
 		return repository.existsById(id);
 	}
 

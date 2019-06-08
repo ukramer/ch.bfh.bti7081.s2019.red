@@ -4,13 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import ch.bfh.red.backend.factories.ExpositionNoteFactory;
 import ch.bfh.red.backend.models.ExpositionNote;
-import ch.bfh.red.backend.services.ExpositionNoteService;
-import ch.bfh.red.backend.services.IService;
+import ch.bfh.red.backend.persistence.ExpositionNotePersistenceManager;
+import ch.bfh.red.backend.persistence.IPersistenceManager;
 
 public class ExpositionNoteCrudTest extends CrudTest<ExpositionNote> {
 
 	@Autowired
-	private ExpositionNoteService service;
+	private ExpositionNotePersistenceManager persistenceManager;
 	
 	private ExpositionNoteFactory factory = new ExpositionNoteFactory();
 	
@@ -30,8 +30,8 @@ public class ExpositionNoteCrudTest extends CrudTest<ExpositionNote> {
     }
 
 	@Override
-	protected IService<ExpositionNote> getService() {
-		return service;
+	protected IPersistenceManager<ExpositionNote> getPersistenceManager() {
+		return persistenceManager;
 	}
 
 }

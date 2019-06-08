@@ -1,40 +1,29 @@
 package ch.bfh.red.test.tests.model;
 
-import java.util.Date;
-
-import ch.bfh.red.backend.models.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import ch.bfh.red.backend.services.IService;
+import ch.bfh.red.backend.factories.ExpositionNoteFactory;
+import ch.bfh.red.backend.factories.PatientFactory;
+import ch.bfh.red.backend.models.ExpositionNote;
+import ch.bfh.red.backend.models.Patient;
+import ch.bfh.red.backend.persistence.ExpositionNotePersistenceManager;
 import ch.bfh.red.test.tests.StartupTest;
 
 public class ExpositionNoteTest extends StartupTest {
-
-    @Autowired
-    private IService<Address> addressService;
-
-    @Autowired
-    private IService<Patient> patientService;
+	private final ExpositionNoteFactory expositionNoteFactory = new ExpositionNoteFactory();
+	private final PatientFactory patientFactory = new PatientFactory();
     
     @Autowired
-    private IService<ExpositionNote> expositionNoteService;
-
+    private ExpositionNotePersistenceManager expositionNoteManager;
+    
     @Test
     public void testSessionTypeMapping() {
-        Address address = new Address("Emmentalstrasse", "100", 3414, "Oberburg");
-        addressService.persist(address);
-
-        Patient patient = new Patient("Anne", "Meier", address);
-        patientService.persist(patient);
-
-        ExpositionNote exposition1 = new ExpositionNote(patient, new Date(), "Am Morgen Herd nicht überprüft",
-                Visibility.PRIVATE, 4);
-        expositionNoteService.persist(exposition1);
-
-        ExpositionNote exposition2 = new ExpositionNote(patient, new Date(), "Ins Bett ohne Aufräumen",
-                Visibility.PUBLIC, 6);
-        expositionNoteService.persist(exposition2);
+        Patient patient = patientFactory.create();
+        ExpositionNote exposition1 = expositionNoteFactory.create(patient);
+        ExpositionNote exposition2 = expositionNoteFactory.create(patient);
+        expositionNoteManager.persistAll(exposition1);
+        expositionNoteManager.persistAll(exposition2);
     }
 
 }

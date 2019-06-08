@@ -45,34 +45,15 @@ public class TherapyService implements IService<Therapy> {
     @Lazy
     private TherapistNoteService therapistNoteService;
     
+    @PersistenceContext
+    private EntityManager entityManager;
+    
+    private static DateToStringEncoder dateToStringEncoder = new DateToStringEncoder();
+    
     public TherapyService() {
 		BeanUtils.checkBeanInstantiation(Thread.currentThread().getStackTrace(), 
 				TherapyService.class);	
 	}
-    
-    // TODO remove
-    private static DateToStringEncoder dateToStringEncoder = new DateToStringEncoder();
-
-    // TODO remove
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    // TODO remove
-    @Transactional
-    public Therapy getByIdWithAllAssociations(Integer id) {
-        Therapy therapy = repository.findById(id).get();
-        Hibernate.initialize(therapy.getSingleSessions());
-        Hibernate.initialize(therapy.getGroupSessions());
-        Hibernate.initialize(therapy.getTherapistNotes());
-        Hibernate.initialize(therapy.getPatientNotes());
-
-        for (GroupSession groupSession: therapy.getGroupSessions()) {
-            Hibernate.initialize(groupSession.getPatients());
-            Hibernate.initialize(groupSession.getTherapists());
-        }
-
-        return therapy;
-    }
 
     @Override
 	public List<Therapy> getAll() {
@@ -99,19 +80,36 @@ public class TherapyService implements IService<Therapy> {
 	
 	@Override
 	public Therapy persist(Therapy t) {
-		patientService.persist(t.getPatient());
-    	singleSessionService.persist(t.getSingleSessions());
-    	groupSessionService.persist(t.getGroupSessions());
-    	patientNoteService.persist(t.getPatientNotes());
-    	therapistNoteService.persist(t.getTherapistNotes());
-    	
         return repository.save(t);
 	}
 	
 	@Override
-	public Boolean existById(Integer id) {
+	public Boolean exists(Therapy t) {
+		if (t == null || t.getId() == null) return false;
+		return existsById(t.getId());
+	}
+	
+	@Override
+	public Boolean existsById(Integer id) {
+		if (id == null) return false;
 		return repository.existsById(id);
 	}
+	
+	@Transactional
+    public Therapy getByIdWithAllAssociations(Integer id) {
+        Therapy therapy = repository.findById(id).get();
+        Hibernate.initialize(therapy.getSingleSessions());
+        Hibernate.initialize(therapy.getGroupSessions());
+        Hibernate.initialize(therapy.getTherapistNotes());
+        Hibernate.initialize(therapy.getPatientNotes());
+
+        for (GroupSession groupSession: therapy.getGroupSessions()) {
+            Hibernate.initialize(groupSession.getPatients());
+            Hibernate.initialize(groupSession.getTherapists());
+        }
+
+        return therapy;
+    }
 
     public List<Therapy> getByFinished(boolean finished) {
         return repository.findByFinished(finished);

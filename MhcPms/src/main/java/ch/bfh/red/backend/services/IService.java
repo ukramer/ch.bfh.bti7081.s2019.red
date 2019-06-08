@@ -3,7 +3,6 @@ package ch.bfh.red.backend.services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 public interface IService<T> {
@@ -18,7 +17,11 @@ public interface IService<T> {
 	
 	T persist(T t);
 	
-	Boolean existById(Integer id);
+//	T persist(T t, Collection<Class<?>> classes);
+	
+	Boolean exists(T t);
+	
+	Boolean existsById(Integer id);
 
 	default Collection<T> persist(Collection<T> models) {
 		if (models == null)
@@ -28,11 +31,8 @@ public interface IService<T> {
 				throw new NullPointerException("At least one item in collection is null");
 		
         Collection<T> persistedModels = new ArrayList<>();
-        Iterator<T> iterator = models.iterator();
-        while (iterator.hasNext()) {
-            persistedModels.add(persist(iterator.next()));
-        }
-
+        for (T model: models)
+            persistedModels.add(persist(model));
         return persistedModels;
     }
 	

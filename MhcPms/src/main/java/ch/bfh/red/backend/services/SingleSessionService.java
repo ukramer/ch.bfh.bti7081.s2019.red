@@ -55,15 +55,18 @@ public class SingleSessionService implements IService<SingleSession> {
 	
 	@Override
 	public SingleSession persist(SingleSession t) {
-		patientService.persist(t.getPatient());
-    	therapistService.persist(t.getTherapist());
-    	
     	return repository.save(t);
 	}
 	
 	@Override
-	public Boolean existById(Integer id) {
+	public Boolean exists(SingleSession t) {
+		if (t == null || t.getId() == null) return false;
+		return existsById(t.getId());
+	}
+	
+	@Override
+	public Boolean existsById(Integer id) {
+		if (id == null) return false;
 		return repository.existsById(id);
 	}
-
 }

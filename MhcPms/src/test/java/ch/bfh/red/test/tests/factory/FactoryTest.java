@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import ch.bfh.red.backend.factories.AbstractFactory;
 
-public class FactoryTest<T> {
+public abstract class FactoryTest<T> {
 	private final AbstractFactory<T> factory;
 	
 	public FactoryTest(AbstractFactory<T> factory) {

@@ -4,13 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import ch.bfh.red.backend.factories.TherapyFactory;
 import ch.bfh.red.backend.models.Therapy;
-import ch.bfh.red.backend.services.IService;
-import ch.bfh.red.backend.services.TherapyService;
+import ch.bfh.red.backend.persistence.IPersistenceManager;
+import ch.bfh.red.backend.persistence.TherapyPersistenceManager;
 
 public class TherapyCrudTest extends CrudTest<Therapy> {
 
 	@Autowired
-	private TherapyService service;
+	private TherapyPersistenceManager persistenceManager;
 	
 	private TherapyFactory factory = new TherapyFactory();
 	
@@ -30,8 +30,8 @@ public class TherapyCrudTest extends CrudTest<Therapy> {
 	}
 
 	@Override
-	protected IService<Therapy> getService() {
-		return service;
+	protected IPersistenceManager<Therapy> getPersistenceManager() {
+		return persistenceManager;
 	}
 	
 }

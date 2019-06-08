@@ -5,55 +5,35 @@ import java.util.Date;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import ch.bfh.red.backend.models.AcademicTitle;
-import ch.bfh.red.backend.models.Address;
+import ch.bfh.red.backend.factories.PatientFactory;
+import ch.bfh.red.backend.factories.TherapistFactory;
 import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.SessionType;
 import ch.bfh.red.backend.models.SingleSession;
 import ch.bfh.red.backend.models.Therapist;
-import ch.bfh.red.backend.services.IService;
+import ch.bfh.red.backend.persistence.SingleSessionPersistenceManager;
 import ch.bfh.red.test.tests.StartupTest;
 
 public class SingleSessionTest extends StartupTest {
-    
+	private final PatientFactory patientFactory = new PatientFactory();
+	private final TherapistFactory therapistFactory = new TherapistFactory();
+	
     @Autowired
-    private IService<Address> addressService;
-
-    @Autowired
-    private IService<Patient> patientService;
-    
-    @Autowired
-    private IService<Therapist> therapistService;
-    
-    @Autowired
-    private IService<SingleSession> singleSessionService;
-    
-
+    private SingleSessionPersistenceManager singleSessionService;
     
     @Test
     public void testSessionTypeMapping() {
-        Address address = new Address("OneToOne funktioniert auch Strasse", ":)", 1234, "Bern");
-        addressService.persist(address);
-        
-        Patient patient = new Patient("Ueli", "Kramer", address);
-        patientService.persist(patient);
-        
-        AcademicTitle title = AcademicTitle.DOCTOR;
-
-        
-        Therapist therapist = new Therapist("marle34", "1234", title, "Marlies", "Lotti", address);
-        therapistService.persist(therapist);
+        Patient patient = patientFactory.create();
+        Therapist therapist = therapistFactory.create();
 
         SessionType type1 = SessionType.TALK;
 
         SingleSession session1 = new SingleSession(patient, therapist, new Date(),
                 new Date(), type1);
-        singleSessionService.persist(session1);
-        
         SingleSession session2 = new SingleSession(patient, therapist, new Date(),
                 new Date(), type1);
-        singleSessionService.persist(session2);
-        
+        singleSessionService.persistAll(session1);
+        singleSessionService.persistAll(session2);
     }
     
 }

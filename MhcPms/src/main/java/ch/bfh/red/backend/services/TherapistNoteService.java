@@ -51,13 +51,18 @@ public class TherapistNoteService implements IService<TherapistNote> {
 	
 	@Override
 	public TherapistNote persist(TherapistNote t) {
-		therapistService.persist(t.getTherapist());
     	return repository.save(t);
 	}
 	
 	@Override
-	public Boolean existById(Integer id) {
+	public Boolean exists(TherapistNote t) {
+		if (t == null || t.getId() == null) return false;
+		return existsById(t.getId());
+	}
+	
+	@Override
+	public Boolean existsById(Integer id) {
+		if (id == null) return false;
 		return repository.existsById(id);
 	}
-
 }

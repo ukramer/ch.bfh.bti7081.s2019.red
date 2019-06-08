@@ -1,8 +1,9 @@
 package ch.bfh.red.ui.presenters;
 
 import ch.bfh.red.backend.models.*;
-import ch.bfh.red.backend.services.PatientService;
-import ch.bfh.red.backend.services.TherapistService;
+import ch.bfh.red.backend.persistence.PatientPersistenceManager;
+import ch.bfh.red.backend.persistence.TherapistPersistenceManager;
+import ch.bfh.red.backend.persistence.TherapyPersistenceManager;
 import ch.bfh.red.backend.services.TherapyService;
 import ch.bfh.red.ui.views.Therapy.DetailView;
 import ch.bfh.red.ui.views.Therapy.ListView;
@@ -17,21 +18,21 @@ import java.util.stream.Collectors;
 
 @Component
 public class TherapyPresenter implements ListView.ListViewListener, DetailView.DetailViewListener {
-    private final TherapyService therapyService;
-    private final PatientService patientService;
-    private final TherapistService therapistService;
+	
+	@Autowired
+    private TherapyPersistenceManager therapyManager;
+	
+	@Autowired
+    private PatientPersistenceManager patientManager;
+	
+	@Autowired
+    private TherapistPersistenceManager therapistManager;
+	
     private ListView listView;
     private DetailView detailView;
     private List<Therapy> therapies = new ArrayList<>();
 
     private Therapy loadedTherapy;
-
-    @Autowired
-    public TherapyPresenter(TherapyService therapyService, TherapistService therapistService, PatientService patientService) {
-        this.therapyService = therapyService;
-        this.patientService = patientService;
-        this.therapistService = therapistService;
-    }
 
     public void setView(ListView listView) {
         this.listView = listView;
@@ -46,10 +47,10 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
         this.detailView = detailView;
         detailView.setListener(this);
 
-        List<Patient> patients = patientService.getAll();
+        List<Patient> patients = patientManager.getService().getAll();
         detailView.setPatients(patients);
 
-        List<Therapist> therapists = therapistService.getAll();
+        List<Therapist> therapists = therapistManager.getService().getAll();
         detailView.setTherapists(therapists);
     }
 
@@ -84,7 +85,7 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
     }
 
     public TherapyService getService() {
-        return therapyService;
+        return (TherapyService) therapyManager.getService();
     }
 
     @Override
@@ -138,7 +139,8 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
         List<PatientNote> notes = new ArrayList<>();
         notes.add(note);
         therapy.setPatientNotes(notes);
-        therapyService.persist(therapy);
+        
+        therapyManager.persistAll(therapy);
 
 /*
 

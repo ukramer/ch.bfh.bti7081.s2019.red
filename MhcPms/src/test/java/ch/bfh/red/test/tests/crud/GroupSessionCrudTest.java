@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ch.bfh.red.backend.factories.GroupSessionFactory;
 import ch.bfh.red.backend.models.GroupSession;
 import ch.bfh.red.backend.models.SessionType;
-import ch.bfh.red.backend.services.GroupSessionService;
-import ch.bfh.red.backend.services.IService;
+import ch.bfh.red.backend.persistence.GroupSessionPersistenceManager;
+import ch.bfh.red.backend.persistence.IPersistenceManager;
 
 public class GroupSessionCrudTest extends CrudTest<GroupSession> {
 	
 	@Autowired
-	private GroupSessionService service;
+	private GroupSessionPersistenceManager persistenceManager;
 	
 	private GroupSessionFactory factory = new GroupSessionFactory();
 
@@ -32,8 +32,8 @@ public class GroupSessionCrudTest extends CrudTest<GroupSession> {
 	}
 
 	@Override
-	protected IService<GroupSession> getService() {
-		return service;
+	protected IPersistenceManager<GroupSession> getPersistenceManager() {
+		return persistenceManager;
 	}
 	
 }

@@ -2,7 +2,9 @@ package ch.bfh.red.test.tests.crud;
 
 import org.junit.Before;
 import org.junit.Test;
-import ch.bfh.red.backend.services.IService;
+
+import ch.bfh.red.backend.persistence.IPersistenceManager;
+import ch.bfh.red.common.EntityUtils;
 import ch.bfh.red.test.tests.StartupTest;
 
 public abstract class CrudTest<T> extends StartupTest {
@@ -17,7 +19,7 @@ public abstract class CrudTest<T> extends StartupTest {
 	
 	protected abstract void setAnUpdateValue(T instance);
 	
-	protected abstract IService<T> getService();
+	protected abstract IPersistenceManager<T> getPersistenceManager();
 	
 	@Before
 	public void before() {
@@ -27,14 +29,14 @@ public abstract class CrudTest<T> extends StartupTest {
 		// Create check
 		try {
 			instance = createInstance();
-			instance2 = getService().persist(instance);
+			instance2 = getPersistenceManager().persist(instance, EntityUtils.getEntityClasses());
 		} catch (Exception e) {
 			createCheck = e;
 		}
 		
 		// Read check
 		try {
-			instance2 = getService().getById(getId(instance));
+			instance2 = getPersistenceManager().getService().getById(getId(instance));
 			instance = instance2;
 			final T readInstance1 = instance;
 			final T readInstance2 = instance2;
@@ -52,7 +54,7 @@ public abstract class CrudTest<T> extends StartupTest {
 		// Update check
 		try {
 			setAnUpdateValue(instance);
-			instance2 = getService().persist(instance);
+			instance2 = getPersistenceManager().getService().persist(instance);
 			final T updateInstance1 = instance;
 			final T updateInstance2 = instance2;
 			if (!updateInstance1.equals(updateInstance2)) {
@@ -68,8 +70,8 @@ public abstract class CrudTest<T> extends StartupTest {
 		// Delete check
 		try {
 			final Integer id = getId(instance);
-			getService().delete(id);
-			if (getService().existById(id)) {
+			getPersistenceManager().getService().delete(id);
+			if (getPersistenceManager().getService().existsById(id)) {
 				deleteCheck = new Exception("Item is still persisted: memoryInstance"
 						+ instance.toString());
 			}

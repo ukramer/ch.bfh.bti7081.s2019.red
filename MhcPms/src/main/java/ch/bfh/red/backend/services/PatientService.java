@@ -1,25 +1,27 @@
 package ch.bfh.red.backend.services;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-
-import ch.bfh.red.backend.models.Patient;
-import ch.bfh.red.backend.models.Therapist;
-import ch.bfh.red.backend.repositories.PatientRepository;
-import ch.bfh.red.common.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.*;
+import ch.bfh.red.backend.models.Patient;
+import ch.bfh.red.backend.repositories.PatientRepository;
+import ch.bfh.red.common.BeanUtils;
+import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
 
 @Service("patientService")
 public class PatientService implements IService<Patient> {
@@ -64,17 +66,18 @@ public class PatientService implements IService<Patient> {
 	
 	@Override
 	public Patient persist(Patient t) {
-		Collection<Therapist> therapists = t.getTherapists();
-		for (Therapist therapist: therapists)
-			if (!therapistService.existById(therapist.getId())) {
-				therapistService.persist(therapist);
-			}
-		therapistService.persist(t.getTherapists());
 		return repository.save(t);
+	}	
+	
+	@Override
+	public Boolean exists(Patient t) {
+		if (t == null || t.getId() == null) return false;
+		return existsById(t.getId());
 	}
 	
 	@Override
-	public Boolean existById(Integer id) {
+	public Boolean existsById(Integer id) {
+		if (id == null) return false;
 		return repository.existsById(id);
 	}
 
@@ -89,7 +92,7 @@ public class PatientService implements IService<Patient> {
 		if(StringUtils.isNotBlank(patientSearchBean.getLastName())){
 			predicates.add(cb.like(patient.get("lastName"), "%" + patientSearchBean.getLastName() + "%"));
 		}
-		Join address = patient.join("address");
+		Join<?,?> address = patient.join("address");
 		if(StringUtils.isNotBlank(patientSearchBean.getStreet())){
 			predicates.add(cb.like(address.get("street"), "%" + patientSearchBean.getStreet() + "%"));
 		}
@@ -116,4 +119,5 @@ public class PatientService implements IService<Patient> {
 		Hibernate.initialize(patient.getTherapists());
 		return patient;
 	}
+
 }

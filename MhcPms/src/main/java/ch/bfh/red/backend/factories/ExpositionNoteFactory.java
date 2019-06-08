@@ -25,8 +25,11 @@ public class ExpositionNoteFactory extends AbstractFactory<ExpositionNote> {
 
     @Override
     public ExpositionNote create(){
+    	return create(patientFactory.create());
+    }
+    
+    public ExpositionNote create(Patient patient){
         Date date = faker.date().past(100, TimeUnit.DAYS);
-        Patient patient = patientFactory.create();
         String text = "This is an exposition note regarding " + patient.toString();
         Visibility visibility = Visibility.values()[random.nextInt(Visibility.values().length)]; 
         return new ExpositionNote(patient, date, text, visibility, random.nextInt(10));

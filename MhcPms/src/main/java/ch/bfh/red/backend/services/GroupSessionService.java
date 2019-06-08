@@ -55,14 +55,18 @@ public class GroupSessionService implements IService<GroupSession> {
 	
 	@Override
 	public GroupSession persist(GroupSession t) {
-		patientService.persist(t.getPatients());
-    	therapistService.persist(t.getTherapists());
-    	
     	return repository.save(t);
 	}
 	
 	@Override
-	public Boolean existById(Integer id) {
+	public Boolean exists(GroupSession t) {
+		if (t == null || t.getId() == null) return false;
+		return existsById(t.getId());
+	}
+	
+	@Override
+	public Boolean existsById(Integer id) {
+		if (id == null) return false;
 		return repository.existsById(id);
 	}
 

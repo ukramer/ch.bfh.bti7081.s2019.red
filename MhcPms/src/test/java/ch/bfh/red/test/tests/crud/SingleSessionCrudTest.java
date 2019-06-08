@@ -5,13 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ch.bfh.red.backend.factories.SingleSessionFactory;
 import ch.bfh.red.backend.models.SessionType;
 import ch.bfh.red.backend.models.SingleSession;
-import ch.bfh.red.backend.services.IService;
-import ch.bfh.red.backend.services.SingleSessionService;
+import ch.bfh.red.backend.persistence.IPersistenceManager;
+import ch.bfh.red.backend.persistence.SingleSessionPersistenceManager;
 
 public class SingleSessionCrudTest extends CrudTest<SingleSession> {
 	
 	@Autowired
-	private SingleSessionService service;
+	private SingleSessionPersistenceManager persistenceManager;
 	
 	private SingleSessionFactory factory = new SingleSessionFactory();
 
@@ -32,8 +32,8 @@ public class SingleSessionCrudTest extends CrudTest<SingleSession> {
 	}
 
 	@Override
-	protected IService<SingleSession> getService() {
-		return service;
+	protected IPersistenceManager<SingleSession> getPersistenceManager() {
+		return persistenceManager;
 	}
 	
 }
