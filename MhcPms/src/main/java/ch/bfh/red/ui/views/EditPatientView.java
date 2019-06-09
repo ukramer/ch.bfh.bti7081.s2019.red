@@ -40,7 +40,6 @@ import ch.bfh.red.ui.encoders.LocalDateToStringEncoder;
 import ch.bfh.red.ui.encoders.SessionTypeToStringEncoder;
 import ch.bfh.red.ui.encoders.TherapyTypeToStringEncoder;
 import ch.bfh.red.ui.presenters.PatientPresenter;
-import ch.bfh.red.ui.views.Therapy.DetailView;
 
 @Route(value = "editpatient", layout = MainLayout.class)
 @Tag("editpatient-element")
@@ -157,7 +156,7 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
 
     @EventHandler
     public void editTherapy(@EventData("event.model.item.id") int id) {
-        UI.getCurrent().navigate(DetailView.class, id);
+        UI.getCurrent().navigate(EditTherapyView.class, id);
     }
 
     @EventHandler

@@ -1,4 +1,4 @@
-package ch.bfh.red.ui.views.Therapy;
+package ch.bfh.red.ui.views;
 
 import ch.bfh.red.MainLayout;
 import ch.bfh.red.backend.models.*;
@@ -9,8 +9,6 @@ import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
 import ch.bfh.red.ui.encoders.SessionTypeToStringEncoder;
 import ch.bfh.red.ui.presenters.TherapyPresenter;
-import ch.bfh.red.ui.views.EditGroupSessionView;
-import ch.bfh.red.ui.views.View;
 import ch.bfh.red.ui.views.session.EditSingleSessionView;
 
 import com.vaadin.flow.component.Tag;
@@ -45,7 +43,7 @@ import java.util.stream.Collectors;
 @HtmlImport("frontend://src/views/therapy/detail.html")
 @Component
 @UIScope
-public class DetailView extends PolymerTemplate<DetailView.TherapyModel> implements HasUrlParameter<Integer>, View<DetailView.DetailViewListener>, BeforeEnterObserver, AfterNavigationObserver {
+public class EditTherapyView extends PolymerTemplate<EditTherapyView.TherapyModel> implements HasUrlParameter<Integer>, View<EditTherapyView.DetailViewListener>, BeforeEnterObserver, AfterNavigationObserver {
     private DetailViewListener listener;
 
     @Id("header")
@@ -72,7 +70,7 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
 
     private Binder<Therapy> binder = new Binder<>();
 
-    DetailView(@Autowired TherapyPresenter therapyPresenter) {
+    EditTherapyView(@Autowired TherapyPresenter therapyPresenter) {
         this.therapyPresenter = therapyPresenter;
            
         binder.forField(startDate).asRequired("Es muss ein Startdatum gesetzt sein.") //Uninitialized Read left unhandled because value is set here
@@ -103,7 +101,7 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
                 listener.load(integer);
             } catch (NoSuchElementException e) {
                 // means that there is no element available with the id
-                UI.getCurrent().navigate(ListView.class);
+                UI.getCurrent().navigate(ListTherapyView.class);
             }
         }
     }
@@ -163,7 +161,7 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
     public void confirmDelete(Therapy therapy) {
         listener.delete(therapy);
         Notification.show("Die Therapie wurde erfolgreich gelöscht.");
-        UI.getCurrent().navigate(ListView.class);
+        UI.getCurrent().navigate(ListTherapyView.class);
     }
 
     @EventHandler
@@ -176,7 +174,7 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
                 listener.save(therapy);
                 if (isNew) {
                     Notification.show("Die Therapie wurde erfolgreich hinzugefügt.");
-                    UI.getCurrent().navigate(ListView.class);
+                    UI.getCurrent().navigate(ListTherapyView.class);
                 } else {
                     Notification.show("Die Therapie wurde erfolgreich aktualisiert.");
                 }
@@ -233,7 +231,7 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
     public void afterNavigation(AfterNavigationEvent afterNavigationEvent) {
         if (binder.getBean() == null) {
             Notification.show("Die aufgerufene Therapie konnte nicht gefunden werden.");
-            UI.getCurrent().navigate(ListView.class);
+            UI.getCurrent().navigate(ListTherapyView.class);
         }
     }
 
