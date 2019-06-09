@@ -9,6 +9,7 @@ import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.SessionType;
 import ch.bfh.red.backend.models.SingleSession;
 import ch.bfh.red.backend.models.Therapist;
+import ch.bfh.red.backend.models.Therapy;
 import ch.bfh.red.backend.services.PatientService;
 import ch.bfh.red.backend.services.SingleSessionService;
 import ch.bfh.red.backend.services.TherapistService;
@@ -50,6 +51,22 @@ public class SingleSessionPresenter implements EditSingleSessionListener {
 	@Override
 	public Collection<SessionType> getSessionTypes() {
 		return Arrays.asList(SessionType.values());
+	}
+
+	@Override
+	public void load(Integer therapyId) {
+		SingleSession singleSession = service.getById(therapyId);
+		singleSessionView.editSingleSession(singleSession);
+	}
+
+	@Override
+	public void prepareNewObject() {
+		singleSessionView.createSingleSession();
+	}
+
+	@Override
+	public void save(SingleSession singleSession) throws Exception {
+		service.persist(singleSession);
 	}
 	
 }
