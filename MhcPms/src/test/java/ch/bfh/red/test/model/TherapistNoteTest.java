@@ -1,5 +1,6 @@
 package ch.bfh.red.test.model;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,20 +11,35 @@ import ch.bfh.red.backend.models.Therapist;
 import ch.bfh.red.backend.persistence.TherapistNotePersistenceManager;
 import ch.bfh.red.test.StartupTest;
 
+import static org.hamcrest.Matchers.hasProperty;
+import static org.junit.Assert.assertThat;
+
 public class TherapistNoteTest extends StartupTest {
-    private final TherapistNoteFactory TherapistNoteFactory = new TherapistNoteFactory();
-    private final TherapistFactory TherapistFactory = new TherapistFactory();
+    private final TherapistNoteFactory therapistNoteFactory = new TherapistNoteFactory();
+    private final TherapistFactory therapistFactory = new TherapistFactory();
+
+    private Therapist therapist;
+    TherapistNote therapistNote1;
+    TherapistNote therapistNote2;
 
     @Autowired
-    private TherapistNotePersistenceManager TherapistNoteManager;
+    private TherapistNotePersistenceManager therapistNoteManager;
 
-    @Test
-    public void testSessionTypeMapping() {
-        Therapist Therapist = TherapistFactory.create();
-        TherapistNote Therapist1 = TherapistNoteFactory.create(Therapist);
-        TherapistNote Therapist2 = TherapistNoteFactory.create(Therapist);
-        TherapistNoteManager.persistAll(Therapist1);
-        TherapistNoteManager.persistAll(Therapist2);
+    @Before
+    public void generateTherapistNotes() {
+        therapist = therapistFactory.create();
+        therapistNote1 = therapistNoteFactory.create(therapist);
+        therapistNote2 = therapistNoteFactory.create(therapist);
+
+        therapistNoteManager.persistAll(therapistNote1);
+        therapistNoteManager.persistAll(therapistNote2);
     }
 
+    @Test
+    public void testPatientNoteCreation() {
+        assertThat(therapistNote1, hasProperty("therapist"));
+        assertThat(therapistNote1, hasProperty("date"));
+        assertThat(therapistNote1, hasProperty("text"));
+        assertThat(therapistNote1, hasProperty("visibility"));
+    }
 }
