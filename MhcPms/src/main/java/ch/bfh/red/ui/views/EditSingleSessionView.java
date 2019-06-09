@@ -1,9 +1,13 @@
 package ch.bfh.red.ui.views;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -27,16 +31,17 @@ import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.SessionType;
 import ch.bfh.red.backend.models.SingleSession;
 import ch.bfh.red.backend.models.Therapist;
+import ch.bfh.red.common.DateTimeUtils;
+import ch.bfh.red.ui.presenters.SingleSessionPresenter;
 
 @Route(value = "editSingleSession", layout = MainLayout.class)
 @Tag("editsinglesession-element")
 @HtmlImport("frontend://src/views/session/editSingleSession.html")
 public class EditSingleSessionView
-		extends PolymerTemplate<EditSingleSessionView.EditSingleSessionModel>
-		implements View<EditSingleSessionView.EditSingleSessionListener> {
-	private static final long serialVersionUID = 1L;
+		extends PolymerTemplate<EditSingleSessionView.EditSingleSessionModel> {
 	
-	private EditSingleSessionListener listener;
+	@Autowired
+	private SingleSessionPresenter presenter;
 	
 	@Id("header")
 	private H2 header;
@@ -56,60 +61,41 @@ public class EditSingleSessionView
 	@Id("startDate.time")
 	private TimePicker startTimePicker;
 	
-	
-	private SingleSession singleSession;
-	
 	private Binder<SingleSession> binder = new Binder<>();
 	
-	public EditSingleSessionView() {
-		header.setText("Bearbeite eine Einzelsitzung");
+	@Autowired
+	public EditSingleSessionView(SingleSessionPresenter presenter) {
+		this.presenter = presenter;
 		
-//		binder.forField(patient)
-//			.asRequired("Auswahl leer")
-//			.bind(SingleSession::getPatient, SingleSession::setPatient);
-//		binder.forField(therapist)
-//		.asRequired("Auswahl leer")
-//		.bind(SingleSession::getTherapist, SingleSession::setTherapist);
-//		binder.forField(sessionType)
-//		.asRequired("Auswahl leer")
-//		.bind(SingleSession::getSessionType, SingleSession::setSessionType);
-		
-		Collection<Patient> patients = createPatients();
-		Collection<Therapist> therapists = createTherapists();
-		Patient patient  = patients.iterator().next();
-		Therapist therapist = therapists.iterator().next();
-		Collection<SessionType> sessionTypes = createSessionTypes();
-		SessionType sessionType = sessionTypes.iterator().next();
-		singleSession = new SingleSession(patient, therapist, new Date(), new Date(), sessionType);
-		
-		startDatePicker.addAttachListener(event -> {
-			System.out.println("attach");
-		});
-		
-		startDatePicker.addBlurListener(event -> {
-			System.out.println("blur");
-		});
-		
-//		final DateToDateBeanEncoder encoder;
-//		startDatePicker.addValueChangeListener(event -> {
-//			System.out.println("value changed");
-//			encoder.
-//			event.getValue()
-//		});
+		Collection<Patient> patients = presenter.getPatients();
+		Collection<Therapist> therapists = presenter.getTherapist();
+		Collection<SessionType> sessionTypes = presenter.getSessionTypes();
 		
 		this.patientComboBox.setDataProvider(DataProvider.ofCollection(patients));
 		this.therapistComboBox.setDataProvider(DataProvider.ofCollection(therapists));
 		this.sessionTypeComboBox.setDataProvider(DataProvider.ofCollection(sessionTypes));
-
-
 		
-		setSingleSession(singleSession);
+		binder.forField(patientComboBox)
+				.asRequired("Auswahl leer")
+				.bind(SingleSession::getPatient, SingleSession::setPatient);
+		binder.forField(therapistComboBox)
+				.asRequired("Auswahl leer")
+				.bind(SingleSession::getTherapist, SingleSession::setTherapist);
+		binder.forField(sessionTypeComboBox)
+				.asRequired("Auswahl leer")
+				.bind(SingleSession::getSessionType, SingleSession::setSessionType);
+		
+		createSingleSession();
 		
 	}
 	
-	public void createSingleSession(SingleSession singleSession) {
+	public void createSingleSession() {
 		header.setText("Neue Einzelsitzung");
-		setSingleSession(singleSession);
+		therapistComboBox.clear();
+		patientComboBox.clear();
+		sessionTypeComboBox.clear();
+		startDatePicker.setValue(LocalDate.now());
+		startTimePicker.setValue(LocalTime.now());
 	}
 	
 	public void editSingleSession(SingleSession singleSession) {
@@ -117,90 +103,43 @@ public class EditSingleSessionView
 		setSingleSession(singleSession);
 	}
 	
-	
 	private void setSingleSession(SingleSession singleSession) {
 		binder.setBean(singleSession);
-//		getModel().setSingleSession(singleSession);
+		getModel().setPatient(singleSession.getPatient());
+		getModel().setTherapist(singleSession.getTherapist());
 		
-//		getModel().setStartDate(singleSession.getStartDate());
-//		getModel().setStartDate(dateTimeBean);
-		
-//		getModel().setStartTime(dateTimeBean);
-	}
-	
-	
-	
-	// TODO remove
-	private Collection<Therapist> createTherapists() {
-		List<Therapist> persons = new ArrayList<>();
-		AcademicTitle academicTitle = AcademicTitle.BACHELOR;
-		Address address1 = new Address("Bahnhofstrasse", "2", 1234, "Zürich");
-		Address address2 = new Address("Langstrasse", "40", 1235, "Bern");
-		persons.add(new Therapist("hansiRu", "1234", academicTitle, "Reto", "Bachmann", address1));
-		persons.add(new Therapist("melbu", "1234", academicTitle, "Laura", "Lütolf", address2));
-		return persons;
-	}
-	
-	// TODO remove
-	private Collection<Patient> createPatients() {
-		List<Patient> patients = new ArrayList<>();
-		patients.add(new Patient("Hans", "Rudolf",
-				new Address("Bahnhofstrasse", "2", 1234, "Zürich")));
-		patients.add(new Patient("Melina", "Büchel",
-				new Address("Langstrasse", "40", 1235, "Bern")));
-		return patients;
-	}
-	
-	// TODO remove
-	private Collection<SessionType> createSessionTypes() {
-		List<SessionType> sessionTypes = new ArrayList<>();
-		sessionTypes.add(SessionType.DISCUSSION);
-		sessionTypes.add(SessionType.EXPOSITION);
-		return sessionTypes;
+		startDatePicker.setValue(DateTimeUtils.toLocalDate(singleSession.getStartDate()));
+		startTimePicker.setValue(DateTimeUtils.toLocalTime(singleSession.getStartDate()));
 	}
 	
 	public interface EditSingleSessionListener {
 		
+		Collection<Patient> getPatients();
+		
+		Collection<Therapist> getTherapist();
+		
+		Collection<SessionType> getSessionTypes();
+		
 	}
 	
-	
-	
+	/**
+	 * Model could not fully implemented with attributes and beans.
+	 * The problem is DatePicker and TimePicker. It's not possible to set 
+	 * the format and the encoder/decooder properly. Tried to solve it 
+	 * with DateTimeBean class, but result was formatting problem.
+	 * Workaround is to exchange value external with {@code getValue} and {@code setValue}. 
+	 */
 	public interface EditSingleSessionModel extends TemplateModel {
-//		@Include({ 
-////			"startDate"
-////			, 
-////			"startDate", "endDate",
-////				"endDate", "sessionType"
-////			,
-//			"patient", "therapist" 
-//				})
-////		@Encode(value = DateToDateBeanEncoder.class, path = "startDate.dateString")
-////		@Encode(value = DateToDateBeanEncoder.class, path = "startDate.timeString")
-////		@Encode(value = DateToDateBeanEncoder.class, path = "endDate.dateString")
-////		@Encode(value = DateToDateBeanEncoder.class, path = "endDate.timeString")
-//		@Encode(value = PatientToNameStringConverter.class, path = "patient")
-//		@Encode(value = TherapistToNameStringConverter.class, path = "therapist")
-//		void setSingleSession(SingleSession singleSession);
+		@Include({ "id", "patient.firstName", "patient.lastName" })
+		void setPatient(Patient patient);
 		
+		Patient getPatient();
 		
-//		
-//		@Encode(value = DateToDateBeanEncoder.class, path = "startDate")
-//		void setStartDate(DateTimeBean date);
-//		
-//		DateTimeBean getStartDate();
-//		
-//		@Encode(value = DateToDateBeanEncoder.class, path = "endDate")
-////		@Include({"time"})
-//		void setEndTime(DateTimeBean date);
-//		
-//		DateTimeBean getEndTime();
-////		
-////		void setStartDate()
+		@Include({ "id", "therapist.academicTitle", "therapist.firstName",
+				"therapist.lastName" })
+		void setTherapist(Therapist therapist);
 		
+		Therapist getTherapist();
 	}
 	
-	@Override
-	public void setListener(EditSingleSessionListener listener) {
-		this.listener = listener;
-	}
 }
