@@ -28,12 +28,20 @@ public class ExpositionPresenter implements ExpositionView.ExpositionViewListene
 	public void setView(ExpositionView expositionView) {
 		this.expositionView = expositionView;
 		expositionView.setListener(this);
-		expositionView.setExpositions(this.expositions);
+		expositions = expositionNoteService.getAll();
+		expositionView.setExpositions(expositions);
 	}
 
 	@Override
 	public void delete(ExpositionNote expositionNote){
 		getService().delete(getService().getById(expositionNote.getId()));
+		expositions = getService().getAll();
+	}
+
+	@Override
+	public void deleteById(int id){
+		getService().delete(id);
+		expositions= getService().getAll();
 	}
 
 	@Override
@@ -42,7 +50,9 @@ public class ExpositionPresenter implements ExpositionView.ExpositionViewListene
 		expositionView.setExpositions(expositions);
 	}
 
-	public void update(){
+	@Override
+	public void updateList(){
+		expositions.clear();
 		expositions = getService().getAll();
 		expositionView.setExpositions(expositions);
 	}
@@ -67,7 +77,10 @@ public class ExpositionPresenter implements ExpositionView.ExpositionViewListene
 		ExpositionNote note2 = new ExpositionNote(patient2, new Date(), "Ins Bett ohne Putzritual", Visibility.PRIVATE, 9);
 		expositionNoteService.persist(note2);
 
-		//update();
+		Patient patient3 = new Patient("Samuel", "Frey",
+				new Address("Fuchsmattweg", "54", 1111, "Hindelbank"));
+		ExpositionNote note3 = new ExpositionNote(patient3, new Date(), "Nur 3mal Händewaschen", Visibility.PRIVATE, 6);
+		expositionNoteService.persist(note3);
 
 	}
 

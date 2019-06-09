@@ -5,14 +5,21 @@ import ch.bfh.red.backend.models.Address;
 import ch.bfh.red.backend.models.ExpositionNote;
 import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.Visibility;
+import ch.bfh.red.ui.components.ConfirmationDialog;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
 import ch.bfh.red.ui.presenters.ExpositionPresenter;
+import com.vaadin.flow.component.EventData;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.polymertemplate.EventHandler;
 import com.vaadin.flow.component.polymertemplate.Id;
+import com.vaadin.flow.component.polymertemplate.ModelItem;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
@@ -40,7 +47,13 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
     @Id("header")
     private H2 header;
 
+    @Id("vaadinVerticalLayout")
+    private VerticalLayout layout;
+
+
+
     private ExpositionPresenter expositionPresenter;
+    private ConfirmationDialog<ExpositionNote> confirmationDialog = new ConfirmationDialog<>();
 
     public interface ExpositionViewModel extends TemplateModel {
         @Include({"patient.firstName","patient.lastName", "text", "date", "degreeOfExposure"})
@@ -55,18 +68,19 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
     public interface ExpositionViewListener {
 
         void delete(ExpositionNote expositionNote);
+        void deleteById(int id);
         void load(Integer id);
         void save(ExpositionNote expositionNote);
-
+        void updateList();
 
     }
 
     @Autowired
     public ExpositionView(ExpositionPresenter expositionPresenter) {
         this.expositionPresenter = expositionPresenter;
-        expositionPresenter.setView(this);
-        // To be removed, preliminary way to set some data
+        this.layout.setSizeFull();
         expositionPresenter.addMockData();
+
 
 
     }
@@ -75,6 +89,7 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent){
         this.expositionPresenter.setView(this);
         header.setText("Expositionen");
+
 
     }
 
@@ -87,6 +102,22 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
     public void setExpositions(List<ExpositionNote> expositions){
         getModel().setExpositions(expositions);
     }
+
+    @EventHandler
+    public void delete(@ModelItem ExpositionNote expositionNote) {
+        confirmationDialog.open(
+                "Exposition wirklich löschen?",
+                "Möchten Sie die Expositionsnotiz wirklich löschen?", "", "Löschen",
+                true, expositionNote, this::confirmDelete);
+    }
+
+    public void confirmDelete(ExpositionNote expositionNote) {
+        if (expositionNote == null) return;
+        listener.delete(expositionNote);
+        Notification.show("Die Exposition wurde erfolgreich gelöscht.");
+        listener.updateList();
+    }
+
 
     @EventHandler
     private void createExposition() {
