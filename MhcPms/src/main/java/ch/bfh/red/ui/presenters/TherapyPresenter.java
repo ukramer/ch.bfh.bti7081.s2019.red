@@ -18,16 +18,16 @@ import java.util.stream.Collectors;
 
 @Component
 public class TherapyPresenter implements ListView.ListViewListener, DetailView.DetailViewListener {
-	
-	@Autowired
+
+    @Autowired
     private TherapyPersistenceManager therapyManager;
-	
-	@Autowired
+
+    @Autowired
     private PatientPersistenceManager patientManager;
-	
-	@Autowired
+
+    @Autowired
     private TherapistPersistenceManager therapistManager;
-	
+
     private ListView listView;
     private DetailView detailView;
     private List<Therapy> therapies = new ArrayList<>();
@@ -139,11 +139,10 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
         List<PatientNote> notes = new ArrayList<>();
         notes.add(note);
         therapy.setPatientNotes(notes);
-        
+
         therapyManager.persistAll(therapy);
 
 /*
-
         Date date = new Date();
         try {
             date = (new SimpleDateFormat("yyyy-MM-dd")).parse("2018-01-01");
