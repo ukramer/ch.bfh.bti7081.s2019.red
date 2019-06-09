@@ -27,4 +27,3 @@ public class ExpositionNoteTest extends StartupTest {
     }
 
 }
-
