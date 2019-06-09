@@ -17,11 +17,11 @@ public class SingleSessionFactory extends AbstractFactory<SingleSession>{
     private final Random random;
 
     public SingleSessionFactory(){
-        this(new Locale("de-ch"));
+        this(Locale.getDefault());
     }
 
     public SingleSessionFactory(Locale locale){
-        faker = new Faker();
+        faker = new Faker(locale);
         therapistFactory = new TherapistFactory(locale);
         patientFactory = new PatientFactory(locale);
         random = new Random();
@@ -31,6 +31,10 @@ public class SingleSessionFactory extends AbstractFactory<SingleSession>{
     public SingleSession create(){
         Patient patient = patientFactory.create();
         Therapist therapist = therapistFactory.create();
+        return create(patient, therapist);
+    }
+    
+    public SingleSession create(Patient patient, Therapist therapist){
         DateAndTime dateAndTime = faker.date();
         Date startDate = dateAndTime.past(1000, TimeUnit.DAYS);
         Date endDate = dateAndTime.past(365, TimeUnit.DAYS);

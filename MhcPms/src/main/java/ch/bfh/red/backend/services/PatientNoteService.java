@@ -26,6 +26,7 @@ public class PatientNoteService implements IService<PatientNote> {
 				PatientNoteService.class);	
 	}
 	
+	@Override
 	public List<PatientNote> getAll() {
 		List<PatientNote> list = new ArrayList<>();
 		repository.findAll().iterator().forEachRemaining(list::add);
@@ -50,12 +51,18 @@ public class PatientNoteService implements IService<PatientNote> {
 	
 	@Override
 	public PatientNote persist(PatientNote t) {
-		patientManager.persist(t.getPatient());
     	return repository.save(t);
 	}
 	
 	@Override
-	public Boolean existById(Integer id) {
+	public Boolean exists(PatientNote t) {
+		if (t == null || t.getId() == null) return false;
+		return existsById(t.getId());
+	}
+	
+	@Override
+	public Boolean existsById(Integer id) {
+		if (id == null) return false;
 		return repository.existsById(id);
 	}
 

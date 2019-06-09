@@ -1,6 +1,8 @@
 package ch.bfh.red.backend.factories;
 
 
+import ch.bfh.red.backend.models.Patient;
+import ch.bfh.red.backend.models.Therapist;
 import ch.bfh.red.backend.models.Therapy;
 import ch.bfh.red.backend.models.TherapyType;
 import com.github.javafaker.Faker;
@@ -16,7 +18,7 @@ public class TherapyFactory extends AbstractFactory<Therapy> {
     private final PatientFactory patientFactory;
 
     public TherapyFactory(){
-        this(new Locale("de-ch"));
+        this(Locale.getDefault());
     }
 
     public TherapyFactory(Locale locale){
@@ -27,15 +29,16 @@ public class TherapyFactory extends AbstractFactory<Therapy> {
 
     @Override
     public Therapy create(){
-        Random random = new Random();
+        Patient patient = patientFactory.create();
+        Therapist therapist = therapistFactory.create();
+        return create(patient, therapist);
+    }
+    
+    public Therapy create(Patient patient, Therapist therapist) {
+    	Random random = new Random();
         Date startDate =  faker.date().past(1000, TimeUnit.DAYS);
         TherapyType therapyType =  TherapyType.values()[random.nextInt(TherapyType.values().length)];
-
-        // TODO use new constructor
-        Therapy therapy = new Therapy(startDate, therapyType);
-        therapy.setPatient(patientFactory.create());
-        therapy.setTherapist(therapistFactory.create());
-        return therapy;
-
+        return new Therapy(startDate, therapyType, patient, therapist);
     }
+    
 }

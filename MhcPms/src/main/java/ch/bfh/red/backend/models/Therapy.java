@@ -23,7 +23,11 @@ import org.hibernate.annotations.Cascade;
 
 @Entity
 public class Therapy implements Comparable<Therapy>, Serializable {
-	private static final long serialVersionUID = 6323530446991755194L;
+
+	/**
+	 * Added attribute expositionNotes
+	 */
+	private static final long serialVersionUID = -4519216661077289951L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,12 +70,18 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private List<TherapistNote> therapistNotes;
 	
+	@OneToMany
+	@JoinColumn(name="THERAPY_ID") // necessary to avoid join table
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
+	private List<ExpositionNote> expositionNotes;
+	
 	public Therapy() {}
 	
-	// TODO add patient, therapist, ...
-	public Therapy(Date startDate, TherapyType therapyType) {
+	public Therapy(Date startDate, TherapyType therapyType, Patient patient, Therapist therapist) {
 		this.startDate = startDate;
 		this.therapyType = therapyType;
+		this.patient = patient;
+		this.therapist = therapist;
 		this.finished = false;
 	}
 
@@ -137,6 +147,14 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 
 	public void setTherapistNotes(List<TherapistNote> therapistNotes) {
 		this.therapistNotes = therapistNotes;
+	}
+
+	public List<ExpositionNote> getExpositionNotes() {
+		return expositionNotes;
+	}
+
+	public void setExpositionNotes(List<ExpositionNote> expositionNotes) {
+		this.expositionNotes = expositionNotes;
 	}
 
 	public Therapist getTherapist() {
