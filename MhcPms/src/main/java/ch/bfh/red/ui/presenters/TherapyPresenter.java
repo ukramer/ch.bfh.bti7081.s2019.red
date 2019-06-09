@@ -4,8 +4,8 @@ import ch.bfh.red.backend.models.*;
 import ch.bfh.red.backend.services.PatientService;
 import ch.bfh.red.backend.services.TherapistService;
 import ch.bfh.red.backend.services.TherapyService;
-import ch.bfh.red.ui.views.Therapy.DetailView;
-import ch.bfh.red.ui.views.Therapy.ListView;
+import ch.bfh.red.ui.views.EditTherapyView;
+import ch.bfh.red.ui.views.ListTherapyView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,12 +16,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class TherapyPresenter implements ListView.ListViewListener, DetailView.DetailViewListener {
+public class TherapyPresenter implements ListTherapyView.ListViewListener, EditTherapyView.DetailViewListener {
     private final TherapyService therapyService;
     private final PatientService patientService;
     private final TherapistService therapistService;
-    private ListView listView;
-    private DetailView detailView;
+    private ListTherapyView listTherapyView;
+    private EditTherapyView editTherapyView;
     private List<Therapy> therapies = new ArrayList<>();
 
     private Therapy loadedTherapy;
@@ -33,24 +33,24 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
         this.therapistService = therapistService;
     }
 
-    public void setView(ListView listView) {
-        this.listView = listView;
-        listView.setListener(this);
+    public void setView(ListTherapyView listTherapyView) {
+        this.listTherapyView = listTherapyView;
+        listTherapyView.setListener(this);
         updateList(false, null, null, null);
 
         List<Patient> patients = therapies.stream().map(Therapy::getPatient).distinct().sorted().collect(Collectors.toList());
-        listView.setPatients(patients);
+        listTherapyView.setPatients(patients);
     }
 
-    public void setView(DetailView detailView) {
-        this.detailView = detailView;
-        detailView.setListener(this);
+    public void setView(EditTherapyView editTherapyView) {
+        this.editTherapyView = editTherapyView;
+        editTherapyView.setListener(this);
 
         List<Patient> patients = patientService.getAll();
-        detailView.setPatients(patients);
+        editTherapyView.setPatients(patients);
 
         List<Therapist> therapists = therapistService.getAll();
-        detailView.setTherapists(therapists);
+        editTherapyView.setTherapists(therapists);
     }
 
     public void delete(Therapy therapy) {
@@ -61,13 +61,13 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
     public void load(Integer therapyId) {
         loadedTherapy = getService().getByIdWithAllAssociations(therapyId);
 
-        detailView.setTherapy(loadedTherapy);
+        editTherapyView.setTherapy(loadedTherapy);
 
-        detailView.setSingleSessions(loadedTherapy.getSingleSessions());
-        detailView.setGroupSessions(loadedTherapy.getGroupSessions());
+        editTherapyView.setSingleSessions(loadedTherapy.getSingleSessions());
+        editTherapyView.setGroupSessions(loadedTherapy.getGroupSessions());
 
-        detailView.setPatientNotes(loadedTherapy.getPatientNotes());
-        detailView.setTherapistNotes(loadedTherapy.getTherapistNotes());
+        editTherapyView.setPatientNotes(loadedTherapy.getPatientNotes());
+        editTherapyView.setTherapistNotes(loadedTherapy.getTherapistNotes());
     }
 
     @Override
@@ -80,7 +80,7 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
 
     @Override
     public void prepareNewObject() {
-        detailView.setTherapy(new Therapy());
+        editTherapyView.setTherapy(new Therapy());
     }
 
     public TherapyService getService() {
@@ -111,7 +111,7 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
                 therapies = getService().getByFinished(finished);
             }
         }
-        listView.setTherapies(therapies);
+        listTherapyView.setTherapies(therapies);
     }
 
     public void addMockData() {
@@ -139,19 +139,5 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
         notes.add(note);
         therapy.setPatientNotes(notes);
         therapyService.persist(therapy);
-
-/*
-
-        Date date = new Date();
-        try {
-            date = (new SimpleDateFormat("yyyy-MM-dd")).parse("2018-01-01");
-        } catch (Exception e) {
-        }
-        Patient patient2 = new Patient("Jürgen", "Test", new Address("Langstrasse", "12k", 7777, "Burgdorf"));
-        Therapy therapy2 = new Therapy(date, new TherapyType("Exposition", ""));
-        therapy2.setTherapist(new Therapist("user", "1234", new AcademicTitle("Dr.", ""), "Ueli", "Kramer", new Address("Burgstrasse", "18", 3600, "Thun")));
-        therapy2.setPatient(patient2);
-        therapyService.add(therapy2);
-        */
     }
 }
