@@ -17,6 +17,8 @@
 		<div class="view-container">
 	    	<h2 id="header"></h2>
 			
+			<vaadin-combo-box id="patient" label="Patient"></vaadin-combo-box>
+			<br/>
 			<vaadin-form-layout>
 				<vaadin-custom-field class="width-auto" label="Datumsbereich" on-change="dateFilter">
                     <vaadin-date-picker label="Datumsbereich" id="startDate.date" on-change="startChanged"></vaadin-date-picker>
@@ -25,8 +27,8 @@
 			</vaadin-form-layout>
 
 			<br/>
-			
-				<vaadin-grid theme="no-border" items="[[therapies]]">
+			<div hidden="{{_isEmpty(singleSessions)}}">
+				<vaadin-grid theme="no-border" items="[[singleSessions]]">
                     <vaadin-grid-sort-column header="Startdatum" path="startDate" direction="desc"></vaadin-grid-sort-column>
                     <vaadin-grid-sort-column header="Patient">
                         <template>
@@ -45,11 +47,11 @@
                     </vaadin-grid-column>
                     <vaadin-grid-column>
                         <template>
-                            <vaadin-button theme="error tertiary" on-click="delete">Löschen</vaadin-button>
+                            <vaadin-button theme="error tertiary" on-click="delete">LÃ¶schen</vaadin-button>
                         </template>
                     </vaadin-grid-column>
                 </vaadin-grid>
-
+			</div>
 		</div>
 	</template>
 
@@ -58,6 +60,11 @@
             static get is() {
                 return 'single-session-list'
             }
+            
+            _isEmpty(array) {
+                return array.length == 0;
+            }
+            
         }
         customElements.define(ListSingleSession.is, ListSingleSession);
     </script> 

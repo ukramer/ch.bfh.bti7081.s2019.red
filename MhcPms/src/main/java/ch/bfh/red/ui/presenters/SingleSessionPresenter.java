@@ -4,24 +4,26 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.SessionType;
 import ch.bfh.red.backend.models.SingleSession;
 import ch.bfh.red.backend.models.Therapist;
-import ch.bfh.red.backend.models.Therapy;
 import ch.bfh.red.backend.services.PatientService;
 import ch.bfh.red.backend.services.SingleSessionService;
 import ch.bfh.red.backend.services.TherapistService;
 import ch.bfh.red.ui.views.EditSingleSessionView;
 import ch.bfh.red.ui.views.EditSingleSessionView.EditSingleSessionListener;
-
-import org.springframework.stereotype.Component;
+import ch.bfh.red.ui.views.session.ListSingleSessionView;
+import ch.bfh.red.ui.views.session.ListSingleSessionView.ListSingleSessionListener;
 
 @Component
-public class SingleSessionPresenter implements EditSingleSessionListener {
+public class SingleSessionPresenter implements EditSingleSessionListener, ListSingleSessionListener {
 	
-	private EditSingleSessionView singleSessionView;
+	private EditSingleSessionView editView;
+	private ListSingleSessionView listView;
+	
 	
 	@Autowired
 	private SingleSessionService service;
@@ -34,8 +36,15 @@ public class SingleSessionPresenter implements EditSingleSessionListener {
 	
 	public SingleSessionPresenter() {}
 	
-	public void setView(EditSingleSessionView singleSessionView) {
-		this.singleSessionView = singleSessionView;
+	public void setView(EditSingleSessionView editView) {
+		this.editView = editView;
+	}
+	
+	public void setView(ListSingleSessionView listView) {
+		this.listView = listView;
+		
+		listView.setSingleSessions(service.getAll());
+		listView.setPatients(patientService.getAll());
 	}
 
 	@Override
@@ -56,17 +65,22 @@ public class SingleSessionPresenter implements EditSingleSessionListener {
 	@Override
 	public void load(Integer therapyId) {
 		SingleSession singleSession = service.getById(therapyId);
-		singleSessionView.editSingleSession(singleSession);
+		editView.editSingleSession(singleSession);
 	}
 
 	@Override
 	public void prepareNewObject() {
-		singleSessionView.createSingleSession();
+		editView.createSingleSession();
 	}
 
 	@Override
 	public void save(SingleSession singleSession) throws Exception {
 		service.persist(singleSession);
+	}
+
+	@Override
+	public void delete(SingleSession singleSession) {
+		service.delete(service.getById(singleSession.getId()));
 	}
 	
 }

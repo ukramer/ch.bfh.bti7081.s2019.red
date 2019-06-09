@@ -52,7 +52,6 @@ public class EditSingleSessionView
 		extends PolymerTemplate<EditSingleSessionView.EditSingleSessionModel> 
 		implements HasUrlParameter<Integer> {
 	
-	@Autowired
 	private SingleSessionPresenter presenter;
 	
 	@Id("header")
