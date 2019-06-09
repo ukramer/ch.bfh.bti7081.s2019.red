@@ -18,7 +18,7 @@ public class MhcPmsApplication {
 	public static void main(String[] args) {
 		ApplicationContext context = start(args);
 		DbSeeder dbSeeder = context.getBean(DbSeeder.class);
-//		seed(dbSeeder);
+		seed(dbSeeder);
 		browse("http://localhost:8080");
 	}
 	
