@@ -12,10 +12,11 @@ import javax.persistence.*;
 
 @Entity
 public class Therapy implements Comparable<Therapy>, Serializable {
+
 	/**
-	 * Added attributes patient and therapist to constructor
+	 * Added attribute expositionNotes
 	 */
-	private static final long serialVersionUID = 5820076385462678441L;
+	private static final long serialVersionUID = -4519216661077289951L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,6 +58,11 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 	@JoinColumn(name="THERAPY_ID") // necessary to avoid join table
 	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private List<TherapistNote> therapistNotes;
+	
+	@OneToMany
+	@JoinColumn(name="THERAPY_ID") // necessary to avoid join table
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
+	private List<ExpositionNote> expositionNotes;
 	
 	public Therapy() {}
 	
@@ -139,6 +145,14 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 
 	public void setTherapistNotes(List<TherapistNote> therapistNotes) {
 		this.therapistNotes = therapistNotes;
+	}
+
+	public List<ExpositionNote> getExpositionNotes() {
+		return expositionNotes;
+	}
+
+	public void setExpositionNotes(List<ExpositionNote> expositionNotes) {
+		this.expositionNotes = expositionNotes;
 	}
 
 	public Therapist getTherapist() {

@@ -68,8 +68,8 @@ public class TherapyPersistenceManager implements IPersistenceManager<Therapy> {
 			patientNoteManager.persist(t.getPatientNotes(), new ArrayList<>(classes));
 		if (classes.contains(TherapistNote.class))
 			therapistNoteManager.persist(t.getTherapistNotes(), new ArrayList<>(classes));
-//		if (classes.contains(ExpositionNote.class))
-//			expositionNoteManager.persist(t.get, classes)
+		if (classes.contains(ExpositionNote.class))
+			expositionNoteManager.persist(t.getExpositionNotes(), new ArrayList<>(classes));
 		if (classes.contains(SingleSession.class))
 			singleSessionManager.persist(t.getSingleSessions(), new ArrayList<>(classes));
 		if (classes.contains(GroupSession.class))

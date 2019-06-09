@@ -30,12 +30,18 @@ public class GroupSessionFactory extends AbstractFactory<GroupSession> {
     
     @Override
     public GroupSession create(){
-        Random random = new Random();
+    	Random random = new Random();
         List<Therapist> therapists = therapistFactory.create(random.nextInt(4));
         List<Patient> patients  = patientFactory.create(random.nextInt(8));
+        return create(therapists, patients);
+    }
+    
+    public GroupSession create(List<Therapist> therapists, List<Patient> patients){
+    	Random random = new Random();
         Date startDate = faker.date().past(1000, TimeUnit.DAYS);
         Date endDate = faker.date().past(365, TimeUnit.DAYS);
         SessionType sessionType =  SessionType.values()[random.nextInt(SessionType.values().length)];
         return new GroupSession(patients, therapists, startDate, endDate, sessionType);
     }
+    
 }

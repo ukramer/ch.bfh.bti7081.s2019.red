@@ -29,14 +29,16 @@ public class TherapyFactory extends AbstractFactory<Therapy> {
 
     @Override
     public Therapy create(){
-        Random random = new Random();
-        Date startDate =  faker.date().past(1000, TimeUnit.DAYS);
-        TherapyType therapyType =  TherapyType.values()[random.nextInt(TherapyType.values().length)];
-
         Patient patient = patientFactory.create();
         Therapist therapist = therapistFactory.create();
-        Therapy therapy = new Therapy(startDate, therapyType, patient, therapist);
-        return therapy;
+        return create(patient, therapist);
+    }
+    
+    public Therapy create(Patient patient, Therapist therapist) {
+    	Random random = new Random();
+        Date startDate =  faker.date().past(1000, TimeUnit.DAYS);
+        TherapyType therapyType =  TherapyType.values()[random.nextInt(TherapyType.values().length)];
+        return new Therapy(startDate, therapyType, patient, therapist);
     }
     
 }

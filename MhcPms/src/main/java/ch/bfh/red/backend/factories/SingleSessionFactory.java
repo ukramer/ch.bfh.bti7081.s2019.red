@@ -31,6 +31,10 @@ public class SingleSessionFactory extends AbstractFactory<SingleSession>{
     public SingleSession create(){
         Patient patient = patientFactory.create();
         Therapist therapist = therapistFactory.create();
+        return create(patient, therapist);
+    }
+    
+    public SingleSession create(Patient patient, Therapist therapist){
         DateAndTime dateAndTime = faker.date();
         Date startDate = dateAndTime.past(1000, TimeUnit.DAYS);
         Date endDate = dateAndTime.past(365, TimeUnit.DAYS);

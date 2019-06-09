@@ -19,4 +19,10 @@ public abstract class AbstractFactory<T> {
         return entities;
     }
 	
+	public List<T> create(int min, int max) {
+		double sub = max - min;
+		int n = (int)(Math.random()*sub)+min;
+		return create(n);
+	}
+	
 }
