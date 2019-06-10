@@ -125,4 +125,9 @@ public class TherapyTest extends StartupTest {
 
         assertTrue((expectedDate.getTime() / 1000) == (therapy1.getStartDate().getTime() / 1000));
     }
+
+    @Test
+    public void testTherapyComparison() {
+        assertFalse(therapy1.equals(therapy2));
+    }
 }
