@@ -17,7 +17,18 @@
 		<div class="view-container">
 	    	<h2 id="header"></h2>
 			
-			
+			<vaadin-combo-box id="therapist" label="therapist">
+				
+			</vaadin-combo-box>
+			<vaadin-combo-box id="patient" label="Patient">
+			</vaadin-combo-box>
+			<br/>
+			<vaadin-form-layout>
+				<vaadin-custom-field class="width-auto" label="Datumsbereich" on-change="dateFilter">
+                    <vaadin-date-picker label="Datumsbereich" id="startDate.date" on-change="startChanged"></vaadin-date-picker>
+                    <vaadin-date-picker id="endDate.date" on-change="endChanged"></vaadin-date-picker>
+                </vaadin-custom-field>
+			</vaadin-form-layout>
 			
 			
 		</div>

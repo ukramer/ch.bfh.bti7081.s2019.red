@@ -43,7 +43,7 @@ public class SingleSessionPresenter implements EditSingleSessionListener, ListSi
 		List<SingleSession> models = service.getAll();
 		List<SingleSessionDTO> dtos = new ArrayList<>();
 		for (SingleSession model: models)
-			dtos.add(SingleSessionDTO.fromModel(model));
+			dtos.add(SingleSessionDTO.toDTO(model));
 		listView.setSingleSessions(dtos);
 		listView.setPatients(patientService.getAll());
 	}
@@ -53,7 +53,7 @@ public class SingleSessionPresenter implements EditSingleSessionListener, ListSi
 		List<SingleSession> models = service.findByDTO(searchBean);
 		List<SingleSessionDTO> dtos = new ArrayList<>();
 		for (SingleSession model: models)
-			dtos.add(SingleSessionDTO.fromModel(model));
+			dtos.add(SingleSessionDTO.toDTO(model));
         listView.setSingleSessions(dtos);
     }
 
@@ -75,14 +75,14 @@ public class SingleSessionPresenter implements EditSingleSessionListener, ListSi
 	@Override
 	public SingleSessionDTO load(Integer therapyId) {
 		SingleSession singleSession = service.getById(therapyId);
-		SingleSessionDTO dto = SingleSessionDTO.fromModel(singleSession);
+		SingleSessionDTO dto = SingleSessionDTO.toDTO(singleSession);
 		return dto;
 	}
 	
 	@Override
 	public SingleSessionDTO save(SingleSessionDTO singleSession) throws Exception {
 		SingleSession singleSession2 = service.persist(SingleSessionDTO.toModel(singleSession));
-		SingleSessionDTO dto = SingleSessionDTO.fromModel(singleSession2);
+		SingleSessionDTO dto = SingleSessionDTO.toDTO(singleSession2);
 		return dto;
 	}
 

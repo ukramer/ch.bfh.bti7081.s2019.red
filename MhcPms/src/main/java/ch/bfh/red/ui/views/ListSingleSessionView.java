@@ -110,8 +110,6 @@ public class ListSingleSessionView
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         presenter.setView(this);
-
-        // init view elements
         header.setText("Einzelsitzungen");
         startDatePicker.setI18n(MainLayout.datePickerI18n);
         endDatePicker.setI18n(MainLayout.datePickerI18n);
