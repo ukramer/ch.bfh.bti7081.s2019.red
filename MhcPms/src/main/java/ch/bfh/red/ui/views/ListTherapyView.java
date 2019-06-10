@@ -1,4 +1,4 @@
-package ch.bfh.red.ui.views.Therapy;
+package ch.bfh.red.ui.views;
 
 import ch.bfh.red.MainLayout;
 import ch.bfh.red.backend.models.Patient;
@@ -7,22 +7,18 @@ import ch.bfh.red.ui.components.ConfirmationDialog;
 import ch.bfh.red.ui.encoders.AcademicTitleToStringEncoder;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
-import ch.bfh.red.ui.encoders.LocalDateToStringEncoder;
 import ch.bfh.red.ui.presenters.TherapyPresenter;
-import ch.bfh.red.ui.views.View;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.HtmlImport;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.polymertemplate.EventHandler;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.ModelItem;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
-import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
@@ -41,7 +37,7 @@ import java.util.List;
 @HtmlImport("frontend://src/views/therapy/list.html")
 @Component
 @UIScope
-public class ListView extends PolymerTemplate<ListView.TherapyModel> implements View<ListView.ListViewListener>, BeforeEnterObserver {
+public class ListTherapyView extends PolymerTemplate<ListTherapyView.TherapyModel> implements View<ListTherapyView.ListViewListener>, BeforeEnterObserver {
     private ListViewListener listener;
 
     @Id("header")
@@ -69,11 +65,8 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
     private TherapyPresenter therapyPresenter;
 
     @Autowired
-    ListView(TherapyPresenter therapyPresenter) {
+    ListTherapyView(TherapyPresenter therapyPresenter) {
         this.therapyPresenter = therapyPresenter;
-
-        // @todo: to be removed
-        therapyPresenter.addMockData();
     }
 
     @Override
@@ -148,12 +141,12 @@ public class ListView extends PolymerTemplate<ListView.TherapyModel> implements 
 
     @EventHandler
     public void edit(@ModelItem Therapy therapy) {
-        UI.getCurrent().navigate(DetailView.class, therapy.getId());
+        UI.getCurrent().navigate(EditTherapyView.class, therapy.getId());
     }
 
     @EventHandler
     public void add() {
-        UI.getCurrent().navigate(DetailView.class);
+        UI.getCurrent().navigate(EditTherapyView.class);
     }
 
     public interface ListViewListener {
