@@ -57,6 +57,7 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
 
     public interface ExpositionViewModel extends TemplateModel {
         @Include({"id", "patient.firstName","patient.lastName", "text", "date", "degreeOfExposure"})
+        @Encode(value = IntegerToStringEncoder.class, path="id")
         @Encode(value = DateToStringEncoder.class, path = "date")
         @Encode(value = IntegerToStringEncoder.class, path = "degreeOfExposure")
         void setExpositions(List<ExpositionNote> expositions);
@@ -115,7 +116,8 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
         if (expositionNote == null) return;
         listener.delete(expositionNote);
         Notification.show("Die Exposition wurde erfolgreich gelöscht.");
-        listener.updateList();
+        getModel().getExpositions().remove(expositionNote);
+        //listener.updateList();
     }
 
 
