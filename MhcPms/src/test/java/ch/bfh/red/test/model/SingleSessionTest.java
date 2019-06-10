@@ -16,14 +16,16 @@ import ch.bfh.red.backend.persistence.SingleSessionPersistenceManager;
 import ch.bfh.red.test.StartupTest;
 
 import static org.hamcrest.Matchers.hasProperty;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 public class SingleSessionTest extends StartupTest {
     private final PatientFactory patientFactory = new PatientFactory();
     private final TherapistFactory therapistFactory = new TherapistFactory();
 
-    private Patient patient;
-    private Therapist therapist;
+    private Patient patient1;
+    private Patient patient2;
+    private Therapist therapist1;
+    private Therapist therapist2;
     private SingleSession session1;
     private SingleSession session2;
     private SessionType type;
@@ -33,14 +35,16 @@ public class SingleSessionTest extends StartupTest {
 
     @Before
     public void generateSingleSessions() {
-        patient = patientFactory.create();
-        therapist = therapistFactory.create();
+        patient1 = patientFactory.create();
+        patient2 = patientFactory.create();
+        therapist1 = therapistFactory.create();
+        therapist2 = therapistFactory.create();
 
         type = SessionType.TALK;
 
-        SingleSession session1 = new SingleSession(patient, therapist, new Date(),
+        session1 = new SingleSession(patient1, therapist1, new Date(),
                 new Date(), type);
-        SingleSession session2 = new SingleSession(patient, therapist, new Date(),
+        session2 = new SingleSession(patient2, therapist2, new Date(),
                 new Date(), type);
 
         singleSessionService.persistAll(session1);
@@ -49,16 +53,37 @@ public class SingleSessionTest extends StartupTest {
 
     @Test
     public void testSingleSessionCreation() {
-        Patient patient = patientFactory.create();
-        Therapist therapist = therapistFactory.create();
-        SessionType type = SessionType.TALK;
-        SingleSession session = new SingleSession(patient, therapist, new Date(),
-                new Date(), type);
-        singleSessionService.persistAll(session);
-        assertThat(session, hasProperty("patient"));
-        assertThat(session, hasProperty("therapist"));
-        assertThat(session, hasProperty("startDate"));
-        assertThat(session, hasProperty("endDate"));
-        assertThat(session, hasProperty("sessionType"));
+        assertThat(session1, hasProperty("patient"));
+        assertThat(session1, hasProperty("therapist"));
+        assertThat(session1, hasProperty("startDate"));
+        assertThat(session1, hasProperty("endDate"));
+        assertThat(session1, hasProperty("sessionType"));
+    }
+
+    @Test
+    public void testSingleSessionPatient() {
+        assertEquals(patient2, session2.getPatient());
+        assertNotEquals(patient2, session1.getPatient());
+
+        session1.setPatient(patient2);
+
+        assertEquals(patient2, session1.getPatient());
+        assertNotEquals(patient1, session1.getPatient());
+    }
+
+    @Test
+    public void testSingleSessionTherapist() {
+        assertEquals(therapist2, session2.getTherapist());
+        assertNotEquals(therapist2, session1.getTherapist());
+
+        session1.setTherapist(therapist2);
+
+        assertEquals(therapist2, session1.getTherapist());
+        assertNotEquals(therapist1, session1.getTherapist());
+    }
+
+    @Test
+    public void testSingleSessionComparison() {
+        assertFalse(session1.equals(session2));
     }
 }
