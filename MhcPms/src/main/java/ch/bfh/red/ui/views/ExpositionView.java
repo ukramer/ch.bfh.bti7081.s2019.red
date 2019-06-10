@@ -56,7 +56,7 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
     private ConfirmationDialog<ExpositionNote> confirmationDialog = new ConfirmationDialog<>();
 
     public interface ExpositionViewModel extends TemplateModel {
-        @Include({"patient.firstName","patient.lastName", "text", "date", "degreeOfExposure"})
+        @Include({"id", "patient.firstName","patient.lastName", "text", "date", "degreeOfExposure"})
         @Encode(value = DateToStringEncoder.class, path = "date")
         @Encode(value = IntegerToStringEncoder.class, path = "degreeOfExposure")
         void setExpositions(List<ExpositionNote> expositions);

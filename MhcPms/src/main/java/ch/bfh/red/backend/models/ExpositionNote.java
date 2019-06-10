@@ -11,6 +11,7 @@ public class ExpositionNote extends AbstractNote<ExpositionNote> {
 	private static final long serialVersionUID = -3982221341929865452L;
 
 	@ManyToOne
+    @Cascade({org.hibernate.annotations.CascadeType.MERGE})
     Patient patient;
 
     @Column(nullable = false)
