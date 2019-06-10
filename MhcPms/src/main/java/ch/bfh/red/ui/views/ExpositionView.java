@@ -11,6 +11,7 @@ import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
 import ch.bfh.red.ui.presenters.ExpositionPresenter;
 import com.vaadin.flow.component.EventData;
 import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
@@ -105,6 +106,11 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
     }
 
     @EventHandler
+    public void edit(@ModelItem ExpositionNote expositionNote) {
+        UI.getCurrent().navigate(ExpositionDetailView.class, expositionNote.getId());
+    }
+
+    @EventHandler
     public void delete(@ModelItem ExpositionNote expositionNote) {
         confirmationDialog.open(
                 "Exposition wirklich löschen?",
@@ -123,7 +129,9 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
 
     @EventHandler
     private void createExposition() {
-        System.out.println("Adding a new exposition");
+
+            UI.getCurrent().navigate(ExpositionDetailView.class);
+
     }
 }
 

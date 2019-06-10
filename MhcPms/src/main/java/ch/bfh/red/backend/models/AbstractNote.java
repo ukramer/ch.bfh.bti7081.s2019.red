@@ -29,7 +29,7 @@ public abstract class AbstractNote<T extends AbstractNote<T>> implements Compara
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
-	private Date date;
+	private Date date = new Date();
 	
 	@Column(nullable = false)
 	private String text;

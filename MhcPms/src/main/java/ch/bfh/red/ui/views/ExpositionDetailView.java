@@ -8,6 +8,7 @@ import ch.bfh.red.backend.models.Visibility;
 import ch.bfh.red.common.DateTimeUtils;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
+import ch.bfh.red.ui.encoders.VisibilityToStringEncoder;
 import ch.bfh.red.ui.presenters.ExpositionPresenter;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
@@ -18,6 +19,7 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.polymertemplate.EventHandler;
 import com.vaadin.flow.component.polymertemplate.Id;
+import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
@@ -31,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -45,7 +48,7 @@ public class ExpositionDetailView extends PolymerTemplate<ExpositionDetailView.E
         HasUrlParameter<Integer>, View<ExpositionDetailView.ExpositionDetailViewListener>, BeforeEnterObserver,
         AfterNavigationObserver {
 
-    private ExpositionDetailViewListener;
+    private ExpositionDetailViewListener listener;
     @Id("header")
     private H2 header;
 
@@ -92,6 +95,7 @@ public class ExpositionDetailView extends PolymerTemplate<ExpositionDetailView.E
     public void setParameter(BeforeEvent beforeEvent, @OptionalParameter Integer integer){
         expositionPresenter.setView(this);
         setDegreeItems();
+        setVisibilityItems();
 
         if(integer==null)
         {
@@ -157,8 +161,16 @@ public class ExpositionDetailView extends PolymerTemplate<ExpositionDetailView.E
         getModel().setExposition(expositionNote);
     }
 
+    private static Collection<Visibility> createVisibilities() {
+        List<Visibility> visibilities = new ArrayList<>();
+        visibilities.add(Visibility.PRIVATE);
+        visibilities.add(Visibility.PUBLIC);
+        return visibilities;
+    }
 
-
+    public void setVisibilityItems(){
+        visibility.setItems(createVisibilities());
+    }
     public void setDegreeItems(){
         degree.setItems( IntStream.rangeClosed(1, 10).boxed().collect(Collectors.toList()));
     }
@@ -191,14 +203,14 @@ public class ExpositionDetailView extends PolymerTemplate<ExpositionDetailView.E
 
         ExpositionNote getExposition();
 
-        @Encode(value= IntegerToStringEncoder.class, path="id")
-        @Encode(value= DateToStringEncoder.class, path="date")
-        @Include({"id", "date"})
-        void setExposition(ExpositionNote expositionNote);
 
         @Encode(value= IntegerToStringEncoder.class, path="id")
         @Encode(value= DateToStringEncoder.class, path="date")
-        @Encode(value =)
+        @Encode(value = VisibilityToStringEncoder.class, path="visibility")
+        @Encode(value= IntegerToStringEncoder.class, path = "degree")
+        @Include({"date", "visibility", "degree"})
+        void setExposition(ExpositionNote expositionNote);
+
     }
 
 }
