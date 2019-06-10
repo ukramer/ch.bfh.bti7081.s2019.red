@@ -9,9 +9,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 
-import ch.bfh.red.ui.views.DashboardView;
 import ch.bfh.red.ui.views.EditGroupSessionView;
-import ch.bfh.red.ui.views.EditPatientView;
 import ch.bfh.red.ui.views.EditSingleSessionView;
 import ch.bfh.red.ui.views.ExpositionView;
 import ch.bfh.red.ui.views.ListPatientView;
@@ -21,12 +19,6 @@ import ch.bfh.red.ui.views.Therapy.ListView;
 public class NavigationComponent extends Component {
     public NavigationComponent() {
         getElement().getClassList().add("main-layout__nav");
-
-        RouterLink dashboard = new RouterLink(null, DashboardView.class);
-        dashboard.add(new Icon(VaadinIcon.GRID), new Text("Dashboard"));
-        dashboard.addClassName("main-layout__nav-item");
-        dashboard.setHighlightCondition(HighlightConditions.sameLocation());
-        add(dashboard);
 
         RouterLink patientList = new RouterLink(null, ListPatientView.class);
         patientList.add(new Icon(VaadinIcon.LIST), new Text("Patient list"));
