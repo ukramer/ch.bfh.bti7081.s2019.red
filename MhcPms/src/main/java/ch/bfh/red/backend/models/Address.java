@@ -101,7 +101,7 @@ public class Address implements Comparable<Address>, Serializable {
 		Address other = (Address) obj;
 		if (city == null && other.city != null)
 			return false;
-		if (!city.equals(other.city))
+		if (!city.equals(other.city)) // Dereferenced Null value is only checked not executed
 			return false;
 
 		if (postalCode.intValue() != other.postalCode.intValue())

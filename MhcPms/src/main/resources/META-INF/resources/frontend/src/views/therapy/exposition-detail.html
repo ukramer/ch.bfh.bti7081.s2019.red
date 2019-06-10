@@ -1,0 +1,66 @@
+<!-- Dependency resources -->
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<!-- Added Web Component dependencies to make Vaadin Designer preview work -->
+<link rel="import" href="../../../bower_components/vaadin-text-field/vaadin-text-field.html">
+<link rel="import" href="../../../bower_components/vaadin-button/vaadin-button.html">
+<link rel="import" href="../../../bower_components/vaadin-grid/all-imports.html">
+<link rel="import" href="../../../bower_components/vaadin-select/vaadin-select.html">
+<link rel="import" href="../../../bower_components/vaadin-date-picker/vaadin-date-picker.html">
+<link rel="import" href="../../../bower_components/vaadin-form-layout/vaadin-form-layout.html">
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/badge.html">
+
+<!-- TODO Needed to show icons in Vaadin Designer preview mode for now, but can be removed soon -->
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/icons.html">
+
+
+<dom-module id="exposition-detail">
+    <template>
+        <style include="lumo-color lumo-typography lumo-badge view-styles">
+
+        </style>
+        <div class="view-container">
+            <h2 id="header"></h2>
+            <vaadin-vertical-layout>
+                <div style="width: 50%">
+                    <vaadin-form-layout>
+                        <vaadin-date-picker id="date" label="Datum"
+                                            required immediate colspan="2">
+
+
+                        </vaadin-date-picker>
+                    </vaadin-form-layout>
+                </div>
+                <div>
+                    <vaadin-combo-box label="Patient" placeholder="Patient wählen" id="patient">
+                    </vaadin-combo-box>
+                    <vaadin-combo-box label="Visibility" placeholder="Visibility wählen" id="visibility">
+                    </vaadin-combo-box>
+                    <vaadin-combo-box label="Expositionsgrad" placeholder="Expositionsgrad wählen" id="degree">
+                    </vaadin-combo-box>
+                </div>
+                <div><vaadin-text-area label="Text" id="text"></vaadin-text-area></div>
+                <vaadin-horizontal-layout>
+                    <vaadin-button theme="success" on-click="save">Speichern</vaadin-button>
+                </vaadin-horizontal-layout>
+            </vaadin-vertical-layout>
+        </div>
+    </template>
+    <script>
+        class ExpositionDetail extends Polymer.Element{
+            static get is(){
+                return 'exposition-detail'
+            }
+
+            _isEmpty(array){
+                return array.length == 0;
+            }
+
+            isNew(){
+                return this.therapy.id == 0;
+
+            }
+
+        }
+        customElements.define(ExpositionDetail.is, ExpositionDetail);
+    </script>
+</dom-module>

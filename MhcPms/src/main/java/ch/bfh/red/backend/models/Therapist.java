@@ -97,7 +97,7 @@ public class Therapist extends AbstractUser<Therapist> {
 		Therapist other = (Therapist) obj;
 		if (academicTitle == null && other.academicTitle != null)
 			return false;
-		if (!academicTitle.equals(other.academicTitle))
+		if (!academicTitle.equals(other.academicTitle)) // Dereferenced Null value is only checked not executed
 			return false;
 		return super.equals(obj);
 	}

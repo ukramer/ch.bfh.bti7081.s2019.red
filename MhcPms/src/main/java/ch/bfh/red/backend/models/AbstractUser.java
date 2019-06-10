@@ -48,7 +48,7 @@ public abstract class AbstractUser<T extends AbstractUser<T>> extends AbstractPe
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) // Dereferenced Null value is only checked not executed
 			return true;
 		if (getClass() != obj.getClass())
 			return false;
@@ -56,7 +56,7 @@ public abstract class AbstractUser<T extends AbstractUser<T>> extends AbstractPe
 		AbstractUser<?> other = (AbstractUser<?>) obj;
 		if (username == null && other.username != null)
 			return false;
-		if (!username.equals(other.username))
+		if (!username.equals(other.username)) // Dereferenced Null value is only checked not executed
 			return false;
 		return super.equals(obj);
 	}

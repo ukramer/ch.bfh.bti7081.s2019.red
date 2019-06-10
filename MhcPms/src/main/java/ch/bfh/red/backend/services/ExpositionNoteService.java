@@ -65,4 +65,8 @@ public class ExpositionNoteService implements IService<ExpositionNote> {
 		return repository.existsById(id);
 	}
 
+	public List<ExpositionNote> getByPatientName(String firstName, String lastName){
+		return repository.findByPatientFirstNameAndPatientLastName(firstName, lastName);
+	}
+
 }
