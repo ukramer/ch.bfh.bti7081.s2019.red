@@ -12,10 +12,10 @@ import com.vaadin.flow.router.RouterLink;
 import ch.bfh.red.ui.views.DashboardView;
 import ch.bfh.red.ui.views.EditGroupSessionView;
 import ch.bfh.red.ui.views.EditPatientView;
-import ch.bfh.red.ui.views.EditSingleSessionView;
 import ch.bfh.red.ui.views.ExpositionView;
 import ch.bfh.red.ui.views.ListPatientView;
 import ch.bfh.red.ui.views.Therapy.ListView;
+import ch.bfh.red.ui.views.session.EditSingleSessionView;
 import ch.bfh.red.ui.views.session.ListSingleSessionView;
 
 @Tag("div")

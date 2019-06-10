@@ -17,10 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.SingleSession;
 import ch.bfh.red.backend.repositories.SingleSessionRepository;
 import ch.bfh.red.common.BeanUtils;
 import ch.bfh.red.ui.dto.SingleSessionSearchDTO;
+import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
 
 @Service("singleSessionService")
 public class SingleSessionService implements IService<SingleSession> {
@@ -38,18 +40,18 @@ public class SingleSessionService implements IService<SingleSession> {
 	
 	@PersistenceContext
 	private EntityManager em;
-
+	
 	public SingleSessionService() {
-		BeanUtils.checkBeanInstantiation(Thread.currentThread().getStackTrace(), 
-				SingleSessionService.class);	
+		BeanUtils.checkBeanInstantiation(Thread.currentThread().getStackTrace(),
+				SingleSessionService.class);
 	}
-
+	
 	public List<SingleSession> getAll() {
 		List<SingleSession> list = new ArrayList<>();
 		repository.findAll().iterator().forEachRemaining(list::add);
 		return list;
 	}
-
+	
 	@Override
 	public SingleSession getById(Integer id) {
 		SingleSession obj = repository.findById(id).get();
@@ -60,7 +62,7 @@ public class SingleSessionService implements IService<SingleSession> {
 	public void delete(Integer id) {
 		delete(getById(id));
 	}
-
+	
 	@Override
 	public void delete(SingleSession t) {
 		repository.delete(t);
@@ -68,33 +70,41 @@ public class SingleSessionService implements IService<SingleSession> {
 	
 	@Override
 	public SingleSession persist(SingleSession t) {
-    	return repository.save(t);
+		return repository.save(t);
 	}
 	
 	@Override
 	public Boolean exists(SingleSession t) {
-		if (t == null || t.getId() == null) return false;
+		if (t == null || t.getId() == null)
+			return false;
 		return existsById(t.getId());
 	}
 	
 	@Override
 	public Boolean existsById(Integer id) {
-		if (id == null) return false;
+		if (id == null)
+			return false;
 		return repository.existsById(id);
 	}
-
+	
 	public List<SingleSession> findByDTO(SingleSessionSearchDTO searchBean) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<SingleSession> cq = cb.createQuery(SingleSession.class);
 		Root<SingleSession> root = cq.from(SingleSession.class);
-		Join<?,?> patientJoin = root.join("patient");
+		Join<?, ?> patientJoin = root.join("patient");
 		List<Predicate> predicates = new ArrayList<>();
-		final String firstName = searchBean.getPatient().getFirstName();
-		if(StringUtils.isNotBlank(firstName))
-			predicates.add(cb.like(patientJoin.get("firstName"), "%" + firstName + "%"));
-		final String lastName = searchBean.getPatient().getLastName();
-		if(StringUtils.isNotBlank(searchBean.getPatient().getLastName()))
-			predicates.add(cb.like(patientJoin.get("lastName"), "%" + lastName + "%"));
+		
+		final PatientSearchBean patientBean = searchBean.getPatient();
+		if (patientBean != null) {
+			final String firstName = patientBean.getFirstName();
+			if (StringUtils.isNotBlank(firstName))
+				predicates.add(
+						cb.like(patientJoin.get("firstName"), "%" + firstName + "%"));
+			final String lastName = patientBean.getLastName();
+			if (StringUtils.isNotBlank(patientBean.getLastName()))
+				predicates
+						.add(cb.like(patientJoin.get("lastName"), "%" + lastName + "%"));
+		}
 		final Date startDate = searchBean.getStartDate();
 		if (startDate != null)
 			predicates.add(cb.greaterThanOrEqualTo(root.get("startDate"), startDate));
@@ -102,9 +112,10 @@ public class SingleSessionService implements IService<SingleSession> {
 		if (endDate != null)
 			predicates.add(cb.lessThanOrEqualTo(root.get("startDate"), endDate));
 		
-		Predicate finalPredicate = cb.and(predicates.toArray(new Predicate[predicates.size()]));
+		Predicate finalPredicate = cb
+				.and(predicates.toArray(new Predicate[predicates.size()]));
 		cq.where(finalPredicate);
 		return em.createQuery(cq).getResultList();
 	}
-		
+	
 }

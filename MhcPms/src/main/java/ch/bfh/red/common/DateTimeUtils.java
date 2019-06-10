@@ -20,6 +20,16 @@ public class DateTimeUtils {
                 .toLocalTime();
     }
     
+    public static LocalDate toLocalDateOrNull(Date date) {
+    	if (date == null) return null;
+        return toLocalDate(date);
+    }
+    
+    public static LocalTime toLocalTimeOrNull(Date date) {
+    	if (date == null) return null;
+    	return toLocalTime(date);
+    }
+    
     public static Date toDate(LocalDate date) {
         return java.util.Date.from(toZonedDateTime(date.atStartOfDay())
                 .toInstant());
@@ -32,6 +42,22 @@ public class DateTimeUtils {
     public static Date toDate(LocalDate date, LocalTime time) {
         return toDate(time.atDate(date)
                 .atZone(ZoneId.systemDefault()).toInstant());
+    }
+    
+    public static Date toDateOrNull(LocalDate date, LocalTime time) {
+    	if (date == null) {
+    		if (time == null) {
+    			return null;
+    		} else {
+    			return toDate(time);
+    		}
+    	} else { 
+    		if (time == null) {
+    			return toDate(date);
+    		} else {
+    			return toDate(date, time);
+    		}
+    	}
     }
     
     public static Date toDate(Instant instant) {

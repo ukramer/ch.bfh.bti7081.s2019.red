@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.HtmlImport;
@@ -42,7 +43,6 @@ import ch.bfh.red.ui.encoders.AcademicTitleToStringEncoder;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
 import ch.bfh.red.ui.presenters.SingleSessionPresenter;
-import ch.bfh.red.ui.views.EditSingleSessionView;
 import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
 
 @Route(value = "singleSession/list", layout = MainLayout.class)
@@ -69,6 +69,9 @@ public class ListSingleSessionView
 	@Id("patient")
 	private ComboBox<Patient> patientComboBox;
 	
+	@Id("newButton")
+	private Button newButton;
+	
 	private Binder<SingleSessionDTO> binder = new Binder<>();
 	
 	private SingleSessionSearchDTO searchBean = new SingleSessionSearchDTO();
@@ -81,6 +84,8 @@ public class ListSingleSessionView
 		
 		binder.forField(patientComboBox)
 				.bind(SingleSessionDTO::getPatient, SingleSessionDTO::setPatient);
+		
+		
 		
 		patientComboBox.addValueChangeListener(event -> {
 			PatientSearchBean patientSearchBean = new PatientSearchBean();
@@ -111,6 +116,8 @@ public class ListSingleSessionView
 			applyFilter();
 		});
 		
+		newButton.addClickListener(event ->changeToCreateMode());
+		
 	}
 	
 	@Override
@@ -122,6 +129,10 @@ public class ListSingleSessionView
 //        start.setI18n(MainLayout.datePickerI18n);
 //        end.setI18n(MainLayout.datePickerI18n);
 		
+	}
+	
+	public void changeToCreateMode() {
+		UI.getCurrent().navigate(EditSingleSessionView.class);
 	}
 	
 	public void setSingleSessions(List<SingleSessionDTO> singleSessions) {

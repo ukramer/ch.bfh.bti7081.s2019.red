@@ -17,18 +17,14 @@ import ch.bfh.red.backend.services.SingleSessionService;
 import ch.bfh.red.backend.services.TherapistService;
 import ch.bfh.red.ui.dto.SingleSessionDTO;
 import ch.bfh.red.ui.dto.SingleSessionSearchDTO;
-import ch.bfh.red.ui.views.EditSingleSessionView;
-import ch.bfh.red.ui.views.EditSingleSessionView.EditSingleSessionListener;
-import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
+import ch.bfh.red.ui.views.session.EditSingleSessionView.EditSingleSessionListener;
 import ch.bfh.red.ui.views.session.ListSingleSessionView;
 import ch.bfh.red.ui.views.session.ListSingleSessionView.ListSingleSessionListener;
 
 @Component
 public class SingleSessionPresenter implements EditSingleSessionListener, ListSingleSessionListener {
 	
-	private EditSingleSessionView editView;
 	private ListSingleSessionView listView;
-	
 	
 	@Autowired
 	private SingleSessionService service;
@@ -40,10 +36,6 @@ public class SingleSessionPresenter implements EditSingleSessionListener, ListSi
 	private TherapistService therapistService;
 	
 	public SingleSessionPresenter() {}
-	
-	public void setView(EditSingleSessionView editView) {
-		this.editView = editView;
-	}
 	
 	public void setView(ListSingleSessionView listView) {
 		this.listView = listView;
@@ -81,20 +73,17 @@ public class SingleSessionPresenter implements EditSingleSessionListener, ListSi
 	}
 
 	@Override
-	public void load(Integer therapyId) {
+	public SingleSessionDTO load(Integer therapyId) {
 		SingleSession singleSession = service.getById(therapyId);
 		SingleSessionDTO dto = SingleSessionDTO.fromModel(singleSession);
-		editView.editSingleSession(dto);
+		return dto;
 	}
-
+	
 	@Override
-	public void prepareNewObject() {
-		editView.createSingleSession();
-	}
-
-	@Override
-	public void save(SingleSessionDTO singleSession) throws Exception {
-		service.persist(SingleSessionDTO.toModel(singleSession));
+	public SingleSessionDTO save(SingleSessionDTO singleSession) throws Exception {
+		SingleSession singleSession2 = service.persist(SingleSessionDTO.toModel(singleSession));
+		SingleSessionDTO dto = SingleSessionDTO.fromModel(singleSession2);
+		return dto;
 	}
 
 	@Override

@@ -20,7 +20,11 @@ public class SingleSessionDTO {
 	
 	public static SingleSessionDTO fromModel(SingleSession singleSession) {
 		SingleSessionDTO dto = new SingleSessionDTO();
-		dto.id = singleSession.getId();
+		try {
+			dto.id = singleSession.getId();
+		} catch (Exception e) {
+			dto.id = null;
+		}
 		dto.startDate = singleSession.getStartDate();
 		dto.endDate = singleSession.getEndDate();
 		dto.patient = singleSession.getPatient();
@@ -31,7 +35,8 @@ public class SingleSessionDTO {
 	
 	public static SingleSession toModel(SingleSessionDTO dto) {
 		SingleSession singleSession = new SingleSession();
-		singleSession.setId(dto.getId());
+		if (dto.getId() != null)
+			singleSession.setId(dto.getId());
 		singleSession.setStartDate(dto.getStartDate());
 		singleSession.setEndDate(dto.getEndDate());
 		singleSession.setPatient(dto.getPatient());
@@ -39,7 +44,7 @@ public class SingleSessionDTO {
 		singleSession.setSessionType(dto.getSessionType());
 		return singleSession;
 	}
-
+	
 	@Override
 	public SingleSessionDTO clone() {
 		SingleSessionDTO clone = new SingleSessionDTO();
@@ -55,51 +60,51 @@ public class SingleSessionDTO {
 	public Integer getId() {
 		return id;
 	}
-
+	
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
+	
 	public Date getStartDate() {
 		return startDate;
 	}
-
+	
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
-
+	
 	public Date getEndDate() {
 		return endDate;
 	}
-
+	
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-
+	
 	public Patient getPatient() {
 		return patient;
 	}
-
+	
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
-
+	
 	public Therapist getTherapist() {
 		return therapist;
 	}
-
+	
 	public void setTherapist(Therapist therapist) {
 		this.therapist = therapist;
 	}
-
+	
 	public SessionType getSessionType() {
 		return sessionType;
 	}
-
+	
 	public void setSessionType(SessionType sessionType) {
 		this.sessionType = sessionType;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -112,7 +117,7 @@ public class SingleSessionDTO {
 		result = prime * result + ((therapist == null) ? 0 : therapist.hashCode());
 		return result;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -137,11 +142,12 @@ public class SingleSessionDTO {
 		return true;
 	}
 	
-	public <T> boolean equalsOrNull(SingleSessionDTO other, Function<SingleSessionDTO, T> mapper) {
+	public <T> boolean equalsOrNull(SingleSessionDTO other,
+									Function<SingleSessionDTO, T> mapper) {
 		return equalsOrNull(this, other, mapper);
 	}
 	
-	public static <T,U> boolean equalsOrNull(T t1, T t2, Function<T,U> mapper) {
+	public static <T, U> boolean equalsOrNull(T t1, T t2, Function<T, U> mapper) {
 		if (t1 == null)
 			throw new NullPointerException("t1 is null");
 		if (t2 == null)
