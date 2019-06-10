@@ -34,7 +34,7 @@ public class ExpositionNoteFactory extends AbstractFactory<ExpositionNote> {
         Date date = faker.date().past(100, TimeUnit.DAYS);
         String text = "This is an exposition note regarding " + patient.toString();
         Visibility visibility = Visibility.values()[random.nextInt(Visibility.values().length)]; 
-        return new ExpositionNote(patient, date, text, visibility, random.nextInt(10));
+        return new ExpositionNote(patient, date, text, visibility, random.nextInt(10)+1);
     }
     
     public Collection<ExpositionNote> create(int count, Patient patient) {
