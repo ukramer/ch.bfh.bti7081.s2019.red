@@ -13,7 +13,7 @@ import ch.bfh.red.ui.views.EditGroupSessionView;
 import ch.bfh.red.ui.views.ExpositionView;
 import ch.bfh.red.ui.views.ListPatientView;
 import ch.bfh.red.ui.views.ListTherapyView;
-import ch.bfh.red.ui.views.session.ListSingleSessionView;
+import ch.bfh.red.ui.views.ListSingleSessionView;
 
 @Tag("div")
 public class NavigationComponent extends Component {
@@ -21,19 +21,19 @@ public class NavigationComponent extends Component {
         getElement().getClassList().add("main-layout__nav");
 
         RouterLink patientList = new RouterLink(null, ListPatientView.class);
-        patientList.add(new Icon(VaadinIcon.LIST), new Text("Patient list"));
+        patientList.add(new Icon(VaadinIcon.LIST), new Text("Patienten"));
         patientList.addClassName("main-layout__nav-item");
         patientList.setHighlightCondition(HighlightConditions.sameLocation());
         add(patientList);
 
         RouterLink editGroupSession = new RouterLink(null, EditGroupSessionView.class);
-        editGroupSession.add(new Icon(VaadinIcon.PENCIL), new Text("Edit Group Session"));
+        editGroupSession.add(new Icon(VaadinIcon.PENCIL), new Text("Gruppensitzungen"));
         editGroupSession.addClassName("main-layout__nav-item");
         editGroupSession.setHighlightCondition(HighlightConditions.sameLocation());
         add(editGroupSession);
 
         RouterLink editSingleSession = new RouterLink(null, ListSingleSessionView.class);
-        editSingleSession.add(new Icon(VaadinIcon.PENCIL), new Text("Edit Single Session"));
+        editSingleSession.add(new Icon(VaadinIcon.PENCIL), new Text("Einzelsitzungen"));
         editSingleSession.addClassName("main-layout__nav-item");
         editSingleSession.setHighlightCondition(HighlightConditions.sameLocation());
         add(editSingleSession);
@@ -45,7 +45,7 @@ public class NavigationComponent extends Component {
         add(therapyListView);
 
         RouterLink expositionView = new RouterLink(null, ExpositionView.class);
-        expositionView.add(new Icon(VaadinIcon.LIST), new Text("View Expositions"));
+        expositionView.add(new Icon(VaadinIcon.LIST), new Text("Expositionen"));
         expositionView.addClassName("main-layout__nav-item");
         expositionView.setHighlightCondition(HighlightConditions.sameLocation());
         add(expositionView);

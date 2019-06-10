@@ -1,7 +1,7 @@
 package ch.bfh.red.backend.services;
 
 import ch.bfh.red.backend.models.*;
-import ch.bfh.red.ui.encoders.DateToStringEncoder;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
 import org.hibernate.query.criteria.internal.OrderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,74 +33,32 @@ public class TherapyService implements IService<Therapy> {
     @Autowired
     @Lazy
     private PatientService patientService;
-    
+
     @Autowired
     @Lazy
     private SingleSessionService singleSessionService;
-    
+
     @Autowired
     @Lazy
     private GroupSessionService groupSessionService;
-    
+
     @Autowired
     @Lazy
     private PatientNoteService patientNoteService;
-    
+
     @Autowired
     @Lazy
     private TherapistNoteService therapistNoteService;
-    
+
     @PersistenceContext
-    private EntityManager entityManager;
-    
-    private static DateToStringEncoder dateToStringEncoder = new DateToStringEncoder();
-    
+    private EntityManager em;
+
     public TherapyService() {
-		BeanUtils.checkBeanInstantiation(Thread.currentThread().getStackTrace(), 
-				TherapyService.class);	
+		BeanUtils.checkBeanInstantiation(Thread.currentThread().getStackTrace(),
+				TherapyService.class);
 	}
 
-    @Override
-	public List<Therapy> getAll() {
-		List<Therapy> list = new ArrayList<>();
-		repository.findAll().iterator().forEachRemaining(list::add);
-		return list;
-	}
-	
-	@Override
-	public Therapy getById(Integer id) {
-		Therapy obj = repository.findById(id).get();
-		return obj;
-	}
-	
-	@Override
-	public void delete(Integer id) {
-		delete(getById(id));
-	}
-
-	@Override
-	public void delete(Therapy t) {
-		repository.delete(t);
-	}
-	
-	@Override
-	public Therapy persist(Therapy t) {
-        return repository.save(t);
-	}
-	
-	@Override
-	public Boolean exists(Therapy t) {
-		if (t == null || t.getId() == null) return false;
-		return existsById(t.getId());
-	}
-	
-	@Override
-	public Boolean existsById(Integer id) {
-		if (id == null) return false;
-		return repository.existsById(id);
-	}
-	
-	@Transactional
+    @Transactional
     public Therapy getByIdWithAllAssociations(Integer id) {
         Therapy therapy = repository.findById(id).get();
         Hibernate.initialize(therapy.getSingleSessions());
@@ -116,44 +74,89 @@ public class TherapyService implements IService<Therapy> {
         return therapy;
     }
 
-    public List<Therapy> getByFinished(boolean finished) {
-        return repository.findByFinished(finished);
+    @Override
+    public List<Therapy> getAll() {
+        return null;
     }
 
-    public List<Therapy> getByFinishedAndPatientName(boolean finished, String firstName, String lastName) {
-        return repository.findByFinishedAndPatientFirstNameAndPatientLastName(finished, firstName, lastName);
+    @Override
+	public Therapy getById(Integer id) {
+		Therapy obj = repository.findById(id).get();
+		return obj;
+	}
+
+	@Override
+	public void delete(Integer id) {
+		delete(getById(id));
+	}
+
+	@Override
+	public void delete(Therapy t) {
+		repository.delete(t);
+	}
+
+	@Override
+	public Therapy persist(Therapy t) {
+		patientService.persist(t.getPatient());
+    	singleSessionService.persist(t.getSingleSessions());
+    	groupSessionService.persist(t.getGroupSessions());
+    	patientNoteService.persist(t.getPatientNotes());
+    	therapistNoteService.persist(t.getTherapistNotes());
+
+        return repository.save(t);
+	}
+
+    @Override
+    public Boolean exists(Therapy t) {
+        if (t == null || t.getId() == null) return false;
+        return existsById(t.getId());
     }
 
-    public List<Therapy> getByFinishedAndPatientNameAndDateRange(boolean finished, String firstName, String lastName, String start, String end) {
-        Date startDate = dateToStringEncoder.decode(start);
-        Date endDate = dateToStringEncoder.decode(end);
-        return repository.findByFinishedAndPatientFirstNameAnPatientLastNameAndStartAndEndDate(finished, firstName, lastName, startDate, endDate);
+    @Override
+    public Boolean existsById(Integer id) {
+        if (id == null) return false;
+        return repository.existsById(id);
     }
 
-    public List<Therapy> getByFinishedAndPatientNameAndStartDate(boolean finished, String firstName, String lastName, String start) {
-        Date startDate = dateToStringEncoder.decode(start);
-        return repository.findByFinishedAndPatientFirstNameAnPatientLastNameAndStartDate(finished, firstName, lastName, startDate);
+    public List<Therapy> getBy(boolean finished, String firstName, String lastName, LocalDate startDate, LocalDate endDate) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Therapy> cq = cb.createQuery(Therapy.class);
+        Root<Therapy> therapy = cq.from(Therapy.class);
+
+        applyFilter(therapy, cq, finished, firstName, lastName, startDate, endDate);
+
+        boolean filterInactive = StringUtils.isBlank(firstName) && StringUtils.isBlank(lastName) && startDate == null && endDate == null;
+        if (filterInactive) {
+            cq.orderBy(new OrderImpl(therapy.get("startDate"), false));
+        }
+
+        TypedQuery<Therapy> query = em.createQuery(cq);
+        if (filterInactive) {
+            query.setMaxResults(10);
+        }
+
+        return query.getResultList();
     }
 
-    public List<Therapy> getByFinishedAndPatientNameAndEndDate(boolean finished, String firstName, String lastName, String end) {
-        Date endDate = dateToStringEncoder.decode(end);
-        return repository.findByFinishedAndPatientFirstNameAnPatientLastNameAndEndDate(finished, firstName, lastName, endDate);
-    }
+    private void applyFilter(Root<Therapy> therapy, CriteriaQuery cq, boolean finished, String firstName, String lastName, LocalDate startDate, LocalDate endDate) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(cb.equal(therapy.get("finished"), finished));
 
-    public List<Therapy> getByFinishedAndDateRange(boolean finished, String start, String end) {
-        Date startDate = dateToStringEncoder.decode(start);
-        Date endDate = dateToStringEncoder.decode(end);
-        return repository.findByFinishedAndStartAndEndDate(finished, startDate, endDate);
+        Join<Patient, String> patient = therapy.join("patient");
+        if(StringUtils.isNotBlank(firstName)){
+            predicates.add(cb.like(patient.get("firstName"), "%" + firstName + "%"));
+        }
+        if(StringUtils.isNotBlank(lastName)){
+            predicates.add(cb.like(patient.get("lastName"), "%" + lastName + "%"));
+        }
+        if(startDate != null){
+            predicates.add(cb.greaterThanOrEqualTo(therapy.get("startDate"), Date.from(startDate.atStartOfDay(ZoneId.systemDefault()).toInstant())));
+        }
+        if(endDate != null){
+            predicates.add(cb.lessThanOrEqualTo(therapy.get("startDate"), Date.from(endDate.atStartOfDay(ZoneId.systemDefault()).toInstant())));
+        }
+        Predicate finalPredicate = cb.and(predicates.toArray(new Predicate[predicates.size()]));
+        cq.where(finalPredicate);
     }
-
-    public List<Therapy> getByFinishedAndStartDate(boolean finished, String start) {
-        Date startDate = dateToStringEncoder.decode(start);
-        return repository.findByFinishedAndStartDate(finished, startDate);
-    }
-
-    public List<Therapy> getByFinishedAndEndDate(boolean finished, String end) {
-        Date endDate = dateToStringEncoder.decode(end);
-        return repository.findByFinishedAndEndDate(finished, endDate);
-    }
-    
 }

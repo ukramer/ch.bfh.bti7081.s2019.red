@@ -26,7 +26,8 @@
                 </vaadin-custom-field>
 			</vaadin-form-layout>
 
-			<br/>
+            <vaadin-button on-click="add" theme="success">Einzelsitzung hinzufügen</vaadin-button>
+
 			<div hidden="{{_isEmpty(singleSessions)}}">
 				<vaadin-grid theme="no-border" items="[[singleSessions]]">
                     <vaadin-grid-sort-column header="Startdatum" path="startDate" direction="desc"></vaadin-grid-sort-column>
@@ -52,10 +53,6 @@
                     </vaadin-grid-column>
                 </vaadin-grid>
 			</div>
-			
-			<br/>
-            <vaadin-button id="newButton" theme="success">Neu</vaadin-button>
-            
 		</div>
 	</template>
 

@@ -17,9 +17,9 @@ import ch.bfh.red.backend.services.SingleSessionService;
 import ch.bfh.red.backend.services.TherapistService;
 import ch.bfh.red.ui.dto.SingleSessionDTO;
 import ch.bfh.red.ui.dto.SingleSessionSearchDTO;
-import ch.bfh.red.ui.views.session.EditSingleSessionView.EditSingleSessionListener;
-import ch.bfh.red.ui.views.session.ListSingleSessionView;
-import ch.bfh.red.ui.views.session.ListSingleSessionView.ListSingleSessionListener;
+import ch.bfh.red.ui.views.EditSingleSessionView.EditSingleSessionListener;
+import ch.bfh.red.ui.views.ListSingleSessionView;
+import ch.bfh.red.ui.views.ListSingleSessionView.ListSingleSessionListener;
 
 @Component
 public class SingleSessionPresenter implements EditSingleSessionListener, ListSingleSessionListener {

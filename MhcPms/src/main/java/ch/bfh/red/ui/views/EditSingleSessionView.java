@@ -1,8 +1,7 @@
-package ch.bfh.red.ui.views.session;
+package ch.bfh.red.ui.views;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -11,7 +10,6 @@ import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import ch.bfh.red.ui.views.ListTherapyView;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.Tag;
