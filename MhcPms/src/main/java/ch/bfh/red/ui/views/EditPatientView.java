@@ -3,7 +3,6 @@ package ch.bfh.red.ui.views;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.bfh.red.backend.services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -155,7 +154,7 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
 
     @EventHandler
     public void editSingleSession(@EventData("event.model.item.id") int id) {
-        System.out.println("edit single session with id: " + id);
+        UI.getCurrent().navigate(EditSingleSessionView.class, id);
     }
 
     @EventHandler
