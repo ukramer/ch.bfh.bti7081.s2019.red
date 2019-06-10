@@ -2,6 +2,7 @@ package ch.bfh.red.ui.presenters;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,8 @@ import ch.bfh.red.backend.services.SingleSessionService;
 import ch.bfh.red.backend.services.TherapistService;
 import ch.bfh.red.ui.views.EditSingleSessionView;
 import ch.bfh.red.ui.views.EditSingleSessionView.EditSingleSessionListener;
+import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
+import ch.bfh.red.ui.views.searchBeans.SingleSessionSearchBean;
 import ch.bfh.red.ui.views.session.ListSingleSessionView;
 import ch.bfh.red.ui.views.session.ListSingleSessionView.ListSingleSessionListener;
 
@@ -46,6 +49,12 @@ public class SingleSessionPresenter implements EditSingleSessionListener, ListSi
 		listView.setSingleSessions(service.getAll());
 		listView.setPatients(patientService.getAll());
 	}
+	
+	@Override
+    public void applyFilter(SingleSessionSearchBean searchBean) {
+		List<SingleSession> singleSessions = service.findBySearchBean(searchBean);
+        listView.setSingleSessions(singleSessions);
+    }
 
 	@Override
 	public Collection<Patient> getPatients() {
