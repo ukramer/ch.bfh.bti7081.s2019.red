@@ -46,16 +46,16 @@
                 <vaadin-button on-click="add" theme="success">Therapie hinzufügen</vaadin-button>
                 <vaadin-grid theme="no-border" items="[[therapies]]">
                     <vaadin-grid-sort-column header="Startdatum" path="startDate" direction="desc"></vaadin-grid-sort-column>
-                    <vaadin-grid-sort-column header="Patient">
+                    <vaadin-grid-column header="Patient">
                         <template>
                             [[item.patient.lastName]] [[item.patient.firstName]]
                         </template>
-                    </vaadin-grid-sort-column>
-                    <vaadin-grid-sort-column header="Therapeut">
+                    </vaadin-grid-column>
+                    <vaadin-grid-column header="Therapeut">
                         <template>
                             [[item.therapist.academicTitle]] [[item.therapist.lastName]] [[item.therapist.firstName]]
                         </template>
-                    </vaadin-grid-sort-column>
+                    </vaadin-grid-column>
                     <vaadin-grid-column>
                         <template>
                             <vaadin-button theme="tertiary" on-click="edit">Bearbeiten</vaadin-button>

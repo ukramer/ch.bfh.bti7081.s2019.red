@@ -63,9 +63,6 @@ public class ListSingleSessionView
     @Id("patient")
     private ComboBox<Patient> patientComboBox;
 
-    @Id("newButton")
-    private Button newButton;
-
     private Binder<SingleSessionDTO> binder = new Binder<>();
 
     private SingleSessionSearchDTO searchBean = new SingleSessionSearchDTO();
@@ -108,9 +105,6 @@ public class ListSingleSessionView
             searchBean.setEndDate(date);
             applyFilter();
         });
-
-        newButton.addClickListener(event -> changeToCreateMode());
-
     }
 
     @Override
@@ -121,10 +115,6 @@ public class ListSingleSessionView
         header.setText("Einzelsitzungen");
         startDatePicker.setI18n(MainLayout.datePickerI18n);
         endDatePicker.setI18n(MainLayout.datePickerI18n);
-    }
-
-    public void changeToCreateMode() {
-        UI.getCurrent().navigate(EditSingleSessionView.class);
     }
 
     public void setSingleSessions(List<SingleSessionDTO> singleSessions) {
@@ -141,6 +131,11 @@ public class ListSingleSessionView
 
     public void applyFilter(SingleSessionSearchDTO searchBean) {
         presenter.applyFilter(searchBean);
+    }
+
+    @EventHandler
+    public void add() {
+        UI.getCurrent().navigate(EditSingleSessionView.class);
     }
 
     @EventHandler

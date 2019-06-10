@@ -38,7 +38,7 @@ public class TherapyPresenter implements ListTherapyView.ListViewListener, EditT
     public void setView(ListTherapyView listTherapyView) {
         this.listTherapyView = listTherapyView;
         listTherapyView.setListener(this);
-        updateList(false, null, null, null);
+        updateList(false, new Patient(), null, null);
 
         List<Patient> patients = therapies.stream().map(Therapy::getPatient).distinct().sorted(Comparator.comparing(AbstractPerson::getLastName)).collect(Collectors.toList());
         listTherapyView.setPatients(patients);
@@ -97,27 +97,7 @@ public class TherapyPresenter implements ListTherapyView.ListViewListener, EditT
     @Override
     public void updateList(boolean finished, Patient patient, LocalDate start, LocalDate end) {
         therapies.clear();
-        if (patient != null) {
-            if (start != null && end != null) {
-                therapies = getService().getByFinishedAndPatientNameAndDateRange(finished, patient.getFirstName(), patient.getLastName(), start.toString(), end.toString());
-            } else if (start != null) {
-                therapies = getService().getByFinishedAndPatientNameAndStartDate(finished, patient.getFirstName(), patient.getLastName(), start.toString());
-            } else if (end != null) {
-                therapies = getService().getByFinishedAndPatientNameAndEndDate(finished, patient.getFirstName(), patient.getLastName(), end.toString());
-            } else {
-                therapies = getService().getByFinishedAndPatientName(finished, patient.getFirstName(), patient.getLastName());
-            }
-        } else {
-            if (start != null && end != null) {
-                therapies = getService().getByFinishedAndDateRange(finished, start.toString(), end.toString());
-            } else if (start != null) {
-                therapies = getService().getByFinishedAndStartDate(finished, start.toString());
-            } else if (end != null) {
-                therapies = getService().getByFinishedAndEndDate(finished, end.toString());
-            } else {
-                therapies = getService().getByFinished(finished);
-            }
-        }
+        therapies = getService().getBy(finished, patient.getFirstName(), patient.getLastName(), start, end);
         listTherapyView.setTherapies(therapies);
     }
 }
