@@ -63,7 +63,7 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
 
     ListPatientView(@Autowired PatientService patientService) {
         new PatientPresenter(this, patientService);
-        header.setText("Patienten");
+        header.setText("Patienten"); //Uninitialized read of Header can be left unhandled, because we set the Value right here.
         initBinder();
     }
 

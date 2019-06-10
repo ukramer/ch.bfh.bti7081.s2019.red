@@ -44,7 +44,7 @@ public class DashboardView extends PolymerTemplate<DashboardView.TherapistModel>
         new DashboardPresenter(this);
         this.therapistService = therapistService;
         //getModel().setTherapist(null); // otherwise pass the model
-        header.setText("Dashboard");
+        header.setText("Dashboard"); //Uninitialized Read left unhandled because value is set here
     }
 
     /* Only the presenter registers one listener... */

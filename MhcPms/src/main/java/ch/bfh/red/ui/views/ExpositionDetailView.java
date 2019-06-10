@@ -75,17 +75,17 @@ public class ExpositionDetailView extends PolymerTemplate<ExpositionDetailView.E
         this.expositionPresenter = expositionPresenter;
 
         //workaround
-        visibility.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
-        patient.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
-        degree.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
+        visibility.setDataProvider(DataProvider.ofCollection(new ArrayList<>())); //Uninitialized Read left unhandled because value is set here
+        patient.setDataProvider(DataProvider.ofCollection(new ArrayList<>())); //Uninitialized Read left unhandled because value is set here
+        degree.setDataProvider(DataProvider.ofCollection(new ArrayList<>())); //Uninitialized Read left unhandled because value is set here
 
 
-        binder.forField(date).asRequired("Es muss ein Datum gesetzt sein.")
+        binder.forField(date).asRequired("Es muss ein Datum gesetzt sein.") //Uninitialized Read left unhandled because value is set here
                 .bind(exposition -> DateTimeUtils.toLocalDate(exposition.getDate()),
                         (exposition, localDate) -> exposition.setDate(DateTimeUtils.toDate(localDate)));
         binder.forField(patient).asRequired("Es muss ein Patient gesetzt sein.").bind(ExpositionNote::getPatient, ExpositionNote::setPatient);
         binder.forField(visibility).asRequired("Es muss eine Visibility gesetzt sein.").bind(ExpositionNote::getVisibility, ExpositionNote::setVisibility);
-        binder.forField(text).bind(ExpositionNote::getText, ExpositionNote::setText);
+        binder.forField(text).bind(ExpositionNote::getText, ExpositionNote::setText); //Uninitialized Read left unhandled because value is set here
         binder.forField(degree).asRequired("Es muss ein Expositionsgrad gesetzt sein.").bind(ExpositionNote::getDegreeOfExposure, ExpositionNote::setDegreeOfExposure);
 
 

@@ -200,7 +200,7 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 		if (i != 0) return i;
 		i = patient.compareTo(o.patient);
 		if (i != 0) return i;
-		i = startDate.compareTo(startDate);
+		i = startDate.compareTo(o.startDate);
 		if (i != 0) return i;
 		return therapyType.compareTo(o.therapyType);
 	}

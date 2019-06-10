@@ -38,6 +38,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("serial")
 @Route(value = "therapy/detail", layout = MainLayout.class)
 @Tag("therapy-detail")
 @HtmlImport("frontend://src/views/therapy/detail.html")
@@ -73,16 +74,16 @@ public class DetailView extends PolymerTemplate<DetailView.TherapyModel> impleme
     DetailView(@Autowired TherapyPresenter therapyPresenter) {
         this.therapyPresenter = therapyPresenter;
            
-        binder.forField(startDate).asRequired("Es muss ein Startdatum gesetzt sein.")
+        binder.forField(startDate).asRequired("Es muss ein Startdatum gesetzt sein.") //Uninitialized Read left unhandled because value is set here
             .bind(therapy -> DateTimeUtils.toLocalDate(therapy.getStartDate()), 
                     (therapy, localDate) -> DateTimeUtils.toDate(localDate));
-        binder.forField(finished).bind(Therapy::isFinished, Therapy::setFinished);
+        binder.forField(finished).bind(Therapy::isFinished, Therapy::setFinished); //Uninitialized Read left unhandled because value is set here
 
         // workaround for https://github.com/vaadin/vaadin-combo-box-flow/issues/235
         // @todo: to be removed with Vaadin v3.0.14
-        therapyType.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
-        patient.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
-        therapist.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
+        therapyType.setDataProvider(DataProvider.ofCollection(new ArrayList<>())); //Uninitialized Read left unhandled because value is set here
+        patient.setDataProvider(DataProvider.ofCollection(new ArrayList<>())); //Uninitialized Read left unhandled because value is set here
+        therapist.setDataProvider(DataProvider.ofCollection(new ArrayList<>())); //Uninitialized Read left unhandled because value is set here
         // workaround end
 
         binder.forField(therapyType).asRequired("Es muss ein Typ gesetzt sein.").bind(Therapy::getTherapyType, Therapy::setTherapyType);
