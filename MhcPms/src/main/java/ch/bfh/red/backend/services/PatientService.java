@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import ch.bfh.red.backend.models.GroupSession;
+import ch.bfh.red.backend.repositories.GroupSessionRepository;
 import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +29,6 @@ public class PatientService implements IService<Patient> {
 
 	@Autowired
 	private PatientRepository repository;
-	
-	@Autowired
-	@Lazy
-	private TherapistService therapistService;
 
 	@PersistenceContext
 	private EntityManager em;
@@ -56,19 +55,18 @@ public class PatientService implements IService<Patient> {
 		delete(getById(id));
 	}
 
+	@Transactional
 	@Override
 	public void delete(Patient t) {
+		List<GroupSession> groupSessions = (List<GroupSession>) t.getGroupSessions();
+		for(GroupSession gs : groupSessions){
+			gs.getPatients().remove(t);
+		}
 		repository.delete(t);
 	}
 	
 	@Override
 	public Patient persist(Patient t) {
-		Collection<Therapist> therapists = t.getTherapists();
-		for (Therapist therapist: therapists)
-			if (!therapistService.existById(therapist.getId())) {
-				therapistService.persist(therapist);
-			}
-		therapistService.persist(t.getTherapists());
 		return repository.save(t);
 	}
 	
@@ -112,7 +110,10 @@ public class PatientService implements IService<Patient> {
 		Hibernate.initialize(patient.getTherapies());
 		Hibernate.initialize(patient.getGroupSessions());
 		Hibernate.initialize(patient.getSingleSessions());
-		Hibernate.initialize(patient.getTherapists());
+		for (GroupSession groupSession: patient.getGroupSessions()) {
+			Hibernate.initialize(groupSession.getPatients());
+			Hibernate.initialize(groupSession.getTherapists());
+		}
 		return patient;
 	}
 }

@@ -110,12 +110,6 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
         @Encode(value = LocalDateToStringEncoder.class, path = "startDateAsLocalDate")
         @Encode(value = LocalDateToStringEncoder.class, path = "endDateAsLocalDate")
         void setGroupSessions(List<GroupSession> groupSessions);
-
-        List<Therapist> getTherapists();
-
-        @Include({"id", "username", "firstName", "lastName"})
-        @Encode(value = IntegerToStringEncoder.class, path = "id")
-        void setTherapists(List<Therapist> therapists);
     }
 
     @Override
@@ -127,14 +121,12 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
             getModel().setTherapies(new ArrayList<>());
             getModel().setSingleSessions(new ArrayList<>());
             getModel().setGroupSessions(new ArrayList<>());
-            getModel().setTherapists(new ArrayList<>());
         } else {
             header.setText("Patient bearbeiten");
             Patient patient = listener.loadPatient(patientId);
             getModel().setTherapies((List<Therapy>) patient.getTherapies());
             getModel().setSingleSessions((List<SingleSession>) patient.getSingleSessions());
             getModel().setGroupSessions((List<GroupSession>) patient.getGroupSessions());
-            getModel().setTherapists((List<Therapist>) patient.getTherapists());
             binder.setBean(patient);
         }
     }
