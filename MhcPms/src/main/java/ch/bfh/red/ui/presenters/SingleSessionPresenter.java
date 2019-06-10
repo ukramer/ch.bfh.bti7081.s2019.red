@@ -1,5 +1,6 @@
 package ch.bfh.red.ui.presenters;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -14,10 +15,11 @@ import ch.bfh.red.backend.models.Therapist;
 import ch.bfh.red.backend.services.PatientService;
 import ch.bfh.red.backend.services.SingleSessionService;
 import ch.bfh.red.backend.services.TherapistService;
+import ch.bfh.red.ui.dto.SingleSessionDTO;
+import ch.bfh.red.ui.dto.SingleSessionSearchDTO;
 import ch.bfh.red.ui.views.EditSingleSessionView;
 import ch.bfh.red.ui.views.EditSingleSessionView.EditSingleSessionListener;
 import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
-import ch.bfh.red.ui.views.searchBeans.SingleSessionSearchBean;
 import ch.bfh.red.ui.views.session.ListSingleSessionView;
 import ch.bfh.red.ui.views.session.ListSingleSessionView.ListSingleSessionListener;
 
@@ -46,14 +48,21 @@ public class SingleSessionPresenter implements EditSingleSessionListener, ListSi
 	public void setView(ListSingleSessionView listView) {
 		this.listView = listView;
 		
-		listView.setSingleSessions(service.getAll());
+		List<SingleSession> models = service.getAll();
+		List<SingleSessionDTO> dtos = new ArrayList<>();
+		for (SingleSession model: models)
+			dtos.add(SingleSessionDTO.fromModel(model));
+		listView.setSingleSessions(dtos);
 		listView.setPatients(patientService.getAll());
 	}
 	
 	@Override
-    public void applyFilter(SingleSessionSearchBean searchBean) {
-		List<SingleSession> singleSessions = service.findBySearchBean(searchBean);
-        listView.setSingleSessions(singleSessions);
+    public void applyFilter(SingleSessionSearchDTO searchBean) {
+		List<SingleSession> models = service.findByDTO(searchBean);
+		List<SingleSessionDTO> dtos = new ArrayList<>();
+		for (SingleSession model: models)
+			dtos.add(SingleSessionDTO.fromModel(model));
+        listView.setSingleSessions(dtos);
     }
 
 	@Override
@@ -74,7 +83,8 @@ public class SingleSessionPresenter implements EditSingleSessionListener, ListSi
 	@Override
 	public void load(Integer therapyId) {
 		SingleSession singleSession = service.getById(therapyId);
-		editView.editSingleSession(singleSession);
+		SingleSessionDTO dto = SingleSessionDTO.fromModel(singleSession);
+		editView.editSingleSession(dto);
 	}
 
 	@Override
@@ -83,12 +93,12 @@ public class SingleSessionPresenter implements EditSingleSessionListener, ListSi
 	}
 
 	@Override
-	public void save(SingleSession singleSession) throws Exception {
-		service.persist(singleSession);
+	public void save(SingleSessionDTO singleSession) throws Exception {
+		service.persist(SingleSessionDTO.toModel(singleSession));
 	}
 
 	@Override
-	public void delete(SingleSession singleSession) {
+	public void delete(SingleSessionDTO singleSession) {
 		service.delete(service.getById(singleSession.getId()));
 	}
 	

@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import ch.bfh.red.backend.models.SingleSession;
 import ch.bfh.red.backend.repositories.SingleSessionRepository;
 import ch.bfh.red.common.BeanUtils;
-import ch.bfh.red.ui.views.searchBeans.SingleSessionSearchBean;
+import ch.bfh.red.ui.dto.SingleSessionSearchDTO;
 
 @Service("singleSessionService")
 public class SingleSessionService implements IService<SingleSession> {
@@ -83,7 +83,7 @@ public class SingleSessionService implements IService<SingleSession> {
 		return repository.existsById(id);
 	}
 
-	public List<SingleSession> findBySearchBean(SingleSessionSearchBean searchBean) {
+	public List<SingleSession> findByDTO(SingleSessionSearchDTO searchBean) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<SingleSession> cq = cb.createQuery(SingleSession.class);
 		Root<SingleSession> root = cq.from(SingleSession.class);

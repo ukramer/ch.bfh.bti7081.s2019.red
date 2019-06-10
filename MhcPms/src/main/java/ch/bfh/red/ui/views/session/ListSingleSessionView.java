@@ -36,13 +36,14 @@ import ch.bfh.red.backend.models.SingleSession;
 import ch.bfh.red.backend.models.Therapy;
 import ch.bfh.red.common.DateTimeUtils;
 import ch.bfh.red.ui.components.ConfirmationDialog;
+import ch.bfh.red.ui.dto.SingleSessionDTO;
+import ch.bfh.red.ui.dto.SingleSessionSearchDTO;
 import ch.bfh.red.ui.encoders.AcademicTitleToStringEncoder;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
 import ch.bfh.red.ui.presenters.SingleSessionPresenter;
 import ch.bfh.red.ui.views.EditSingleSessionView;
 import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
-import ch.bfh.red.ui.views.searchBeans.SingleSessionSearchBean;
 
 @Route(value = "singleSession/list", layout = MainLayout.class)
 @Tag("single-session-list")
@@ -68,9 +69,9 @@ public class ListSingleSessionView
 	@Id("patient")
 	private ComboBox<Patient> patientComboBox;
 	
-	private Binder<SingleSession> binder = new Binder<>();
+	private Binder<SingleSessionDTO> binder = new Binder<>();
 	
-	private SingleSessionSearchBean searchBean = new SingleSessionSearchBean();
+	private SingleSessionSearchDTO searchBean = new SingleSessionSearchDTO();
 	
 	@Autowired
 	public ListSingleSessionView(SingleSessionPresenter presenter) {
@@ -79,7 +80,7 @@ public class ListSingleSessionView
 		patientComboBox.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
 		
 		binder.forField(patientComboBox)
-				.bind(SingleSession::getPatient, SingleSession::setPatient);
+				.bind(SingleSessionDTO::getPatient, SingleSessionDTO::setPatient);
 		
 		patientComboBox.addValueChangeListener(event -> {
 			PatientSearchBean patientSearchBean = new PatientSearchBean();
@@ -123,7 +124,7 @@ public class ListSingleSessionView
 		
 	}
 	
-	public void setSingleSessions(List<SingleSession> singleSessions) {
+	public void setSingleSessions(List<SingleSessionDTO> singleSessions) {
 		getModel().setSingleSessions(singleSessions);
 	}
 	
@@ -135,24 +136,24 @@ public class ListSingleSessionView
 		applyFilter(this.searchBean);
 	}
 	
-	public void applyFilter(SingleSessionSearchBean searchBean) {
+	public void applyFilter(SingleSessionSearchDTO searchBean) {
 		presenter.applyFilter(searchBean);
 	}
 	
 	@EventHandler
-	public void edit(@ModelItem SingleSession singleSession) {
+	public void edit(@ModelItem SingleSessionDTO singleSession) {
 		UI.getCurrent().navigate(EditSingleSessionView.class, singleSession.getId());
 	}
 	
 	@EventHandler
-	public void delete(@ModelItem SingleSession singleSession) {
-		new ConfirmationDialog<SingleSession>().open(
+	public void delete(@ModelItem SingleSessionDTO singleSession) {
+		new ConfirmationDialog<SingleSessionDTO>().open(
 				"Einzelsitzung wirklich löschen?",
 				"Möchten Sie die Einzelsitzung wirklich löschen?", "", "Löschen",
 				true, singleSession, this::confirmDelete);
 	}
 	
-	private void confirmDelete(SingleSession singleSession) {
+	private void confirmDelete(SingleSessionDTO singleSession) {
 		if (singleSession == null)
 			return;
 		presenter.delete(singleSession);
@@ -162,9 +163,9 @@ public class ListSingleSessionView
 	
 	public interface ListSingleSessionListener {
 		
-		void delete(SingleSession singleSession);
+		void delete(SingleSessionDTO singleSession);
 		
-		void applyFilter(SingleSessionSearchBean searchBean);
+		void applyFilter(SingleSessionSearchDTO searchBean);
 		
 	}
 	
@@ -179,9 +180,9 @@ public class ListSingleSessionView
 		@Encode(value = AcademicTitleToStringEncoder.class,
 				path = "therapist.academicTitle")
 		@Encode(value = DateToStringEncoder.class, path = "startDate")
-		void setSingleSessions(List<SingleSession> singleSessions);
+		void setSingleSessions(List<SingleSessionDTO> singleSessions);
 		
-		List<SingleSession> getSingleSessions();
+		List<SingleSessionDTO> getSingleSessions();
 		
 //        @Include({"firstName", "lastName"})
 //        void setPatients(List<Patient> patients);

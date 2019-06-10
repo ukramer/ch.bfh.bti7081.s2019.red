@@ -1,15 +1,15 @@
-package ch.bfh.red.ui.views.searchBeans;
+package ch.bfh.red.ui.dto;
 
 import java.util.Date;
 
 import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
 
-public class SingleSessionSearchBean {
+public class SingleSessionSearchDTO {
 	private PatientSearchBean patient;
 	private Date startDate;
 	private Date endDate;
 	
-	public SingleSessionSearchBean() {}
+	public SingleSessionSearchDTO() {}
 
 	public PatientSearchBean getPatient() {
 		return patient;
