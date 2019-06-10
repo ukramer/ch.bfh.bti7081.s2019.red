@@ -85,6 +85,14 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 		this.finished = false;
 	}
 
+	public Therapy(Date startDate, TherapyType therapyType, Patient patient, Therapist therapist, boolean finished) {
+		this.startDate = startDate;
+		this.therapyType = therapyType;
+		this.patient = patient;
+		this.therapist = therapist;
+		this.finished = finished;
+	}
+
 	public Date getStartDate() {
 		return startDate;
 	}

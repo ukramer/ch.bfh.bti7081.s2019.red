@@ -38,7 +38,9 @@ public class TherapyFactory extends AbstractFactory<Therapy> {
     	Random random = new Random();
         Date startDate =  faker.date().past(1000, TimeUnit.DAYS);
         TherapyType therapyType =  TherapyType.values()[random.nextInt(TherapyType.values().length)];
-        return new Therapy(startDate, therapyType, patient, therapist);
+        Therapy therapy =  new Therapy(startDate, therapyType, patient, therapist, random.nextBoolean());
+        return therapy;
+
     }
     
 }
