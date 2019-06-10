@@ -19,7 +19,7 @@ public class MhcPmsApplication {
 		ApplicationContext context = start(args);
 		DbSeeder dbSeeder = context.getBean(DbSeeder.class);
 		seed(dbSeeder);
-		browse("http://localhost:8080/listpatient");
+		browse("http://localhost:8080");
 	}
 	
 	public static ApplicationContext start(String[] args) {
