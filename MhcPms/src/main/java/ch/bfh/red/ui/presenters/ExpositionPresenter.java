@@ -65,23 +65,23 @@ public class ExpositionPresenter implements ExpositionView.ExpositionViewListene
 		return expositionNoteService;
 	}
 
-	public void addMockData(){
-
-		Patient patient1 = new Patient("Stefan", "Mosimann",
-				new Address("Flughafenstrasse", "14", 3123, "Belp"));
-		ExpositionNote note1 = new ExpositionNote(patient1, new Date(), "Herd nicht überpüft", Visibility.PRIVATE, 7);
-		expositionNoteService.persist(note1);
-
-		Patient patient2 = new Patient("Annina", "Eigensatz",
-				new Address("Steinhofstrasse", "34", 3400, "Burgdorf"));
-		ExpositionNote note2 = new ExpositionNote(patient2, new Date(), "Ins Bett ohne Putzritual", Visibility.PRIVATE, 9);
-		expositionNoteService.persist(note2);
-
-		Patient patient3 = new Patient("Samuel", "Frey",
-				new Address("Fuchsmattweg", "54", 1111, "Hindelbank"));
-		ExpositionNote note3 = new ExpositionNote(patient3, new Date(), "Nur 3mal Händewaschen", Visibility.PRIVATE, 6);
-		expositionNoteService.persist(note3);
-
-	}
+//	public void addMockData(){
+//
+//		Patient patient1 = new Patient("Stefan", "Mosimann",
+//				new Address("Flughafenstrasse", "14", 3123, "Belp"));
+//		ExpositionNote note1 = new ExpositionNote(patient1, new Date(), "Herd nicht überpüft", Visibility.PRIVATE, 7);
+//		expositionNoteService.persist(note1);
+//
+//		Patient patient2 = new Patient("Annina", "Eigensatz",
+//				new Address("Steinhofstrasse", "34", 3400, "Burgdorf"));
+//		ExpositionNote note2 = new ExpositionNote(patient2, new Date(), "Ins Bett ohne Putzritual", Visibility.PRIVATE, 9);
+//		expositionNoteService.persist(note2);
+//
+//		Patient patient3 = new Patient("Samuel", "Frey",
+//				new Address("Fuchsmattweg", "54", 1111, "Hindelbank"));
+//		ExpositionNote note3 = new ExpositionNote(patient3, new Date(), "Nur 3mal Händewaschen", Visibility.PRIVATE, 6);
+//		expositionNoteService.persist(note3);
+//
+//	}
 
 }

@@ -79,7 +79,7 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
     public ExpositionView(ExpositionPresenter expositionPresenter) {
         this.expositionPresenter = expositionPresenter;
         this.layout.setSizeFull();
-        expositionPresenter.addMockData();
+        //expositionPresenter.addMockData();
 
 
 
