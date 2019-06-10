@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,7 @@ import com.vaadin.flow.templatemodel.TemplateModel;
 import ch.bfh.red.MainLayout;
 import ch.bfh.red.common.DateTimeUtils;
 import ch.bfh.red.ui.dto.GroupSessionDTO;
+import ch.bfh.red.ui.dto.GroupSessionGridDTO;
 import ch.bfh.red.ui.dto.GroupSessionSearchDTO;
 import ch.bfh.red.ui.dto.PersonDTO;
 import ch.bfh.red.ui.dto.TherapistDTO;
@@ -60,7 +62,7 @@ public class ListGroupSessionView
 	
 	@Id("endDate.date")
 	private DatePicker endDatePicker;
-
+	
 	private Binder<GroupSessionSearchDTO> binder = new Binder<>();
 	
 	private GroupSessionSearchDTO searchBean = new GroupSessionSearchDTO();
@@ -73,7 +75,8 @@ public class ListGroupSessionView
 		therapistComboBox.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
 		
 		binder.forField(patientComboBox)
-        .bind(GroupSessionSearchDTO::getPatient, GroupSessionSearchDTO::setPatient);
+				.bind(GroupSessionSearchDTO::getPatient,
+						GroupSessionSearchDTO::setPatient);
 		
 		patientComboBox.addValueChangeListener(event -> {
 			PersonDTO patientSearchBean = event.getValue();
@@ -112,14 +115,31 @@ public class ListGroupSessionView
 	}
 	
 	@Override
-    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        presenter.setView(this);
-
-        // init view elements
-        header.setText("Gruppensitzungen");
-        startDatePicker.setI18n(MainLayout.datePickerI18n);
-        endDatePicker.setI18n(MainLayout.datePickerI18n);
-    }
+	public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+		presenter.setView(this);
+		
+		// init view elements
+		header.setText("Gruppensitzungen");
+		startDatePicker.setI18n(MainLayout.datePickerI18n);
+		endDatePicker.setI18n(MainLayout.datePickerI18n);
+	}
+	
+	public void setGroupSessions(List<GroupSessionDTO> groupSessions) {
+		List<GroupSessionGridDTO> gridList = new ArrayList<>();
+		DateToStringEncoder encoder = new DateToStringEncoder();
+		for (GroupSessionDTO groupSession : groupSessions) {
+			Integer id = groupSession.getId();
+			String startDate = encoder.encode(groupSession.getStartDate());
+			String patients = groupSession.getPatients().stream()
+					.map(p -> p.getLastName()).collect(Collectors.joining(", "));
+			String therapists = groupSession.getTherapists().stream().map(t -> t.getLastName())
+					.collect(Collectors.joining(", "));
+			gridList.add(new GroupSessionGridDTO(id, startDate, patients, therapists));
+		}
+		
+		getModel().setGroupSessions(gridList);
+		
+	}
 	
 	public void applyFilter() {
 		applyFilter(this.searchBean);
@@ -130,12 +150,12 @@ public class ListGroupSessionView
 	}
 	
 	public void setPatients(List<PersonDTO> patients) {
-        patientComboBox.setItems(patients);
-    }
+		patientComboBox.setItems(patients);
+	}
 	
 	public void setTherapists(List<TherapistDTO> therapists) {
-        therapistComboBox.setItems(therapists);
-    }
+		therapistComboBox.setItems(therapists);
+	}
 	
 	public interface ListGroupSessionListener {
 		
@@ -145,17 +165,11 @@ public class ListGroupSessionView
 	
 	public interface ListGroupSessionModel extends TemplateModel {
 		
-		@Include({ "id", "startDate", "finished"})
+		@Include({ "id", "startDate", "patients", "therapists" })
 		@Encode(value = IntegerToStringEncoder.class, path = "id")
-		@Encode(value = DateToStringEncoder.class, path = "startDate")
-		void setGroupSessions(List<GroupSessionDTO> groupSessions);
+		void setGroupSessions(List<GroupSessionGridDTO> groupSessions);
 		
-		List<GroupSessionDTO> getGroupSessions();
-		
-	}
-	
-	public void setGroupSessions(List<GroupSessionDTO> groupSessions) {
-		getModel().setGroupSessions(groupSessions);
+		List<GroupSessionGridDTO> getGroupSessions();
 		
 	}
 	

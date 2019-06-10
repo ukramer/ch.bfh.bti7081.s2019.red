@@ -30,6 +30,16 @@
                 </vaadin-custom-field>
 			</vaadin-form-layout>
 			
+			<div hidden="{{_isEmpty(groupSessions)}}">
+				<vaadin-grid theme="no-border" items="[[groupSessions]]">
+                    <vaadin-grid-sort-column header="Startdatum" path="startDate" direction="desc"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Patienten">
+                        <template>
+                            [[item.patients]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                </vaadin-grid>
+			</div>
 			
 		</div>
 	</template>
@@ -38,6 +48,10 @@
         class ListGroupSession extends Polymer.Element {
             static get is() {
                 return 'group-session-list'
+            }
+            
+            _isEmpty(array) {
+                return array.length == 0;
             }
             
         }
