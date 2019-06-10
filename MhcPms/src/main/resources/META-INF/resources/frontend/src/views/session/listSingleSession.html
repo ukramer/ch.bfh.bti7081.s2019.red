@@ -1,0 +1,76 @@
+<!-- Dependency resources -->
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<!-- Added Web Component dependencies to make Vaadin Designer preview work -->
+<link rel="import" href="../../../bower_components/vaadin-text-field/vaadin-text-field.html">
+<link rel="import" href="../../../bower_components/vaadin-button/vaadin-button.html">
+<link rel="import" href="../../../bower_components/vaadin-grid/all-imports.html">
+<link rel="import" href="../../../bower_components/vaadin-select/vaadin-select.html">
+<link rel="import" href="../../../bower_components/vaadin-date-picker/vaadin-date-picker.html">
+<link rel="import" href="../../../bower_components/vaadin-form-layout/vaadin-form-layout.html">
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/badge.html">
+<!-- TODO Needed to show icons in Vaadin Designer preview mode for now, but can be removed soon -->
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/icons.html">
+
+<dom-module id="single-session-list">
+	<template>
+		<style include="lumo-color lumo-typography lumo-badge view-styles"></style>
+		<div class="view-container">
+	    	<h2 id="header"></h2>
+			
+			<vaadin-combo-box id="patient" label="Patient"></vaadin-combo-box>
+			<br/>
+			<vaadin-form-layout>
+				<vaadin-custom-field class="width-auto" label="Datumsbereich" on-change="dateFilter">
+                    <vaadin-date-picker label="Datumsbereich" id="startDate.date" on-change="startChanged"></vaadin-date-picker>
+                    <vaadin-date-picker id="endDate.date" on-change="endChanged"></vaadin-date-picker>
+                </vaadin-custom-field>
+			</vaadin-form-layout>
+
+			<br/>
+			<div hidden="{{_isEmpty(singleSessions)}}">
+				<vaadin-grid theme="no-border" items="[[singleSessions]]">
+                    <vaadin-grid-sort-column header="Startdatum" path="startDate" direction="desc"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Patient">
+                        <template>
+                            [[item.patient.lastName]] [[item.patient.firstName]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Therapeut">
+                        <template>
+                            [[item.therapist.academicTitle]] [[item.therapist.lastName]] [[item.therapist.firstName]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="tertiary" on-click="edit">Bearbeiten</vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="error tertiary" on-click="delete">Löschen</vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                </vaadin-grid>
+			</div>
+			
+			<br/>
+            <vaadin-button id="newButton" theme="success">Neu</vaadin-button>
+            
+		</div>
+	</template>
+
+	<script>
+        class ListSingleSession extends Polymer.Element {
+            static get is() {
+                return 'single-session-list'
+            }
+            
+            _isEmpty(array) {
+                return array.length == 0;
+            }
+            
+        }
+        customElements.define(ListSingleSession.is, ListSingleSession);
+    </script> 
+
+</dom-module>

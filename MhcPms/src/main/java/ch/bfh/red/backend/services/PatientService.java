@@ -3,35 +3,27 @@ package ch.bfh.red.backend.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
+import ch.bfh.red.backend.models.GroupSession;
+import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.repositories.PatientRepository;
 import ch.bfh.red.common.BeanUtils;
-import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.*;
 
 @Service("patientService")
 public class PatientService implements IService<Patient> {
 
 	@Autowired
 	private PatientRepository repository;
-	
-	@Autowired
-	@Lazy
-	private TherapistService therapistService;
 
 	@PersistenceContext
 	private EntityManager em;
@@ -58,22 +50,27 @@ public class PatientService implements IService<Patient> {
 		delete(getById(id));
 	}
 
+	@Transactional
 	@Override
 	public void delete(Patient t) {
+		List<GroupSession> groupSessions = (List<GroupSession>) t.getGroupSessions();
+		for(GroupSession gs : groupSessions){
+			gs.getPatients().remove(t);
+		}
 		repository.delete(t);
 	}
 	
 	@Override
 	public Patient persist(Patient t) {
 		return repository.save(t);
-	}	
+	}
 	
 	@Override
 	public Boolean exists(Patient t) {
 		if (t == null || t.getId() == null) return false;
 		return existsById(t.getId());
 	}
-	
+
 	@Override
 	public Boolean existsById(Integer id) {
 		if (id == null) return false;
@@ -115,8 +112,10 @@ public class PatientService implements IService<Patient> {
 		Hibernate.initialize(patient.getTherapies());
 		Hibernate.initialize(patient.getGroupSessions());
 		Hibernate.initialize(patient.getSingleSessions());
-		Hibernate.initialize(patient.getTherapists());
+		for (GroupSession groupSession: patient.getGroupSessions()) {
+			Hibernate.initialize(groupSession.getPatients());
+			Hibernate.initialize(groupSession.getTherapists());
+		}
 		return patient;
 	}
-
 }

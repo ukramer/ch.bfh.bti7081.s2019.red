@@ -46,8 +46,6 @@ public class PatientPersistenceManager implements IPersistenceManager<Patient> {
 	@Override
 	public Patient persist(Patient t, Collection<Class<?>> classes) {
 		classes.remove(Patient.class);
-		if (classes.contains(Therapist.class))
-			therapistManager.persist(t.getTherapists(), new ArrayList<>(classes));
 		if (classes.contains(SingleSession.class))
 			singleSessionManager.persist(t.getSingleSessions(), new ArrayList<>(classes));
 		if (classes.contains(GroupSession.class))

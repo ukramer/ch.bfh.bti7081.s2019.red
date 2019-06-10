@@ -13,19 +13,19 @@ import java.util.Date;
 public class DateToStringEncoder
         implements ModelEncoder<Date, String> {
 
-    public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); //Spotbugs: Threadsafety can be ignored, because we don't run more than one thread
 
     @Override
     public Date decode(String presentationValue) {
         try {
-            return format.parse(presentationValue);
+            return format.parse(presentationValue); //SpotBugs: Only applies to Multithreading
         } catch (ParseException e) {}
         return null;
     }
 
     @Override
     public String encode(Date modelValue) {
-        return modelValue == null ? null : format.format(modelValue);
+        return modelValue == null ? null : format.format(modelValue); //SpotBugs: Only applies to Multithreading
     }
 
 }

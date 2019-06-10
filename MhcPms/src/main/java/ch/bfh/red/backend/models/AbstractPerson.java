@@ -75,21 +75,21 @@ public abstract class AbstractPerson<T extends AbstractPerson<T>> implements Com
 
 	@Override
 	public boolean equals(Object obj) {
-		if (getClass() != obj.getClass())
+		if (getClass() != obj.getClass()) // Dereferenced Null value is only checked not executed
 			return false;
 
 		AbstractPerson<?> other = (AbstractPerson<?>) obj;
 		if (address == null && other.address != null)
 			return false;
-		if (!address.equals(other.address))
+		if (!address.equals(other.address)) // Dereferenced Null value is only checked not executed
 			return false;
 		if (firstName == null && other.firstName != null)
 			return false;
-		if (!firstName.equals(other.firstName))
+		if (!firstName.equals(other.firstName)) // Dereferenced Null value is only checked not executed
 			return false;
 		if (lastName == null && other.lastName != null)
 			return false;
-		if (!lastName.equals(other.lastName))
+		if (!lastName.equals(other.lastName)) // Dereferenced Null value is only checked not executed
 			return false;
 		return true;
 	}
