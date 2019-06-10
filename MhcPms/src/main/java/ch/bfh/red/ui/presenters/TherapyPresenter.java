@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +40,7 @@ public class TherapyPresenter implements ListTherapyView.ListViewListener, EditT
         listTherapyView.setListener(this);
         updateList(false, null, null, null);
 
-        List<Patient> patients = therapies.stream().map(Therapy::getPatient).distinct().sorted().collect(Collectors.toList());
+        List<Patient> patients = therapies.stream().map(Therapy::getPatient).distinct().sorted(Comparator.comparing(AbstractPerson::getLastName)).collect(Collectors.toList());
         listTherapyView.setPatients(patients);
     }
 
@@ -49,9 +49,11 @@ public class TherapyPresenter implements ListTherapyView.ListViewListener, EditT
         editTherapyView.setListener(this);
 
         List<Patient> patients = patientManager.getService().getAll();
+        patients.sort(Comparator.comparing(AbstractPerson::getLastName));
         editTherapyView.setPatients(patients);
 
         List<Therapist> therapists = therapistManager.getService().getAll();
+        therapists.sort(Comparator.comparing(AbstractPerson::getLastName));
         editTherapyView.setTherapists(therapists);
 
         List<TherapyType> therapyTypes = Arrays.asList(TherapyType.values());
@@ -117,46 +119,5 @@ public class TherapyPresenter implements ListTherapyView.ListViewListener, EditT
             }
         }
         listTherapyView.setTherapies(therapies);
-    }
-
-    public void addMockData() {
-        Patient patient = new Patient("Jürgen", "Test", new Address("Langstrasse", "12k", 7777, "Burgdorf"));
-        Therapist therapist = new Therapist("user", "1234", AcademicTitle.DOCTOR, "Ueli", "Kramer", new Address("Burgstrasse", "18", 3600, "Thun"));
-        Therapy therapy = new Therapy(new Date(), TherapyType.ART, patient, therapist);
-
-        therapy.setTherapist(therapist);
-        therapy.setPatient(patient);
-
-        SingleSession singleSession = new SingleSession(patient, therapist, new Date(), new Date(), SessionType.DISCUSSION);
-        List<SingleSession> singleSessions = new ArrayList<>();
-        singleSessions.add(singleSession);
-        therapy.setSingleSessions(singleSessions);
-
-        List<GroupSession> groupSessions = new ArrayList<>();
-        List<Patient> patients = new ArrayList<>();
-        patients.add(patient);
-        List<Therapist> therapists = new ArrayList<>();
-        therapists.add(therapist);
-        groupSessions.add(new GroupSession(patients, therapists, new Date(), new Date(), SessionType.DISCUSSION));
-        therapy.setGroupSessions(groupSessions);
-        PatientNote note = new PatientNote(patient, new Date(), "Dieser Text", Visibility.PUBLIC);
-        List<PatientNote> notes = new ArrayList<>();
-        notes.add(note);
-        therapy.setPatientNotes(notes);
-
-        therapyManager.persistAll(therapy);
-
-/*
-        Date date = new Date();
-        try {
-            date = (new SimpleDateFormat("yyyy-MM-dd")).parse("2018-01-01");
-        } catch (Exception e) {
-        }
-        Patient patient2 = new Patient("Jürgen", "Test", new Address("Langstrasse", "12k", 7777, "Burgdorf"));
-        Therapy therapy2 = new Therapy(date, new TherapyType("Exposition", ""));
-        therapy2.setTherapist(new Therapist("user", "1234", new AcademicTitle("Dr.", ""), "Ueli", "Kramer", new Address("Burgstrasse", "18", 3600, "Thun")));
-        therapy2.setPatient(patient2);
-        therapyService.add(therapy2);
-        */
     }
 }

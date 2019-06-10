@@ -67,9 +67,6 @@ public class ListTherapyView extends PolymerTemplate<ListTherapyView.TherapyMode
     @Autowired
     ListTherapyView(TherapyPresenter therapyPresenter) {
         this.therapyPresenter = therapyPresenter;
-
-        // @todo: to be removed
-        therapyPresenter.addMockData();
     }
 
     @Override
