@@ -1,20 +1,16 @@
 package ch.bfh.red.backend.services;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import ch.bfh.red.backend.models.GroupSession;
-import ch.bfh.red.backend.repositories.GroupSessionRepository;
 import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import ch.bfh.red.backend.models.Patient;
-import ch.bfh.red.backend.models.Therapist;
 import ch.bfh.red.backend.repositories.PatientRepository;
 import ch.bfh.red.common.BeanUtils;
 import org.springframework.transaction.annotation.Transactional;
