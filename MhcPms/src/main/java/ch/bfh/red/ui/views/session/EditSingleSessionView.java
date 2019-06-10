@@ -11,6 +11,7 @@ import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import ch.bfh.red.ui.views.ListTherapyView;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.Tag;
@@ -42,7 +43,6 @@ import ch.bfh.red.backend.models.Therapist;
 import ch.bfh.red.common.DateTimeUtils;
 import ch.bfh.red.ui.dto.SingleSessionDTO;
 import ch.bfh.red.ui.presenters.SingleSessionPresenter;
-import ch.bfh.red.ui.views.Therapy.ListView;
 
 @Route(value = "editSingleSession", layout = MainLayout.class)
 @Tag("editsinglesession-element")
@@ -160,7 +160,7 @@ public class EditSingleSessionView
 				SingleSessionDTO dto = presenter.load(singleSessionId);
 				openEditMode(dto);
 			} catch (NoSuchElementException e) {
-				UI.getCurrent().navigate(ListView.class);
+				UI.getCurrent().navigate(ListTherapyView.class);
 				Notification
 						.show("Einzelsitzung nicht gefunden. Id = " + singleSessionId);
 			}
