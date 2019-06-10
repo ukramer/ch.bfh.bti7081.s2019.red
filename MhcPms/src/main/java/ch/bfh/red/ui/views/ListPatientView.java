@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-@Route(value = "listpatient", layout = MainLayout.class)
+@Route(value = "", layout = MainLayout.class)
 @Tag("listpatient-element")
 @HtmlImport("frontend://src/views/person/listPatient.html")
 @Component
