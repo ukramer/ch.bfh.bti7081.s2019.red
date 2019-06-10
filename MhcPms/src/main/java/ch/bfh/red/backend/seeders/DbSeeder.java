@@ -9,16 +9,10 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Supplier;
 
+import ch.bfh.red.backend.factories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import ch.bfh.red.backend.factories.ExpositionNoteFactory;
-import ch.bfh.red.backend.factories.GroupSessionFactory;
-import ch.bfh.red.backend.factories.PatientFactory;
-import ch.bfh.red.backend.factories.PatientNoteFactory;
-import ch.bfh.red.backend.factories.SingleSessionFactory;
-import ch.bfh.red.backend.factories.TherapistFactory;
-import ch.bfh.red.backend.factories.TherapistNoteFactory;
 import ch.bfh.red.backend.models.ExpositionNote;
 import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.PatientNote;
@@ -38,6 +32,7 @@ public class DbSeeder {
 	private final ExpositionNoteFactory expositionNoteFactory = new ExpositionNoteFactory();
 	private final SingleSessionFactory singleSessionFactory = new SingleSessionFactory();
 	private final GroupSessionFactory groupSessionFactory = new GroupSessionFactory();
+	private final TherapyFactory therapyFactory = new TherapyFactory();
 	
 	@Autowired
 	private TherapyPersistenceManager therapyManager;
@@ -57,7 +52,7 @@ public class DbSeeder {
 			Range<ExpositionNote> expositionNoteRange = new Range<>(5, 20, ExpositionNote.class);
 			Range<SingleSession> singleSessionRange = new Range<>(5, 20, SingleSession.class);
 			
-			Therapy therapy = createTherapy(new Date(), 
+			Therapy therapy = createTherapy(
 											TherapyType.PSYCHO, 
 											patient, 
 											therapist,
@@ -71,7 +66,7 @@ public class DbSeeder {
 		therapyManager.persistAll(therapies);
 	}
 	
-	private Therapy createTherapy(  Date startDate,
+	private Therapy createTherapy(
 									TherapyType therapyType,
 									Patient patient,
 									Therapist therapist,
@@ -79,7 +74,8 @@ public class DbSeeder {
 									Range<TherapistNote> therapistNoteRange,
 									Range<ExpositionNote> expositionNoteRange,
 									Range<SingleSession> singleSessionRange) {
-		Therapy therapy = new Therapy(startDate, therapyType, patient, therapist);
+		Therapy therapy = therapyFactory.create(patient, therapist);
+		therapy.setTherapyType(therapyType);
 		List<PatientNote> patientNotes = createRanged(
 				() -> patientNoteFactory.create(patient), patientNoteRange);
 		List<TherapistNote> therapistNotes = createRanged(
