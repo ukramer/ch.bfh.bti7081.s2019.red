@@ -9,7 +9,6 @@ import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
 import ch.bfh.red.ui.encoders.SessionTypeToStringEncoder;
 import ch.bfh.red.ui.presenters.TherapyPresenter;
-import ch.bfh.red.ui.views.session.EditSingleSessionView;
 
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
@@ -118,7 +117,7 @@ public class EditTherapyView extends PolymerTemplate<EditTherapyView.TherapyMode
 
     @EventHandler
     public void showSingleSession(@ModelItem SingleSession singleSession) {
-        UI.getCurrent().navigate(EditSingleSessionView.class/*, singleSession.getId()*/); // @todo: correct after the session view is finished
+        UI.getCurrent().navigate(EditSingleSessionView.class, singleSession.getId());
     }
 
     @EventHandler
