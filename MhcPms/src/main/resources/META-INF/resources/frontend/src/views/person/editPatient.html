@@ -71,18 +71,6 @@
                     </vaadin-grid-column>
                 </vaadin-grid>
             </div>
-            <div hidden="{{_isEmpty(therapists)}}">
-                <h4>Therapeuten</h4>
-                <vaadin-grid id="gridTherapists" items=[[therapists]] theme="no-border" column-reordering-allowed multi-sort>
-                    <vaadin-grid-column>
-                        <template class="header">#</template>
-                        <template>[[index]]</template>
-                    </vaadin-grid-column>
-                    <vaadin-grid-sort-column header="Benutzername" path="username"></vaadin-grid-sort-column>
-                    <vaadin-grid-sort-column header="Vorname" path="firstName"></vaadin-grid-sort-column>
-                    <vaadin-grid-sort-column header="Nachname" path="lastName"></vaadin-grid-sort-column>
-                </vaadin-grid>
-            </div>
         </div>
     </template>
 

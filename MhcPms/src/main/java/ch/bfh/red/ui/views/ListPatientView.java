@@ -39,6 +39,7 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
     private ListPatientViewListener listener;
     private Binder<PatientSearchBean> binder = new Binder<>(PatientSearchBean.class);
     private ConfirmationDialog<Integer> confirmationDialog = new ConfirmationDialog<>();
+    private PatientPresenter patientPresenter;
 
     @Id("firstName")
     private TextField firstName;
@@ -61,9 +62,9 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
     @Id("header")
     private H2 header;
 
-    ListPatientView(@Autowired PatientService patientService) {
-        new PatientPresenter(this, patientService);
-        header.setText("Patienten"); //Uninitialized read of Header can be left unhandled, because we set the Value right here.
+    ListPatientView(@Autowired PatientPresenter patientPresenter) {
+        this.patientPresenter = patientPresenter;
+        header.setText("Patienten");//Uninitialized read of Header can be left unhandled, because we set the Value right here.
         initBinder();
     }
 
@@ -84,6 +85,7 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
         resetView();
+        patientPresenter.setView(this);
     }
 
     @Override
