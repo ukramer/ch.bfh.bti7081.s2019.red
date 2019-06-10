@@ -1,8 +1,9 @@
 package ch.bfh.red.ui.presenters;
 
 import ch.bfh.red.backend.models.*;
-import ch.bfh.red.backend.services.PatientService;
-import ch.bfh.red.backend.services.TherapistService;
+import ch.bfh.red.backend.persistence.PatientPersistenceManager;
+import ch.bfh.red.backend.persistence.TherapistPersistenceManager;
+import ch.bfh.red.backend.persistence.TherapyPersistenceManager;
 import ch.bfh.red.backend.services.TherapyService;
 import ch.bfh.red.ui.views.Therapy.DetailView;
 import ch.bfh.red.ui.views.Therapy.ListView;
@@ -10,33 +11,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class TherapyPresenter implements ListView.ListViewListener, DetailView.DetailViewListener {
-    private final TherapyService therapyService;
-    private final PatientService patientService;
-    private final TherapistService therapistService;
+
+    @Autowired
+    private TherapyPersistenceManager therapyManager;
+
+    @Autowired
+    private PatientPersistenceManager patientManager;
+
+    @Autowired
+    private TherapistPersistenceManager therapistManager;
+
     private ListView listView;
     private DetailView detailView;
     private List<Therapy> therapies = new ArrayList<>();
 
     private Therapy loadedTherapy;
 
-    @Autowired
-    public TherapyPresenter(TherapyService therapyService, TherapistService therapistService, PatientService patientService) {
-        this.therapyService = therapyService;
-        this.patientService = patientService;
-        this.therapistService = therapistService;
-    }
-
     public void setView(ListView listView) {
         this.listView = listView;
         listView.setListener(this);
-        updateList(false, new Patient(), null, null);
+        updateList(false, null, null, null);
 
-        List<Patient> patients = patientService.getAll().stream().distinct().sorted().collect(Collectors.toList());
+        List<Patient> patients = therapies.stream().map(Therapy::getPatient).distinct().sorted().collect(Collectors.toList());
         listView.setPatients(patients);
     }
 
@@ -44,14 +47,11 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
         this.detailView = detailView;
         detailView.setListener(this);
 
-        List<Patient> patients = patientService.getAll();
+        List<Patient> patients = patientManager.getService().getAll();
         detailView.setPatients(patients);
 
-        List<Therapist> therapists = therapistService.getAll();
+        List<Therapist> therapists = therapistManager.getService().getAll();
         detailView.setTherapists(therapists);
-
-        List<TherapyType> therapyTypes = Arrays.asList(TherapyType.values());
-        detailView.setTherapyTypes(therapyTypes);
     }
 
     public void delete(Therapy therapy) {
@@ -85,20 +85,40 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
     }
 
     public TherapyService getService() {
-        return therapyService;
+        return (TherapyService) therapyManager.getService();
     }
 
     @Override
     public void updateList(boolean finished, Patient patient, LocalDate start, LocalDate end) {
         therapies.clear();
-        therapies = getService().getBy(finished, patient.getFirstName(), patient.getLastName(), start, end);
+        if (patient != null) {
+            if (start != null && end != null) {
+                therapies = getService().getByFinishedAndPatientNameAndDateRange(finished, patient.getFirstName(), patient.getLastName(), start.toString(), end.toString());
+            } else if (start != null) {
+                therapies = getService().getByFinishedAndPatientNameAndStartDate(finished, patient.getFirstName(), patient.getLastName(), start.toString());
+            } else if (end != null) {
+                therapies = getService().getByFinishedAndPatientNameAndEndDate(finished, patient.getFirstName(), patient.getLastName(), end.toString());
+            } else {
+                therapies = getService().getByFinishedAndPatientName(finished, patient.getFirstName(), patient.getLastName());
+            }
+        } else {
+            if (start != null && end != null) {
+                therapies = getService().getByFinishedAndDateRange(finished, start.toString(), end.toString());
+            } else if (start != null) {
+                therapies = getService().getByFinishedAndStartDate(finished, start.toString());
+            } else if (end != null) {
+                therapies = getService().getByFinishedAndEndDate(finished, end.toString());
+            } else {
+                therapies = getService().getByFinished(finished);
+            }
+        }
         listView.setTherapies(therapies);
     }
 
     public void addMockData() {
         Patient patient = new Patient("Jürgen", "Test", new Address("Langstrasse", "12k", 7777, "Burgdorf"));
-        Therapy therapy = new Therapy(new Date(), TherapyType.ART);
         Therapist therapist = new Therapist("user", "1234", AcademicTitle.DOCTOR, "Ueli", "Kramer", new Address("Burgstrasse", "18", 3600, "Thun"));
+        Therapy therapy = new Therapy(new Date(), TherapyType.ART, patient, therapist);
 
         therapy.setTherapist(therapist);
         therapy.setPatient(patient);
@@ -113,12 +133,26 @@ public class TherapyPresenter implements ListView.ListViewListener, DetailView.D
         patients.add(patient);
         List<Therapist> therapists = new ArrayList<>();
         therapists.add(therapist);
-        groupSessions.add(new GroupSession(patients, therapists, therapist, new Date(), new Date(), SessionType.DISCUSSION));
+        groupSessions.add(new GroupSession(patients, therapists, new Date(), new Date(), SessionType.DISCUSSION));
         therapy.setGroupSessions(groupSessions);
         PatientNote note = new PatientNote(patient, new Date(), "Dieser Text", Visibility.PUBLIC);
         List<PatientNote> notes = new ArrayList<>();
         notes.add(note);
         therapy.setPatientNotes(notes);
-        therapyService.persist(therapy);
+
+        therapyManager.persistAll(therapy);
+
+/*
+        Date date = new Date();
+        try {
+            date = (new SimpleDateFormat("yyyy-MM-dd")).parse("2018-01-01");
+        } catch (Exception e) {
+        }
+        Patient patient2 = new Patient("Jürgen", "Test", new Address("Langstrasse", "12k", 7777, "Burgdorf"));
+        Therapy therapy2 = new Therapy(date, new TherapyType("Exposition", ""));
+        therapy2.setTherapist(new Therapist("user", "1234", new AcademicTitle("Dr.", ""), "Ueli", "Kramer", new Address("Burgstrasse", "18", 3600, "Thun")));
+        therapy2.setPatient(patient2);
+        therapyService.add(therapy2);
+        */
     }
 }

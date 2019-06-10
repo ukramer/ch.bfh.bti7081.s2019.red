@@ -5,20 +5,29 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+
+import ch.bfh.red.backend.seeders.DbSeeder;
 
 @SpringBootApplication
 public class MhcPmsApplication {
 	
 	public static void main(String[] args) {
-		start(args);
+		ApplicationContext context = start(args);
+		DbSeeder dbSeeder = context.getBean(DbSeeder.class);
+		seed(dbSeeder);
 		browse("http://localhost:8080");
 	}
 	
 	public static ApplicationContext start(String[] args) {
 		return SpringApplication.run(MhcPmsApplication.class, args);
+	}
+	
+	public static void seed(DbSeeder dbSeeder) {
+		dbSeeder.seed(150);
 	}
 	
 	private static void browse(String url) {

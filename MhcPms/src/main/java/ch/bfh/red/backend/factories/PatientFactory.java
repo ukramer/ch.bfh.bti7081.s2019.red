@@ -12,7 +12,7 @@ public class PatientFactory extends AbstractFactory<Patient> {
     private final AddressFactory addressFactory;
     
     public PatientFactory() {
-    	this(new Locale("de-ch"));
+    	this(Locale.getDefault());
     }
 
     public PatientFactory(Locale locale) {
@@ -22,7 +22,10 @@ public class PatientFactory extends AbstractFactory<Patient> {
     
 	@Override
 	public Patient create() {
-		Address address = addressFactory.create();
+		return create(addressFactory.create());
+	}
+	
+	public Patient create(Address address) {
     	String firstName = faker.name().firstName();
         String lastName = faker.name().lastName();
         Patient patient = new Patient(firstName, lastName, address);

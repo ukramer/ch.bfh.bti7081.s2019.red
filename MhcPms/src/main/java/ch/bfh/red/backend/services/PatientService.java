@@ -10,7 +10,6 @@ import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -71,7 +70,14 @@ public class PatientService implements IService<Patient> {
 	}
 	
 	@Override
-	public Boolean existById(Integer id) {
+	public Boolean exists(Patient t) {
+		if (t == null || t.getId() == null) return false;
+		return existsById(t.getId());
+	}
+
+	@Override
+	public Boolean existsById(Integer id) {
+		if (id == null) return false;
 		return repository.existsById(id);
 	}
 
@@ -86,7 +92,7 @@ public class PatientService implements IService<Patient> {
 		if(StringUtils.isNotBlank(patientSearchBean.getLastName())){
 			predicates.add(cb.like(patient.get("lastName"), "%" + patientSearchBean.getLastName() + "%"));
 		}
-		Join address = patient.join("address");
+		Join<?,?> address = patient.join("address");
 		if(StringUtils.isNotBlank(patientSearchBean.getStreet())){
 			predicates.add(cb.like(address.get("street"), "%" + patientSearchBean.getStreet() + "%"));
 		}
