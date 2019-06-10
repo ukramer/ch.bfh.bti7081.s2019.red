@@ -5,6 +5,7 @@ import ch.bfh.red.backend.models.ExpositionNote;
 import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.Visibility;
 import ch.bfh.red.backend.persistence.ExpositionNotePersistenceManager;
+import ch.bfh.red.backend.persistence.PatientPersistenceManager;
 import ch.bfh.red.backend.services.ExpositionNoteService;
 import ch.bfh.red.ui.views.ExpositionDetailView;
 import ch.bfh.red.ui.views.ExpositionView;
@@ -24,6 +25,8 @@ public class ExpositionPresenter implements ExpositionView.ExpositionViewListene
 
 	@Autowired
 	private ExpositionNotePersistenceManager expositionManager;
+	@Autowired
+	private PatientPersistenceManager patientManager;
 	private List<ExpositionNote> expositions = new ArrayList<>();
 
 	private ExpositionNote loadedExposition;
@@ -31,8 +34,14 @@ public class ExpositionPresenter implements ExpositionView.ExpositionViewListene
 	public void setView(ExpositionView expositionView) {
 		this.expositionView = expositionView;
 		expositionView.setListener(this);
+
+
 		expositions = expositionManager.getService().getAll();
 		expositionView.setExpositions(expositions);
+
+
+		List<Patient> patients = expositions.stream().map(ExpositionNote::getPatient).distinct().sorted().collect(Collectors.toList());
+		expositionView.setPatients(patients);
 	}
 
 	public void setView(ExpositionDetailView expositionDetailView){
@@ -61,7 +70,11 @@ public class ExpositionPresenter implements ExpositionView.ExpositionViewListene
 		expositionDetailView.setExposition(loadedExposition);
 
 	}
-
+	@Override
+	public void updateListByFilter(Patient patient){
+		expositions = getService().getByPatientName(patient.getFirstName(), patient.getLastName());
+		expositionView.setExpositions(expositions);
+	}
 	@Override
 	public void updateList(){
 		expositions.clear();

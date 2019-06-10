@@ -22,6 +22,7 @@ import com.vaadin.flow.component.polymertemplate.EventHandler;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.ModelItem;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
+import com.vaadin.flow.component.select.generated.GeneratedVaadinSelect;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
@@ -51,44 +52,53 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
     @Id("vaadinVerticalLayout")
     private VerticalLayout layout;
 
-
+    private Patient currentPatientFilter = new Patient();
 
     private ExpositionPresenter expositionPresenter;
     private ConfirmationDialog<ExpositionNote> confirmationDialog = new ConfirmationDialog<>();
 
     public interface ExpositionViewModel extends TemplateModel {
-        @Include({"id", "patient.firstName","patient.lastName", "text", "date", "degreeOfExposure"})
-        @Encode(value = IntegerToStringEncoder.class, path="id")
+        @Include({"id", "patient.firstName", "patient.lastName", "text", "date", "degreeOfExposure"})
+        @Encode(value = IntegerToStringEncoder.class, path = "id")
         @Encode(value = DateToStringEncoder.class, path = "date")
         @Encode(value = IntegerToStringEncoder.class, path = "degreeOfExposure")
         void setExpositions(List<ExpositionNote> expositions);
 
         List<ExpositionNote> getExpositions();
+
+        @Include({"firstName", "lastName"})
+        void setPatients(List<Patient> patients);
+
+        List<Patient> getPatients();
     }
 
 
     public interface ExpositionViewListener {
 
         void delete(ExpositionNote expositionNote);
+
         void deleteById(int id);
+
         void load(Integer id);
+
         void save(ExpositionNote expositionNote);
+
         void updateList();
 
+        void updateListByFilter(Patient patient);
     }
 
     @Autowired
     public ExpositionView(ExpositionPresenter expositionPresenter) {
         this.expositionPresenter = expositionPresenter;
         this.layout.setSizeFull();
-        //expositionPresenter.addMockData();
 
 
 
     }
 
     @Override
-    public void beforeEnter(BeforeEnterEvent beforeEnterEvent){
+    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         this.expositionPresenter.setView(this);
         header.setText("Expositionen");
 
@@ -101,8 +111,21 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
     }
 
 
-    public void setExpositions(List<ExpositionNote> expositions){
+    public void setExpositions(List<ExpositionNote> expositions) {
         getModel().setExpositions(expositions);
+    }
+
+    public void setPatients(List<Patient> patients) {
+        getModel().setPatients(patients);
+    }
+
+    @EventHandler
+    public void patientFilter(@ModelItem Patient patient) {
+        if (patient == null) {
+            patient = new Patient();
+        }
+        currentPatientFilter = patient;
+        listener.updateListByFilter(currentPatientFilter);
     }
 
     @EventHandler
@@ -130,7 +153,7 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
     @EventHandler
     private void createExposition() {
 
-            UI.getCurrent().navigate(ExpositionDetailView.class);
+        UI.getCurrent().navigate(ExpositionDetailView.class);
 
     }
 }
