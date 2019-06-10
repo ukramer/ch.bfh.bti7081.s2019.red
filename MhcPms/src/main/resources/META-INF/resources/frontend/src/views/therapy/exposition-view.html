@@ -57,19 +57,19 @@
                             [[item.date]]
                         </template>
                     </vaadin-grid-sort-column>
-                    <vaadin-grid-sort-column header ="Grad" id="degreeColumn">
+                    <vaadin-grid-sort-column header ="Grad" id="degreeColumn" >
                         <template>
                             [[item.degreeOfExposure]]
                         </template>
                     </vaadin-grid-sort-column>
                     <vaadin-grid-column>
                         <template>
-                            <vaadin-button theme="tertiary" on-click="edit">Bearbeiten</vaadin-button>
+                            <vaadin-button theme="tertiary" on-click="edit"><iron-icon icon="vaadin:edit"></iron-icon></vaadin-button>
                         </template>
                     </vaadin-grid-column>
                     <vaadin-grid-column>
                         <template>
-                            <vaadin-button theme="error tertiary" on-click="delete">Löschen</vaadin-button>
+                            <vaadin-button theme="error tertiary" on-click="delete"><iron-icon icon="vaadin:trash"></iron-icon></vaadin-button>
                         </template>
                     </vaadin-grid-column>
                 </vaadin-grid-column-group>
