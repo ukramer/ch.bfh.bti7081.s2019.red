@@ -2,6 +2,7 @@
 <link rel="import" href="../../../bower_components/vaadin-ordered-layout/src/vaadin-vertical-layout.html">
 <link rel="import" href="../../../bower_components/vaadin-ordered-layout/src/vaadin-horizontal-layout.html">
 <link rel="import" href="../../../bower_components/vaadin-button/src/vaadin-button.html">
+<link rel="import" href="../../../bower_components/vaadin-grid/all-imports.html">
 <link rel="import" href="../../../bower_components/vaadin-grid/src/vaadin-grid.html">
 <link rel="import" href="../../../bower_components/vaadin-grid/src/vaadin-grid-column.html">
 <link rel="import" href="../../../bower_components/vaadin-grid/src/vaadin-grid-column-group.html">
@@ -33,22 +34,16 @@
                     <template class="header">
                         Übersicht Expositionstherapie
                     </template>
-                    <vaadin-grid-column id="patientFirstNameColumn">
-                        <template class="header">
-                            First Name
-                        </template>
+                    <vaadin-grid-sort-column header = "Vorname" id="patientFirstNameColumn">
                         <template>
                             [[item.patient.firstName]]
                         </template>
-                    </vaadin-grid-column>
-                    <vaadin-grid-column id="patientLastNameColumn" width="9em">
-                        <template class="header">
-                            Last Name
-                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Nachname"  id="patientLastNameColumn" width="9em">
                         <template>
                             [[item.patient.lastName]]
                         </template>
-                    </vaadin-grid-column>
+                    </vaadin-grid-sort-column>
                     <vaadin-grid-column  id="expositionColumn" width="25em">
                         <template class="header">
                             Exposition
@@ -57,22 +52,16 @@
                             [[item.text]]
                         </template>
                     </vaadin-grid-column>
-                    <vaadin-grid-column id="dateColumn" width="9em">
-                        <template class="header">
-                            Datum
-                        </template>
+                    <vaadin-grid-sort-column header ="Datum" id="dateColumn" width="9em" >
                         <template>
                             [[item.date]]
                         </template>
-                    </vaadin-grid-column>
-                    <vaadin-grid-column id="degreeColumn" width ="9em">
-                        <template class="header">
-                            Expositionsgrad
-                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header ="Expositionsgrad" id="degreeColumn" width ="9em">
                         <template>
                             [[item.degreeOfExposure]]
                         </template>
-                    </vaadin-grid-column>
+                    </vaadin-grid-sort-column>
                     <vaadin-grid-column>
                         <template>
                             <vaadin-button theme="tertiary" on-click="edit">Bearbeiten</vaadin-button>
