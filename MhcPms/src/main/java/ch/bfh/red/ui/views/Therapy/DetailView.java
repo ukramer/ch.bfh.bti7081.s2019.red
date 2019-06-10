@@ -10,8 +10,9 @@ import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
 import ch.bfh.red.ui.encoders.SessionTypeToStringEncoder;
 import ch.bfh.red.ui.presenters.TherapyPresenter;
 import ch.bfh.red.ui.views.EditGroupSessionView;
-import ch.bfh.red.ui.views.EditSingleSessionView;
 import ch.bfh.red.ui.views.View;
+import ch.bfh.red.ui.views.session.EditSingleSessionView;
+
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.checkbox.Checkbox;

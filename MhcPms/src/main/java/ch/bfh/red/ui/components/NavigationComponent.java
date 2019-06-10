@@ -12,10 +12,11 @@ import com.vaadin.flow.router.RouterLink;
 import ch.bfh.red.ui.views.DashboardView;
 import ch.bfh.red.ui.views.EditGroupSessionView;
 import ch.bfh.red.ui.views.EditPatientView;
-import ch.bfh.red.ui.views.EditSingleSessionView;
 import ch.bfh.red.ui.views.ExpositionView;
 import ch.bfh.red.ui.views.ListPatientView;
 import ch.bfh.red.ui.views.Therapy.ListView;
+import ch.bfh.red.ui.views.session.EditSingleSessionView;
+import ch.bfh.red.ui.views.session.ListSingleSessionView;
 
 @Tag("div")
 public class NavigationComponent extends Component {
@@ -40,7 +41,7 @@ public class NavigationComponent extends Component {
         editGroupSession.setHighlightCondition(HighlightConditions.sameLocation());
         add(editGroupSession);
 
-        RouterLink editSingleSession = new RouterLink(null, EditSingleSessionView.class);
+        RouterLink editSingleSession = new RouterLink(null, ListSingleSessionView.class);
         editSingleSession.add(new Icon(VaadinIcon.PENCIL), new Text("Edit Single Session"));
         editSingleSession.addClassName("main-layout__nav-item");
         editSingleSession.setHighlightCondition(HighlightConditions.sameLocation());
