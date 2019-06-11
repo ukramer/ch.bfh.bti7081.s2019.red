@@ -58,6 +58,8 @@ public class DbSeeder {
 		final Collection<Therapy> therapies = createTherapies(therapyCount, patients, therapists);
 		final Collection<GroupSession> groupSessions = createGroupSessions(patients, therapists);
 		
+		therapyManager.persistAll(therapies);
+		
 		connect(therapies, groupSessions);
 		
 		therapyManager.persistAll(therapies);
@@ -71,13 +73,21 @@ public class DbSeeder {
 	private void connect(Collection<Therapy> therapies, GroupSession groupSession) {
 		Therapy therapy = getTherapy(groupSession, therapies);
 		if (therapy != null) {
-			List<GroupSession> groupSessions  = therapy.getGroupSessions();
+			Collection<GroupSession> groupSessions  = therapy.getGroupSessions();
 			if (groupSessions == null) {
 				groupSessions = new ArrayList<>();
-				therapy.setGroupSessions(groupSessions);
+				therapy.setGroupSessions(new ArrayList<>(groupSessions));
 			}
 			groupSessions.add(groupSession);
+			
+			List<Therapy> groupSessionTherapies = groupSession.getTherapies();
+			if (groupSessionTherapies == null) {
+				groupSessionTherapies = new ArrayList<>();
+				groupSession.setTherapies(groupSessionTherapies);
+			}
+			groupSessionTherapies.add(therapy);
 		}
+		
 	}
 	
 	private Therapy getTherapy(GroupSession groupSession, Collection<Therapy> therapies) {

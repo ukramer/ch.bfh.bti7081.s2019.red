@@ -24,6 +24,10 @@ public class GroupSession extends AbstractSession<GroupSession> {
 	@ManyToMany(fetch = FetchType.LAZY)
 	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private List<Therapist> therapists;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
+	private List<Therapy> therapies;
 
 	public GroupSession() {}
 	
@@ -50,12 +54,20 @@ public class GroupSession extends AbstractSession<GroupSession> {
 		this.therapists = therapists;
 	}	
 
+	public List<Therapy> getTherapies() {
+		return therapies;
+	}
+
+	public void setTherapies(List<Therapy> therapies) {
+		this.therapies = therapies;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((patients == null) ? 0 : patients.hashCode());
-		result = prime * result + ((therapists == null) ? 0 : therapists.hashCode());
+//		result = prime * result + ((patients == null) ? 0 : patients.hashCode());
+//		result = prime * result + ((therapists == null) ? 0 : therapists.hashCode());
 		return result;
 	}
 

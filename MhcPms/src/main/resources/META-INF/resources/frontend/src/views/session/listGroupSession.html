@@ -31,7 +31,28 @@
 			</vaadin-form-layout>
 			
 			<div hidden="{{_isEmpty(groupSessions)}}">
-				<vaadin-grid id="groupSessionGrid" theme="no-border">
+				<vaadin-grid theme="no-border" style="width:1100px" items="[[groupSessions]]">
+                    <vaadin-grid-sort-column header="Startdatum" flex-grow="5" path="startDate" direction="desc"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Patienten" flex-grow="10">
+                        <template>
+                            [[item.patients]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Therapeuten" flex-grow="10">
+                        <template>
+                            [[item.therapists]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="tertiary" on-click="edit"><iron-icon icon="vaadin:edit"></iron-icon></vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="error tertiary" on-click="delete"><iron-icon icon="vaadin:trash"></iron-icon></vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
                 </vaadin-grid>
 			</div>
 			

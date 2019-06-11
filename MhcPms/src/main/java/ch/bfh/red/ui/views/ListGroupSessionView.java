@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.datepicker.DatePicker;
@@ -21,13 +22,13 @@ import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.polymertemplate.EventHandler;
 import com.vaadin.flow.component.polymertemplate.Id;
+import com.vaadin.flow.component.polymertemplate.ModelItem;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.provider.DataProvider;
-import com.vaadin.flow.data.renderer.Renderer;
-import com.vaadin.flow.function.ValueProvider;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
@@ -38,10 +39,12 @@ import com.vaadin.flow.templatemodel.TemplateModel;
 
 import ch.bfh.red.MainLayout;
 import ch.bfh.red.common.DateTimeUtils;
+import ch.bfh.red.ui.components.ConfirmationDialog;
 import ch.bfh.red.ui.dto.GroupSessionDTO;
 import ch.bfh.red.ui.dto.GroupSessionGridDTO;
 import ch.bfh.red.ui.dto.GroupSessionSearchDTO;
 import ch.bfh.red.ui.dto.PersonDTO;
+import ch.bfh.red.ui.dto.SingleSessionDTO;
 import ch.bfh.red.ui.dto.TherapistDTO;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
@@ -72,9 +75,6 @@ public class ListGroupSessionView
 	
 	@Id("endDate.date")
 	private DatePicker endDatePicker;
-	
-	@Id("groupSessionGrid")
-	private Grid<GroupSessionGridDTO> grid;
 	
 	private Binder<GroupSessionSearchDTO> binder = new Binder<>();
 	
@@ -125,44 +125,7 @@ public class ListGroupSessionView
 			searchBean.setEndDate(date);
 			applyFilter();
 		});
-		
-//		grid.setSizeFull();
-		Column<GroupSessionGridDTO> startDateColumn = grid.addColumn(dto -> dto.getStartDate());
-		startDateColumn.setHeader("Startdatum");
-		startDateColumn.setSortable(true);
-		startDateColumn.setWidth("100px");
-		startDateColumn.setFlexGrow(5);
-		Column<GroupSessionGridDTO> patientsColumn = grid.addColumn(dto -> dto.getPatients());
-		patientsColumn.setHeader("Patienten");
-		patientsColumn.setSortable(true);
-		patientsColumn.setFlexGrow(10);
-		Column<GroupSessionGridDTO> therapistsColumn = grid.addColumn(dto -> dto.getTherapists());
-		therapistsColumn.setHeader("Therapeuten");
-		therapistsColumn.setSortable(true);
-		therapistsColumn.setFlexGrow(10);
-		
-		Icon icon = new Icon(VaadinIcon.EDIT);
-		icon.setSize("20px");
-		icon.getStyle().set("float", "left");
-		icon.setColor("blue");
-		Label nameLabel = new Label();
-		nameLabel.add(icon);
-		
-		grid.setWidth("1100px");
-		
-		GridContextMenu<GroupSessionGridDTO> contextMenu = grid.addContextMenu();
-		contextMenu.addItem("Bearbeiten", event -> {
-			Optional<GroupSessionGridDTO> dto = event.getItem();
-			if (dto.isPresent()) {
-				System.out.println("Element ausgewählt : ) id = " +dto.get().getId());
-			}
-		});
-		contextMenu.addItem("Löschen", event -> {
-			Optional<GroupSessionGridDTO> dto = event.getItem();
-			if (dto.isPresent()) {
-				System.out.println("Element löschen : ) id = " +dto.get().getId());
-			}
-		});
+
 	}
 	
 	@Override
@@ -174,6 +137,27 @@ public class ListGroupSessionView
 		startDatePicker.setI18n(MainLayout.datePickerI18n);
 		endDatePicker.setI18n(MainLayout.datePickerI18n);
 	}
+	
+	@EventHandler
+    public void edit(@ModelItem GroupSessionDTO singleSession) {
+//        UI.getCurrent().navigate(EditSingleSessionView.class, singleSession.getId());
+    }
+
+    @EventHandler
+    public void delete(@ModelItem GroupSessionGridDTO singleSession) {
+        new ConfirmationDialog<GroupSessionGridDTO>().open(
+                "Gruppensitzung wirklich löschen?",
+                "Möchten Sie die Gruppensitzung wirklich löschen?", "", "Löschen",
+                true, singleSession, this::confirmDelete);
+    }
+    
+    private void confirmDelete(GroupSessionGridDTO dto) {
+        if (dto == null)
+            return;
+        presenter.delete(dto);
+        Notification.show("Die Therapie wurde erfolgreich gelöscht.");
+        getModel().getGroupSessions().remove(dto);
+    }
 	
 	public void setGroupSessions(List<GroupSessionDTO> groupSessions) {
 		List<GroupSessionGridDTO> gridList = new ArrayList<>();
@@ -188,9 +172,7 @@ public class ListGroupSessionView
 			gridList.add(new GroupSessionGridDTO(id, startDate, patients, therapists));
 		}
 		
-		
-//		getModel().setGroupSessions(gridList);
-		grid.setItems(gridList);
+		getModel().setGroupSessions(gridList);
 		
 	}
 	
@@ -214,15 +196,17 @@ public class ListGroupSessionView
 		
 		void applyFilter(GroupSessionSearchDTO searchBean);
 		
+		void delete(GroupSessionGridDTO session);
+		
 	}
 	
 	public interface ListGroupSessionModel extends TemplateModel {
 		
-//		@Include({ "id", "startDate", "patients", "therapists" })
-//		@Encode(value = IntegerToStringEncoder.class, path = "id")
-//		void setGroupSessions(List<GroupSessionGridDTO> groupSessions);
-//		
-//		List<GroupSessionGridDTO> getGroupSessions();
+		@Include({ "id", "startDate", "patients", "therapists" })
+		@Encode(value = IntegerToStringEncoder.class, path = "id")
+		void setGroupSessions(List<GroupSessionGridDTO> groupSessions);
+		
+		List<GroupSessionGridDTO> getGroupSessions();
 		
 	}
 	

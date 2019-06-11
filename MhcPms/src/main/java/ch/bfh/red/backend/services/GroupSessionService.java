@@ -18,6 +18,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import ch.bfh.red.backend.models.GroupSession;
+import ch.bfh.red.backend.models.Patient;
+import ch.bfh.red.backend.models.Therapist;
+import ch.bfh.red.backend.models.Therapy;
 import ch.bfh.red.backend.repositories.GroupSessionRepository;
 import ch.bfh.red.common.BeanUtils;
 import ch.bfh.red.ui.dto.GroupSessionSearchDTO;
@@ -36,6 +39,10 @@ public class GroupSessionService implements IService<GroupSession> {
 	@Autowired
 	@Lazy
 	private TherapistService therapistService;
+	
+	@Autowired
+	@Lazy
+	private TherapyService therapyService;
 	
 	@PersistenceContext
 	private EntityManager em;
@@ -65,6 +72,23 @@ public class GroupSessionService implements IService<GroupSession> {
 
 	@Override
 	public void delete(GroupSession t) {
+		t = getById(t.getId());
+		
+		List<Therapy> therapies = t.getTherapies();
+		for (Therapy therapy: therapies) {
+			therapy.getGroupSessions().remove(t);
+		}
+		therapyService.persist(therapies);
+		
+		List<Patient> patients = t.getPatients();
+		for (Patient patient: patients)
+			patient.getGroupSessions().remove(t);
+		patientService.persist(patients);
+		
+		List<Therapist> therapists = t.getTherapists();
+		for (Therapist therapist: therapists)
+			therapist.getGroupSessions().remove(t);
+		
 		repository.delete(t);
 	}
 	

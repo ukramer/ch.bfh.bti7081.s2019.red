@@ -13,8 +13,10 @@ import ch.bfh.red.backend.services.GroupSessionService;
 import ch.bfh.red.backend.services.PatientService;
 import ch.bfh.red.backend.services.TherapistService;
 import ch.bfh.red.ui.dto.GroupSessionDTO;
+import ch.bfh.red.ui.dto.GroupSessionGridDTO;
 import ch.bfh.red.ui.dto.GroupSessionSearchDTO;
 import ch.bfh.red.ui.dto.PersonDTO;
+import ch.bfh.red.ui.dto.SingleSessionDTO;
 import ch.bfh.red.ui.dto.TherapistDTO;
 import ch.bfh.red.ui.views.ListGroupSessionView;
 import ch.bfh.red.ui.views.ListGroupSessionView.ListGroupSessionListener;
@@ -64,5 +66,10 @@ public class GroupSessionPresenter implements ListGroupSessionListener {
 			dtos.add(GroupSessionDTO.toDTO(model));
         listView.setGroupSessions(dtos);
     }
+	
+	@Override
+	public void delete(GroupSessionGridDTO singleSession) {
+		service.delete(service.getById(singleSession.getId()));
+	}
 	
 }
