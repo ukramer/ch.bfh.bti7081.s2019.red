@@ -41,7 +41,7 @@ import ch.bfh.red.ui.components.ConfirmationDialog;
 import ch.bfh.red.ui.dto.GroupSessionDTO;
 import ch.bfh.red.ui.dto.GroupSessionGridDTO;
 import ch.bfh.red.ui.dto.GroupSessionSearchDTO;
-import ch.bfh.red.ui.dto.PersonDTO;
+import ch.bfh.red.ui.dto.PatientDTO;
 import ch.bfh.red.ui.dto.TherapistDTO;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
@@ -62,7 +62,7 @@ public class ListGroupSessionView
 	private H2 header;
 	
 	@Id("patient")
-	private ComboBox<PersonDTO> patientComboBox;
+	private ComboBox<PatientDTO> patientComboBox;
 	
 	@Id("therapist")
 	private ComboBox<TherapistDTO> therapistComboBox;
@@ -92,7 +92,7 @@ public class ListGroupSessionView
 		
 		patientComboBox.addValueChangeListener(event -> {
 			if (detectChanges) {
-				PersonDTO patientSearchBean = event.getValue();
+				PatientDTO patientSearchBean = event.getValue();
 				this.searchBean.setPatient(patientSearchBean);
 				applyFilter();
 			}
@@ -101,7 +101,7 @@ public class ListGroupSessionView
 		therapistComboBox.addValueChangeListener(event -> {
 			if (detectChanges) {
 				TherapistDTO patientSearchBean = event.getValue();
-				PersonDTO personDTO = new PersonDTO();
+				PatientDTO personDTO = new PatientDTO();
 				if (patientSearchBean != null) {
 					personDTO.setFirstName(patientSearchBean.getFirstName());
 					personDTO.setLastName(patientSearchBean.getLastName());
@@ -169,26 +169,14 @@ public class ListGroupSessionView
 	}
 	
 	public void setGroupSessions(List<GroupSessionDTO> dtos) {
-		
-		
-		
-		
-		HashSet<PersonDTO> patientsDTO = new HashSet<>();
-		for (GroupSessionDTO dto : dtos) {
-			Collection<Patient> patients = dto.getPatients();
-			for (Patient patient : patients)
-				patientsDTO.add(
-						new PersonDTO(patient.getFirstName(), patient.getLastName()));
-		}
+		HashSet<PatientDTO> patientsDTO = new HashSet<>();
+		for (GroupSessionDTO dto : dtos)
+			patientsDTO.addAll(dto.getPatients());
 		patientComboBox.setItems(patientsDTO);
 		
 		HashSet<TherapistDTO> therapistsDTO = new HashSet<>();
-		for (GroupSessionDTO dto : dtos) {
-			Collection<Therapist> therapists = dto.getTherapists();
-			for (Therapist therapist : therapists)
-				therapistsDTO.add(new TherapistDTO(therapist.getAcademicTitle().getCode(),
-						therapist.getFirstName(), therapist.getLastName()));
-		}
+		for (GroupSessionDTO dto : dtos)
+			therapistsDTO.addAll(dto.getTherapists());
 		therapistComboBox.setItems(therapistsDTO);
 
 		setFilteredSessions(dtos);

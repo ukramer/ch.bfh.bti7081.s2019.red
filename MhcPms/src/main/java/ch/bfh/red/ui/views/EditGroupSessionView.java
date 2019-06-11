@@ -40,7 +40,6 @@ import ch.bfh.red.backend.models.SessionType;
 import ch.bfh.red.backend.models.Therapist;
 import ch.bfh.red.common.DateTimeUtils;
 import ch.bfh.red.ui.dto.GroupSessionDTO;
-import ch.bfh.red.ui.dto.SingleSessionDTO;
 import ch.bfh.red.ui.presenters.GroupSessionPresenter;
 
 @Route(value = "editGroupSession", layout = MainLayout.class)
@@ -208,16 +207,10 @@ public class EditGroupSessionView
 		return dto;
 	}
 	
-	public void setPatients(Collection<Patient> patients) {
-//		patientComboBox.setItems(patients);
-	}
-	
 	private void setDTO(GroupSessionDTO dto) {
 		this.dto = dto;
 		GroupSessionDTO clone = dto.clone();
 		binder.setBean(clone);
-//		getModel().setPatient(clone.getPatient());
-//		getModel().setTherapist(clone.getTherapist());
 		
 		LocalDate localStartDate = DateTimeUtils
 				.toLocalDateOrNull(dto.getStartDate());

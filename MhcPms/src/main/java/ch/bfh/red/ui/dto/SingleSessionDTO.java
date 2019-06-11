@@ -7,6 +7,7 @@ import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.SessionType;
 import ch.bfh.red.backend.models.SingleSession;
 import ch.bfh.red.backend.models.Therapist;
+import ch.bfh.red.common.DTOutils;
 
 public class SingleSessionDTO {
 	private Integer id;
@@ -144,19 +145,7 @@ public class SingleSessionDTO {
 	
 	private <T> boolean equalsOrNull(SingleSessionDTO other,
 									Function<SingleSessionDTO, T> mapper) {
-		return equalsOrNull(this, other, mapper);
-	}
-	
-	private static <T, U> boolean equalsOrNull(T t1, T t2, Function<T, U> mapper) {
-		if (t1 == null)
-			throw new NullPointerException("t1 is null");
-		if (t2 == null)
-			throw new NullPointerException("t2 is null");
-		U u1 = mapper.apply(t1);
-		U u2 = mapper.apply(t2);
-		if (u1 != null && u2 != null && !u1.equals(u2))
-			return false;
-		return true;
+		return DTOutils.equalsOrNull(this, other, mapper);
 	}
 	
 }

@@ -3,6 +3,7 @@ package ch.bfh.red.ui.dto;
 import org.apache.commons.lang3.StringUtils;
 
 public class TherapistDTO {
+	private Integer id;
 	private String prefix;
 	private String firstName;
 	private String lastName;
@@ -13,19 +14,19 @@ public class TherapistDTO {
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
-
+	
 	public String getFirstName() {
 		return firstName;
 	}
-
+	
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-
+	
 	public String getLastName() {
 		return lastName;
 	}
-
+	
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
@@ -33,11 +34,19 @@ public class TherapistDTO {
 	public String getPrefix() {
 		return prefix;
 	}
-
+	
 	public void setPrefix(String prefix) {
 		this.prefix = prefix;
 	}
-
+	
+	public Integer getId() {
+		return id;
+	}
+	
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
 	@Override
 	public String toString() {
 		if (StringUtils.isBlank(prefix))

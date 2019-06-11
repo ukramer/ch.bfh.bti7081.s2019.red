@@ -3,26 +3,26 @@ package ch.bfh.red.ui.dto;
 import java.util.Date;
 
 public class GroupSessionSearchDTO {
-	private PersonDTO patient;
-	private PersonDTO therapist;
+	private PatientDTO patient;
+	private PatientDTO therapist;
 	private Date startDate;
 	private Date endDate;
 	
 	public GroupSessionSearchDTO() {}
 
-	public PersonDTO getPatient() {
+	public PatientDTO getPatient() {
 		return patient;
 	}
 
-	public void setPatient(PersonDTO patient) {
+	public void setPatient(PatientDTO patient) {
 		this.patient = patient;
 	}
 
-	public PersonDTO getTherapist() {
+	public PatientDTO getTherapist() {
 		return therapist;
 	}
 
-	public void setTherapist(PersonDTO therapist) {
+	public void setTherapist(PatientDTO therapist) {
 		this.therapist = therapist;
 	}
 

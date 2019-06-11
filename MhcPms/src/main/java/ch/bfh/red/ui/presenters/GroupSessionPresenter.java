@@ -1,6 +1,5 @@
 package ch.bfh.red.ui.presenters;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -15,11 +14,10 @@ import ch.bfh.red.backend.models.Therapist;
 import ch.bfh.red.backend.services.GroupSessionService;
 import ch.bfh.red.backend.services.PatientService;
 import ch.bfh.red.backend.services.TherapistService;
+import ch.bfh.red.converters.GroupSessionConverter;
 import ch.bfh.red.ui.dto.GroupSessionDTO;
 import ch.bfh.red.ui.dto.GroupSessionGridDTO;
 import ch.bfh.red.ui.dto.GroupSessionSearchDTO;
-import ch.bfh.red.ui.dto.PersonDTO;
-import ch.bfh.red.ui.dto.TherapistDTO;
 import ch.bfh.red.ui.views.EditGroupSessionView.EditGroupSessionListener;
 import ch.bfh.red.ui.views.ListGroupSessionView;
 import ch.bfh.red.ui.views.ListGroupSessionView.ListGroupSessionListener;
@@ -38,13 +36,14 @@ public class GroupSessionPresenter implements ListGroupSessionListener, EditGrou
 	@Autowired
 	private TherapistService therapistService;
 	
+	@Autowired
+	private GroupSessionConverter groupSessionConverter;
+	
 	public void setView(ListGroupSessionView listView) {
 		this.listView = listView;
 		
 		List<GroupSession> models = service.getAll();
-		List<GroupSessionDTO> dtos = new ArrayList<>();
-		for (GroupSession model: models)
-			dtos.add(GroupSessionDTO.toDTO(model));
+		List<GroupSessionDTO> dtos = groupSessionConverter.toDTOList(models);
 		listView.setGroupSessions(dtos);
 //		List<Patient> patients = patientService.getAll();
 //		List<PersonDTO> patientsDTO = new ArrayList<>();
@@ -64,9 +63,7 @@ public class GroupSessionPresenter implements ListGroupSessionListener, EditGrou
 	@Override
     public void applyFilter(GroupSessionSearchDTO searchBean) {
 		List<GroupSession> models = service.findByDTO(searchBean);
-		List<GroupSessionDTO> dtos = new ArrayList<>();
-		for (GroupSession model: models)
-			dtos.add(GroupSessionDTO.toDTO(model));
+		List<GroupSessionDTO> dtos = groupSessionConverter.toDTOList(models);
         listView.setFilteredSessions(dtos);
     }
 	
@@ -93,14 +90,15 @@ public class GroupSessionPresenter implements ListGroupSessionListener, EditGrou
 	@Override
 	public GroupSessionDTO load(Integer therapyId) {
 		GroupSession model = service.getById(therapyId);
-		GroupSessionDTO dto = GroupSessionDTO.toDTO(model);
+		GroupSessionDTO dto = groupSessionConverter.toDTO(model);
 		return dto;
 	}
 
 	@Override
 	public GroupSessionDTO save(GroupSessionDTO dto) throws Exception {
-		GroupSession model = service.persist(GroupSessionDTO.toModel(dto));
-		GroupSessionDTO dto2 = GroupSessionDTO.toDTO(model);
+		GroupSession model = groupSessionConverter.toModel(dto);
+		model = service.persist(model);
+		GroupSessionDTO dto2 = groupSessionConverter.toDTO(model);
 		return dto2;
 	}
 	
