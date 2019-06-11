@@ -148,6 +148,11 @@ public class ListGroupSessionView
 	}
 	
 	@EventHandler
+    public void add() {
+        UI.getCurrent().navigate(EditGroupSessionView.class);
+    }
+	
+	@EventHandler
 	public void edit(@ModelItem GroupSessionGridDTO dto) {
 		UI.getCurrent().navigate(EditGroupSessionView.class, dto.getId());
 	}

@@ -30,6 +30,38 @@
             </div>
             <br/>
             <vaadin-button id="backButton" theme="success">Zurück</vaadin-button>
+            
+            <h2>Patienten</h2>
+            <vaadin-combo-box id="selectablePatients"></vaadin-combo-box>
+            <vaadin-button id="addPatientButton" theme="success">Hinzufügen</vaadin-button>
+			<div hidden="{{_isEmpty(patients)}}">
+				<vaadin-grid theme="no-border" items="[[patients]]">
+                    <vaadin-grid-sort-column header="Vorname">
+                        <template>
+                            [[item.firstName]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Nachname">
+                        <template>
+                            [[item.lastName]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="tertiary" on-click="removePatient"><iron-icon icon="vaadin:close"></iron-icon></vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="tertiary" on-click="navigatePatient"><iron-icon icon="vaadin:arrow-right"></iron-icon></vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                </vaadin-grid>
+			</div>
+			
+			<br/>
+			<br/>
+			<br/>
 		</div>
 	</template>
 	
@@ -38,6 +70,11 @@
             static get is() {
                 return 'editgroupsession-element'
             }
+            
+            _isEmpty(array) {
+                return array.length == 0;
+            }
+            
         }
         customElements.define(EditGroupSessionElement.is, EditGroupSessionElement);
     </script>        

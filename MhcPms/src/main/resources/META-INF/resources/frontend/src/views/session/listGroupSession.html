@@ -14,7 +14,7 @@
 <dom-module id="group-session-list">
 	<template>
 		<style include="lumo-color lumo-typography lumo-badge view-styles"></style>
-		<vaadin-vertical-layout theme="spacing" id="vaadinVerticalLayout">
+		<div class="view-container">
 	    	<h2 id="header"></h2>
 			
 			<vaadin-combo-box id="therapist" label="Therapeut"></vaadin-combo-box>
@@ -26,6 +26,8 @@
                     <vaadin-date-picker id="endDate.date" on-change="endChanged"></vaadin-date-picker>
                 </vaadin-custom-field>
 			</vaadin-form-layout>
+			
+			<vaadin-button on-click="add" theme="success">Gruppensitzung hinzufügen</vaadin-button>
 			
 			<br/>
 			<div hidden="{{_isEmpty(groupSessions)}}">
@@ -53,8 +55,7 @@
                     </vaadin-grid-column>
                 </vaadin-grid>
 			</div>
-			
-		</vaadin-vertical-layout>
+		</div>
 	</template>
 
 	<script>

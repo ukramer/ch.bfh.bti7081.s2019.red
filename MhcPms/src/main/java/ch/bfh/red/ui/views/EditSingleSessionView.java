@@ -81,9 +81,6 @@ public class EditSingleSessionView
 	@Id("cancelButton")
 	private Button cancelButton;
 	
-	@Id("backButton")
-	private Button backButton;
-	
 	@Id("changedButtons")
 	private Div changedButtons;
 	
@@ -144,7 +141,6 @@ public class EditSingleSessionView
 		
 		saveButton.addClickListener(event -> saveChanges());
 		cancelButton.addClickListener(event -> cancelChanges());
-		backButton.addClickListener(event -> changeToListView());
 		
 	}
 	
@@ -213,10 +209,6 @@ public class EditSingleSessionView
 	
 	public void cancelChanges() {
 		setSingleSession(singleSession.clone());
-	}
-	
-	public void changeToListView() {
-		UI.getCurrent().navigate(ListSingleSessionView.class);
 	}
 	
 	public SingleSessionDTO getSingleSession() {

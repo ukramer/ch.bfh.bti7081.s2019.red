@@ -1,5 +1,6 @@
 package ch.bfh.red.ui.presenters;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -15,9 +16,11 @@ import ch.bfh.red.backend.services.GroupSessionService;
 import ch.bfh.red.backend.services.PatientService;
 import ch.bfh.red.backend.services.TherapistService;
 import ch.bfh.red.converters.GroupSessionConverter;
+import ch.bfh.red.converters.PatientConverter;
 import ch.bfh.red.ui.dto.GroupSessionDTO;
 import ch.bfh.red.ui.dto.GroupSessionGridDTO;
 import ch.bfh.red.ui.dto.GroupSessionSearchDTO;
+import ch.bfh.red.ui.dto.PatientDTO;
 import ch.bfh.red.ui.views.EditGroupSessionView.EditGroupSessionListener;
 import ch.bfh.red.ui.views.ListGroupSessionView;
 import ch.bfh.red.ui.views.ListGroupSessionView.ListGroupSessionListener;
@@ -38,6 +41,9 @@ public class GroupSessionPresenter implements ListGroupSessionListener, EditGrou
 	
 	@Autowired
 	private GroupSessionConverter groupSessionConverter;
+	
+	@Autowired
+	private PatientConverter patientConverter;
 	
 	public void setView(ListGroupSessionView listView) {
 		this.listView = listView;
@@ -73,8 +79,10 @@ public class GroupSessionPresenter implements ListGroupSessionListener, EditGrou
 	}
 
 	@Override
-	public Collection<Patient> getPatients() {
-		return patientService.getAll();
+	public Collection<PatientDTO> getPatients() {
+		Collection<Patient> models = patientService.getAll();
+		Collection<PatientDTO> dtos = patientConverter.toDTOList(models);
+		return dtos;
 	}
 
 	@Override

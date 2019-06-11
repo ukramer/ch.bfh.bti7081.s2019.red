@@ -122,7 +122,7 @@ public class EditTherapyView extends PolymerTemplate<EditTherapyView.TherapyMode
 
     @EventHandler
     public void showGroupSession(@ModelItem GroupSession groupSession) {
-        UI.getCurrent().navigate(EditGroupSessionViewOld.class/*, groupSession.getId()*/); // @todo: correct after the session view is finished
+        UI.getCurrent().navigate(EditGroupSessionView.class, groupSession.getId());
     }
 
     @EventHandler
@@ -145,7 +145,7 @@ public class EditTherapyView extends PolymerTemplate<EditTherapyView.TherapyMode
         parameters.put("therapy", list);
 
         RouteConfiguration configuration = RouteConfiguration.forRegistry(UI.getCurrent().getRouter().getRegistry());
-        String url = configuration.getUrl(EditGroupSessionViewOld.class);
+        String url = configuration.getUrl(EditGroupSessionView.class);
         UI.getCurrent().navigate(url, new QueryParameters(parameters));
     }
 

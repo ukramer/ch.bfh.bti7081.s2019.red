@@ -5,8 +5,10 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -21,7 +23,9 @@ import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.polymertemplate.EventHandler;
 import com.vaadin.flow.component.polymertemplate.Id;
+import com.vaadin.flow.component.polymertemplate.ModelItem;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.component.timepicker.TimePicker;
 import com.vaadin.flow.data.binder.Binder;
@@ -31,6 +35,7 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.templatemodel.Encode;
 import com.vaadin.flow.templatemodel.Include;
 import com.vaadin.flow.templatemodel.TemplateModel;
 
@@ -40,6 +45,8 @@ import ch.bfh.red.backend.models.SessionType;
 import ch.bfh.red.backend.models.Therapist;
 import ch.bfh.red.common.DateTimeUtils;
 import ch.bfh.red.ui.dto.GroupSessionDTO;
+import ch.bfh.red.ui.dto.PatientDTO;
+import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
 import ch.bfh.red.ui.presenters.GroupSessionPresenter;
 
 @Route(value = "editGroupSession", layout = MainLayout.class)
@@ -81,9 +88,17 @@ public class EditGroupSessionView
 	@Id("changedButtons")
 	private Div changedButtons;
 	
+	@Id("selectablePatients")
+	private ComboBox<PatientDTO> selectablePatients;
+	
+	@Id("addPatientButton")
+	private Button addPatientButton;
+	
 	private Binder<GroupSessionDTO> binder = new Binder<>();
 	
 	private GroupSessionDTO dto;
+	
+	private Collection<PatientDTO> patients = new ArrayList<>();
 	
 	@Autowired
 	public EditGroupSessionView(GroupSessionPresenter presenter) {
@@ -92,6 +107,10 @@ public class EditGroupSessionView
 		Collection<SessionType> sessionTypes = presenter.getSessionTypes();
 		
 		this.sessionTypeComboBox.setDataProvider(DataProvider.ofCollection(sessionTypes));
+		this.selectablePatients.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
+		
+		setPatients(presenter.getPatients());
+		updateSelectablePatients();
 		
 		binder.forField(sessionTypeComboBox)
 				.asRequired("Auswahl leer")
@@ -124,6 +143,14 @@ public class EditGroupSessionView
 		cancelButton.addClickListener(event -> cancelChanges());
 		backButton.addClickListener(event -> changeToListView());
 		
+		addPatientButton.addClickListener(event -> {
+			PatientDTO selectedPatient = selectablePatients.getValue();
+			List<PatientDTO> patients = getModel().getPatients();
+			patients.add(selectedPatient);
+			getModel().setPatients(new ArrayList<>(patients));
+			updateSelectablePatients();
+		});
+		
 	}
 	
 	@Override
@@ -141,6 +168,18 @@ public class EditGroupSessionView
 						.show("Gruppensitzung nicht gefunden. Id = " + modelId);
 			}
 		}
+	}
+	
+	@EventHandler
+	public void removePatient(@ModelItem PatientDTO patient) {
+		List<PatientDTO> patients = getModel().getPatients();
+		patients.remove(patient);
+		getModel().setPatients(new ArrayList<>(patients));
+	}
+	
+	@EventHandler
+	public void navigatePatient(@ModelItem PatientDTO patient) {
+		UI.getCurrent().navigate(EditPatientView.class, patient.getId());
 	}
 	
 	public void openCreateMode() {
@@ -222,6 +261,24 @@ public class EditGroupSessionView
 		LocalTime localEndTime = DateTimeUtils.toLocalTimeOrNull(dto.getEndDate());
 		endDatePicker.setValue(localEndDate);
 		endTimePicker.setValue(localEndTime);
+		
+		getModel().setPatients(dto.getPatients());
+	}
+	
+	public void setPatients(Collection<PatientDTO> patients) {
+		this.patients = patients;
+		updateSelectablePatients();
+	}
+	
+	public void updateSelectablePatients() {
+		Collection<PatientDTO> selectedPatients = getModel().getPatients();
+		Collection<PatientDTO> patients = this.patients;
+		Set<PatientDTO> selectablePatients = new HashSet<>();
+		for (PatientDTO dto: patients)
+			selectablePatients.add(dto);
+		for (PatientDTO dto: selectedPatients)
+			selectablePatients.remove(dto);
+		this.selectablePatients.setItems(selectablePatients);
 	}
 	
 	private <T> void updateChangedButtons(  T newValue,
@@ -254,7 +311,7 @@ public class EditGroupSessionView
 	
 	public interface EditGroupSessionListener {
 		
-		Collection<Patient> getPatients();
+		Collection<PatientDTO> getPatients();
 		
 		Collection<Therapist> getTherapist();
 		
@@ -274,6 +331,13 @@ public class EditGroupSessionView
 	 * {@code getValue} and {@code setValue}.
 	 */
 	public interface EditGroupSessionModel extends TemplateModel {
+		
+		@Include({"id", "firstName", "lastName"})
+		@Encode(value = IntegerToStringEncoder.class, path = "id")
+		void setPatients(List<PatientDTO> patients);
+		
+		List<PatientDTO> getPatients();
+		
 		@Include({ "id", "patient.firstName", "patient.lastName" })
 		void setPatient(Patient patient);
 		
