@@ -1,30 +1,32 @@
 package ch.bfh.red.backend.factories;
 
-import ch.bfh.red.backend.models.*;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
 import com.github.javafaker.DateAndTime;
 import com.github.javafaker.Faker;
 
-
-import java.util.Date;
-import java.util.Locale;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
+import ch.bfh.red.backend.models.Patient;
+import ch.bfh.red.backend.models.SessionType;
+import ch.bfh.red.backend.models.SingleSession;
+import ch.bfh.red.backend.models.Therapist;
 
 public class SingleSessionFactory extends AbstractFactory<SingleSession>{
     private final Faker faker;
     private final TherapistFactory therapistFactory;
     private final PatientFactory patientFactory;
-    private final Random random;
+    private final SessionTypeFactory sessionTypeFactory;
 
     public SingleSessionFactory(){
         this(Locale.getDefault());
     }
 
     public SingleSessionFactory(Locale locale){
-        faker = new Faker(locale);
-        therapistFactory = new TherapistFactory(locale);
-        patientFactory = new PatientFactory(locale);
-        random = new Random();
+        this.faker = new Faker(locale);
+        this.therapistFactory = new TherapistFactory(locale);
+        this.patientFactory = new PatientFactory(locale);
+        this.sessionTypeFactory = new SessionTypeFactory();
     }
     
     @Override
@@ -38,7 +40,7 @@ public class SingleSessionFactory extends AbstractFactory<SingleSession>{
         DateAndTime dateAndTime = faker.date();
         Date startDate = dateAndTime.past(1000, TimeUnit.DAYS);
         Date endDate = dateAndTime.past(365, TimeUnit.DAYS);
-        SessionType type = SessionType.values()[random.nextInt(SessionType.values().length)];
+        SessionType type = sessionTypeFactory.create();
         return new SingleSession(patient, therapist, startDate, endDate, type);
     }
 

@@ -17,6 +17,7 @@ public class GroupSessionFactory extends AbstractFactory<GroupSession> {
     private final Faker faker;
     private final TherapistFactory therapistFactory;
     private final PatientFactory patientFactory;
+    private final SessionTypeFactory sessionTypeFactory;
 
     public GroupSessionFactory(){
         this(Locale.getDefault());
@@ -26,6 +27,7 @@ public class GroupSessionFactory extends AbstractFactory<GroupSession> {
         faker = new Faker(locale);
         therapistFactory = new TherapistFactory(locale);
         patientFactory = new PatientFactory(locale);
+        sessionTypeFactory = new SessionTypeFactory();
     }
     
     @Override
@@ -40,7 +42,7 @@ public class GroupSessionFactory extends AbstractFactory<GroupSession> {
     	Random random = new Random();
         Date startDate = faker.date().past(1000, TimeUnit.DAYS);
         Date endDate = faker.date().past(365, TimeUnit.DAYS);
-        SessionType sessionType =  SessionType.values()[random.nextInt(SessionType.values().length)];
+        SessionType sessionType =  sessionTypeFactory.create();
         return new GroupSession(patients, therapists, startDate, endDate, sessionType);
     }
     
