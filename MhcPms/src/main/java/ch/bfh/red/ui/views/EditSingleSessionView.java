@@ -158,7 +158,7 @@ public class EditSingleSessionView
 				SingleSessionDTO dto = presenter.load(singleSessionId);
 				openEditMode(dto);
 			} catch (NoSuchElementException e) {
-				UI.getCurrent().navigate(ListTherapyView.class);
+				UI.getCurrent().navigate(ListSingleSessionView.class);
 				Notification
 						.show("Einzelsitzung nicht gefunden. Id = " + singleSessionId);
 			}

@@ -1,0 +1,45 @@
+<!-- Dependency resources -->
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<!-- Added Web Component dependencies to make Vaadin Designer preview work -->
+<link rel="import" href="../../../bower_components/vaadin-text-field/vaadin-text-field.html">
+<link rel="import" href="../../../bower_components/vaadin-date-picker/vaadin-date-picker.html">
+<link rel="import" href="../../../bower_components/vaadin-button/vaadin-button.html">
+<link rel="import" href="../../../bower_components/vaadin-grid/all-imports.html">
+<link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/badge.html">
+<!-- TODO Needed to show icons in Vaadin Designer preview mode for now, but can be removed soon -->
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/icons.html">
+
+<dom-module id="editgroupsession-element">
+	<template>
+		<style include="lumo-color lumo-typography lumo-badge view-styles"></style>
+		<div class="view-container">
+			<h2 id="header"></h2>
+            <vaadin-combo-box id="sessionType" label="Typ" value="{{groupSession.sessionType::input}}"></vaadin-combo-box>
+            <br/>
+            <vaadin-date-picker id="startDate.date" label="Start Datum" value="{{startDate.date::input}}"></vaadin-date-picker>
+            <vaadin-time-picker id="startDate.time" label="Start Zeit" value="{{startDate.time::input}}"></vaadin-time-picker>
+            <br/>
+            <vaadin-date-picker id="endDate.date" label="Abschluss Datum" value="{{endDate.date::input}}"></vaadin-date-picker>
+            <vaadin-time-picker id="endDate.time" label="Abschluss Zeit" value="{{endDate.time::input}}"></vaadin-time-picker>
+            <br/>
+            <div id="changedButtons">
+	            <vaadin-button id="saveButton" theme="success">Speichern</vaadin-button>
+	            <vaadin-button id="cancelButton" theme="success">Abbrechen</vaadin-button>
+            </div>
+            <br/>
+            <vaadin-button id="backButton" theme="success">Zurück</vaadin-button>
+		</div>
+	</template>
+	
+	<script>
+        class EditGroupSessionElement extends Polymer.Element {
+            static get is() {
+                return 'editgroupsession-element'
+            }
+        }
+        customElements.define(EditGroupSessionElement.is, EditGroupSessionElement);
+    </script>        
+
+</dom-module>

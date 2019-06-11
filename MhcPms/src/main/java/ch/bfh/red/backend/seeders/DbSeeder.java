@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -54,9 +55,11 @@ public class DbSeeder {
 	
 	public void seed(int therapyCount) {
 		final Collection<Patient> patients = patientFactory.create(therapyCount * 2);
-		final Collection<Therapist> therapists = therapistFactory.create(20);
-		final Collection<Therapy> therapies = createTherapies(therapyCount, patients, therapists);
-		final Collection<GroupSession> groupSessions = createGroupSessions(patients, therapists);
+		final Collection<Therapist> therapists = therapistFactory.create(200);
+		final Collection<
+				Therapy> therapies = createTherapies(therapyCount, patients, therapists);
+		final Collection<GroupSession> groupSessions = createGroupSessions(50, patients,
+				therapists, therapies);
 		
 		therapyManager.persistAll(therapies);
 		
@@ -65,15 +68,17 @@ public class DbSeeder {
 		therapyManager.persistAll(therapies);
 	}
 	
-	private void connect(Collection<Therapy> therapies, Collection<GroupSession> groupSessions) {
-		for (GroupSession groupSession: groupSessions)
+	private void connect(   Collection<Therapy> therapies,
+							Collection<GroupSession> groupSessions) {
+		for (GroupSession groupSession : groupSessions)
 			connect(therapies, groupSession);
 	}
 	
 	private void connect(Collection<Therapy> therapies, GroupSession groupSession) {
-		Therapy therapy = getTherapy(groupSession, therapies);
-		if (therapy != null) {
-			Collection<GroupSession> groupSessions  = therapy.getGroupSessions();
+		Optional<Therapy> optional = getTherapy(groupSession, therapies);
+		if (optional.isPresent()) {
+			Therapy therapy = optional.get();
+			Collection<GroupSession> groupSessions = therapy.getGroupSessions();
 			if (groupSessions == null) {
 				groupSessions = new ArrayList<>();
 				therapy.setGroupSessions(new ArrayList<>(groupSessions));
@@ -87,37 +92,48 @@ public class DbSeeder {
 			}
 			groupSessionTherapies.add(therapy);
 		}
-		
 	}
 	
-	private Therapy getTherapy(GroupSession groupSession, Collection<Therapy> therapies) {
+	private Optional<Therapy> getTherapy(   GroupSession groupSession,
+											Collection<Therapy> therapies) {
 		Collection<Patient> patients = groupSession.getPatients();
-		Collection<Therapy> patientTherapies = therapies.stream()
-				.filter(therapy -> patients.contains(therapy.getPatient()))
-				.collect(Collectors.toList());
-		if (patientTherapies.isEmpty())
-			return null;
-		return patientTherapies.iterator().next();
+		Optional<Therapy> optional = therapies.stream()
+				.filter(therapy -> patients.contains(therapy.getPatient())).findFirst();
+		return optional;
 	}
 	
-	private Collection<GroupSession> createGroupSessions(Collection<Patient> patients, Collection<Therapist> therapists) {
+	private Collection<GroupSession>
+			createGroupSessions(int groupSessionCount, Collection<Patient> patients,
+								Collection<Therapist> therapists,
+								Collection<Therapy> therapies) {
 		final Collection<GroupSession> groupSessions = new ArrayList<>();
 		Range<Patient> patientRange = new Range<>(5, 20);
 		Range<Therapist> therapistRange = new Range<>(1, 3);
-		final List<Entry<Collection<Patient>,
-				Collection<Therapist>>> groupSessionPairs = createGroupSessionPairs(10,
-						patients, therapists, patientRange, therapistRange);
-		for (int i = 0; i < groupSessionPairs.size(); i++) {
-			Collection<Patient> sessionPatients = groupSessionPairs.get(i).getKey();
-			Collection<Therapist> sessionTherapists = groupSessionPairs.get(i).getValue();
-			groupSessions.add(createGroupSession(sessionTypeFactory.create(),
+		
+		int i = 0;
+		while (groupSessions.size() < groupSessionCount && i <= groupSessionCount * 3) {
+			final Entry<Collection<Patient>,
+					Collection<Therapist>> entry = createGroupSessionPairs(patients,
+							therapists, patientRange, therapistRange);
+			Collection<Patient> sessionPatients = entry.getKey();
+			Collection<Therapist> sessionTherapists = entry.getValue();
+			GroupSession groupSession = createGroupSession(sessionTypeFactory.create(),
 					sessionTherapists,
-					sessionPatients));
+					sessionPatients);
+			if (getTherapy(groupSession, therapies).isPresent()) {
+				groupSessions.add(groupSession);
+			}
+			i++;
 		}
+		if (i >= groupSessionCount * 3)
+			System.out.println(
+					"Creation of group session cancelled. Too much tries to generate valid session");
 		return groupSessions;
 	}
 	
-	private Collection<Therapy> createTherapies(int therapyCount, Collection<Patient> patients, Collection<Therapist> therapists) {
+	private Collection<Therapy> createTherapies(int therapyCount,
+												Collection<Patient> patients,
+												Collection<Therapist> therapists) {
 		final Collection<Therapy> therapies = new ArrayList<>();
 		final List<Entry<Patient, Therapist>> therapyPairs = createTherapyPairs(
 				therapyCount, patients, therapists, 3);
@@ -178,26 +194,23 @@ public class DbSeeder {
 		return groupSession;
 	}
 	
-	private static List<Entry<Collection<Patient>, Collection<Therapist>>>
-			createGroupSessionPairs(int pairCount,
-									Collection<Patient> patients,
+	private static Entry<Collection<Patient>, Collection<Therapist>>
+			createGroupSessionPairs(Collection<Patient> patients,
 									Collection<Therapist> therapists,
 									Range<Patient> patientRange,
 									Range<Therapist> therapistRange) {
-		List<Entry<Collection<Patient>, Collection<Therapist>>> pairs = new ArrayList<>();
-		while (pairs.size() < pairCount) {
-			Collection<Patient> sessionPatients = getRandom(
-					patientRange.getRandomRangedValue(), patients, true);
-			Collection<Therapist> sessionTherapists = getRandom(
-					therapistRange.getRandomRangedValue(), therapists, true);
-			pairs.add(new AbstractMap.SimpleEntry<>(sessionPatients, sessionTherapists));
-		}
-		return pairs;
+		Collection<Patient> sessionPatients = getRandom(
+				patientRange.getRandomRangedValue(), patients, true);
+		Collection<Therapist> sessionTherapists = getRandom(
+				therapistRange.getRandomRangedValue(), therapists, true);
+		return new AbstractMap.SimpleEntry<>(sessionPatients, sessionTherapists);
 	}
 	
 	private static List<Entry<Patient, Therapist>> createTherapyPairs(  int pairCount,
-																		Collection<Patient> patients,
-																		Collection<Therapist> therapists,
+																		Collection<
+																				Patient> patients,
+																		Collection<
+																				Therapist> therapists,
 																		int maxPatientCount) {
 		List<Entry<Patient, Therapist>> pairs = new ArrayList<>();
 		while (pairs.size() < pairCount) {
