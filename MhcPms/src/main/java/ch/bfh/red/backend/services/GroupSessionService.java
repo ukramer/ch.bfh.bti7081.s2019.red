@@ -112,7 +112,7 @@ public class GroupSessionService implements IService<GroupSession> {
 		
 		Predicate finalPredicate = cb
 				.and(predicates.toArray(new Predicate[predicates.size()]));
-		cq.where(finalPredicate);
+		cq.where(finalPredicate).distinct(true);
 		return em.createQuery(cq).getResultList();
 	}
 

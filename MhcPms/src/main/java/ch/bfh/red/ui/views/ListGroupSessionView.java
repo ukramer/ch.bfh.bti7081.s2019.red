@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,22 @@ import org.springframework.stereotype.Component;
 
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.Grid.Column;
+import com.vaadin.flow.component.grid.contextmenu.GridContextMenu;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.provider.DataProvider;
+import com.vaadin.flow.data.renderer.Renderer;
+import com.vaadin.flow.function.ValueProvider;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
@@ -62,6 +72,9 @@ public class ListGroupSessionView
 	
 	@Id("endDate.date")
 	private DatePicker endDatePicker;
+	
+	@Id("groupSessionGrid")
+	private Grid<GroupSessionGridDTO> grid;
 	
 	private Binder<GroupSessionSearchDTO> binder = new Binder<>();
 	
@@ -112,6 +125,44 @@ public class ListGroupSessionView
 			searchBean.setEndDate(date);
 			applyFilter();
 		});
+		
+//		grid.setSizeFull();
+		Column<GroupSessionGridDTO> startDateColumn = grid.addColumn(dto -> dto.getStartDate());
+		startDateColumn.setHeader("Startdatum");
+		startDateColumn.setSortable(true);
+		startDateColumn.setWidth("100px");
+		startDateColumn.setFlexGrow(5);
+		Column<GroupSessionGridDTO> patientsColumn = grid.addColumn(dto -> dto.getPatients());
+		patientsColumn.setHeader("Patienten");
+		patientsColumn.setSortable(true);
+		patientsColumn.setFlexGrow(10);
+		Column<GroupSessionGridDTO> therapistsColumn = grid.addColumn(dto -> dto.getTherapists());
+		therapistsColumn.setHeader("Therapeuten");
+		therapistsColumn.setSortable(true);
+		therapistsColumn.setFlexGrow(10);
+		
+		Icon icon = new Icon(VaadinIcon.EDIT);
+		icon.setSize("20px");
+		icon.getStyle().set("float", "left");
+		icon.setColor("blue");
+		Label nameLabel = new Label();
+		nameLabel.add(icon);
+		
+		grid.setWidth("1100px");
+		
+		GridContextMenu<GroupSessionGridDTO> contextMenu = grid.addContextMenu();
+		contextMenu.addItem("Bearbeiten", event -> {
+			Optional<GroupSessionGridDTO> dto = event.getItem();
+			if (dto.isPresent()) {
+				System.out.println("Element ausgewählt : ) id = " +dto.get().getId());
+			}
+		});
+		contextMenu.addItem("Löschen", event -> {
+			Optional<GroupSessionGridDTO> dto = event.getItem();
+			if (dto.isPresent()) {
+				System.out.println("Element löschen : ) id = " +dto.get().getId());
+			}
+		});
 	}
 	
 	@Override
@@ -137,7 +188,9 @@ public class ListGroupSessionView
 			gridList.add(new GroupSessionGridDTO(id, startDate, patients, therapists));
 		}
 		
-		getModel().setGroupSessions(gridList);
+		
+//		getModel().setGroupSessions(gridList);
+		grid.setItems(gridList);
 		
 	}
 	
@@ -165,11 +218,11 @@ public class ListGroupSessionView
 	
 	public interface ListGroupSessionModel extends TemplateModel {
 		
-		@Include({ "id", "startDate", "patients", "therapists" })
-		@Encode(value = IntegerToStringEncoder.class, path = "id")
-		void setGroupSessions(List<GroupSessionGridDTO> groupSessions);
-		
-		List<GroupSessionGridDTO> getGroupSessions();
+//		@Include({ "id", "startDate", "patients", "therapists" })
+//		@Encode(value = IntegerToStringEncoder.class, path = "id")
+//		void setGroupSessions(List<GroupSessionGridDTO> groupSessions);
+//		
+//		List<GroupSessionGridDTO> getGroupSessions();
 		
 	}
 	

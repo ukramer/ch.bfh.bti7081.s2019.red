@@ -31,13 +31,7 @@
 			</vaadin-form-layout>
 			
 			<div hidden="{{_isEmpty(groupSessions)}}">
-				<vaadin-grid theme="no-border" items="[[groupSessions]]">
-                    <vaadin-grid-sort-column header="Startdatum" path="startDate" direction="desc"></vaadin-grid-sort-column>
-                    <vaadin-grid-sort-column header="Patienten">
-                        <template>
-                            [[item.patients]]
-                        </template>
-                    </vaadin-grid-sort-column>
+				<vaadin-grid id="groupSessionGrid" theme="no-border">
                 </vaadin-grid>
 			</div>
 			

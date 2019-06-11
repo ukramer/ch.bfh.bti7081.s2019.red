@@ -39,7 +39,6 @@ public class GroupSessionFactory extends AbstractFactory<GroupSession> {
     }
     
     public GroupSession create(List<Therapist> therapists, List<Patient> patients){
-    	Random random = new Random();
         Date startDate = faker.date().past(1000, TimeUnit.DAYS);
         Date endDate = faker.date().past(365, TimeUnit.DAYS);
         SessionType sessionType =  sessionTypeFactory.create();
