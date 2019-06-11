@@ -155,7 +155,7 @@ public class ListSingleSessionView
         if (singleSession == null)
             return;
         presenter.delete(singleSession);
-        Notification.show("Die Therapie wurde erfolgreich gelöscht.");
+        Notification.show("Die Einzelsitzung wurde erfolgreich gelöscht.");
         getModel().getSingleSessions().remove(singleSession);
     }
 
