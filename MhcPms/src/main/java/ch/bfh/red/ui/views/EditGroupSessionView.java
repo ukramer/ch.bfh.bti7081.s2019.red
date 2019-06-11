@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -40,12 +41,11 @@ import com.vaadin.flow.templatemodel.Include;
 import com.vaadin.flow.templatemodel.TemplateModel;
 
 import ch.bfh.red.MainLayout;
-import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.SessionType;
-import ch.bfh.red.backend.models.Therapist;
 import ch.bfh.red.common.DateTimeUtils;
 import ch.bfh.red.ui.dto.GroupSessionDTO;
 import ch.bfh.red.ui.dto.PatientDTO;
+import ch.bfh.red.ui.dto.TherapistDTO;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
 import ch.bfh.red.ui.presenters.GroupSessionPresenter;
 
@@ -61,6 +61,7 @@ public class EditGroupSessionView
 	@Id("header")
 	private H2 header;
 	
+	// fields
 	@Id("sessionType")
 	private ComboBox<SessionType> sessionTypeComboBox;
 	
@@ -76,29 +77,37 @@ public class EditGroupSessionView
 	@Id("endDate.time")
 	private TimePicker endTimePicker;
 	
+	// changes
 	@Id("saveButton")
 	private Button saveButton;
 	
 	@Id("cancelButton")
 	private Button cancelButton;
 	
-	@Id("backButton")
-	private Button backButton;
-	
 	@Id("changedButtons")
 	private Div changedButtons;
 	
+	// patient grid
 	@Id("selectablePatients")
 	private ComboBox<PatientDTO> selectablePatients;
 	
 	@Id("addPatientButton")
 	private Button addPatientButton;
 	
+	// therapist grid
+	@Id("selectableTherapists")
+	private ComboBox<TherapistDTO> selectableTherapists;
+	
+	@Id("addTherapistButton")
+	private Button addTherapistButton;
+	
 	private Binder<GroupSessionDTO> binder = new Binder<>();
 	
 	private GroupSessionDTO dto;
 	
 	private Collection<PatientDTO> patients = new ArrayList<>();
+	
+	private Collection<TherapistDTO> therapists = new ArrayList<>();
 	
 	@Autowired
 	public EditGroupSessionView(GroupSessionPresenter presenter) {
@@ -108,9 +117,12 @@ public class EditGroupSessionView
 		
 		this.sessionTypeComboBox.setDataProvider(DataProvider.ofCollection(sessionTypes));
 		this.selectablePatients.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
+		this.selectableTherapists.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
 		
 		setPatients(presenter.getPatients());
+		setTherapists(presenter.getTherapist());
 		updateSelectablePatients();
+		updateSelectableTherapists();
 		
 		binder.forField(sessionTypeComboBox)
 				.asRequired("Auswahl leer")
@@ -141,14 +153,21 @@ public class EditGroupSessionView
 		
 		saveButton.addClickListener(event -> saveChanges());
 		cancelButton.addClickListener(event -> cancelChanges());
-		backButton.addClickListener(event -> changeToListView());
 		
 		addPatientButton.addClickListener(event -> {
 			PatientDTO selectedPatient = selectablePatients.getValue();
-			List<PatientDTO> patients = getModel().getPatients();
-			patients.add(selectedPatient);
-			getModel().setPatients(new ArrayList<>(patients));
+			List<PatientDTO> dtos = getModel().getPatients();
+			dtos.add(selectedPatient);
+			getModel().setPatients(new ArrayList<>(dtos));
 			updateSelectablePatients();
+		});
+		
+		addTherapistButton.addClickListener(event -> {
+			TherapistDTO selectedDTOs = selectableTherapists.getValue();
+			List<TherapistDTO> dtos = getModel().getTherapists();
+			dtos.add(selectedDTOs);
+			getModel().setTherapists(new ArrayList<>(dtos));
+			updateSelectableTherapists();
 		});
 		
 	}
@@ -172,9 +191,16 @@ public class EditGroupSessionView
 	
 	@EventHandler
 	public void removePatient(@ModelItem PatientDTO patient) {
-		List<PatientDTO> patients = getModel().getPatients();
-		patients.remove(patient);
-		getModel().setPatients(new ArrayList<>(patients));
+		List<PatientDTO> dtos = getModel().getPatients();
+		dtos.remove(patient);
+		getModel().setPatients(new ArrayList<>(dtos));
+	}
+	
+	@EventHandler
+	public void removeTherapist(@ModelItem TherapistDTO dto) {
+		List<TherapistDTO> dtos = getModel().getTherapists();
+		dtos.remove(dto);
+		getModel().setTherapists(new ArrayList<>(dtos));
 	}
 	
 	@EventHandler
@@ -263,6 +289,7 @@ public class EditGroupSessionView
 		endTimePicker.setValue(localEndTime);
 		
 		getModel().setPatients(dto.getPatients());
+		getModel().setTherapists(dto.getTherapists());
 	}
 	
 	public void setPatients(Collection<PatientDTO> patients) {
@@ -270,15 +297,30 @@ public class EditGroupSessionView
 		updateSelectablePatients();
 	}
 	
+	public void setTherapists(Collection<TherapistDTO> therapists) {
+		this.therapists = therapists;
+		updateSelectableTherapists();
+	}
+	
 	public void updateSelectablePatients() {
-		Collection<PatientDTO> selectedPatients = getModel().getPatients();
-		Collection<PatientDTO> patients = this.patients;
-		Set<PatientDTO> selectablePatients = new HashSet<>();
-		for (PatientDTO dto: patients)
-			selectablePatients.add(dto);
-		for (PatientDTO dto: selectedPatients)
-			selectablePatients.remove(dto);
-		this.selectablePatients.setItems(selectablePatients);
+		updateSelectable(getModel().getPatients(), this.patients, 
+				dtos -> this.selectablePatients.setItems(dtos));
+	}
+	
+	public void updateSelectableTherapists() {
+		updateSelectable(getModel().getTherapists(), this.therapists, 
+				dtos -> this.selectableTherapists.setItems(dtos));
+	}
+	
+	private <T> void updateSelectable(Collection<T> selectedDTOs, Collection<T> allDTOs, Consumer<Collection<T>> selectableConsumer) {
+		Collection<T> selected = selectedDTOs;
+		Collection<T> all = allDTOs;
+		Set<T> selectable = new HashSet<>();
+		for (T dto: all)
+			selectable.add(dto);
+		for (T dto: selected)
+			selectable.remove(dto);
+		selectableConsumer.accept(selectable);
 	}
 	
 	private <T> void updateChangedButtons(  T newValue,
@@ -313,7 +355,7 @@ public class EditGroupSessionView
 		
 		Collection<PatientDTO> getPatients();
 		
-		Collection<Therapist> getTherapist();
+		Collection<TherapistDTO> getTherapist();
 		
 		Collection<SessionType> getSessionTypes();
 		
@@ -338,16 +380,11 @@ public class EditGroupSessionView
 		
 		List<PatientDTO> getPatients();
 		
-		@Include({ "id", "patient.firstName", "patient.lastName" })
-		void setPatient(Patient patient);
+		@Include({"id", "prefix", "firstName", "lastName"})
+		@Encode(value = IntegerToStringEncoder.class, path = "id")
+		void setTherapists(List<TherapistDTO> therapists);
 		
-		Patient getPatient();
-		
-		@Include({ "id", "therapist.academicTitle", "therapist.firstName",
-				"therapist.lastName" })
-		void setTherapist(Therapist therapist);
-		
-		Therapist getTherapist();
+		List<TherapistDTO> getTherapists();
 		
 	}
 	

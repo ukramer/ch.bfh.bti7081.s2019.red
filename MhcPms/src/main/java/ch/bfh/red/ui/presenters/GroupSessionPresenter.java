@@ -17,10 +17,12 @@ import ch.bfh.red.backend.services.PatientService;
 import ch.bfh.red.backend.services.TherapistService;
 import ch.bfh.red.converters.GroupSessionConverter;
 import ch.bfh.red.converters.PatientConverter;
+import ch.bfh.red.converters.TherapistConverter;
 import ch.bfh.red.ui.dto.GroupSessionDTO;
 import ch.bfh.red.ui.dto.GroupSessionGridDTO;
 import ch.bfh.red.ui.dto.GroupSessionSearchDTO;
 import ch.bfh.red.ui.dto.PatientDTO;
+import ch.bfh.red.ui.dto.TherapistDTO;
 import ch.bfh.red.ui.views.EditGroupSessionView.EditGroupSessionListener;
 import ch.bfh.red.ui.views.ListGroupSessionView;
 import ch.bfh.red.ui.views.ListGroupSessionView.ListGroupSessionListener;
@@ -44,6 +46,9 @@ public class GroupSessionPresenter implements ListGroupSessionListener, EditGrou
 	
 	@Autowired
 	private PatientConverter patientConverter;
+	
+	@Autowired
+	private TherapistConverter therapistConverter;
 	
 	public void setView(ListGroupSessionView listView) {
 		this.listView = listView;
@@ -86,8 +91,10 @@ public class GroupSessionPresenter implements ListGroupSessionListener, EditGrou
 	}
 
 	@Override
-	public Collection<Therapist> getTherapist() {
-		return therapistService.getAll();
+	public Collection<TherapistDTO> getTherapist() {
+		Collection<Therapist> models = therapistService.getAll();
+		Collection<TherapistDTO> dtos = therapistConverter.toDTOList(models);
+		return dtos;
 	}
 
 	@Override

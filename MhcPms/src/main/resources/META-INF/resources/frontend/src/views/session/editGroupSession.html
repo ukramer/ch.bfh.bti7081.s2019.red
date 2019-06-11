@@ -29,7 +29,6 @@
 	            <vaadin-button id="cancelButton" theme="success">Abbrechen</vaadin-button>
             </div>
             <br/>
-            <vaadin-button id="backButton" theme="success">Zurück</vaadin-button>
             
             <h2>Patienten</h2>
             <vaadin-combo-box id="selectablePatients"></vaadin-combo-box>
@@ -57,11 +56,36 @@
                         </template>
                     </vaadin-grid-column>
                 </vaadin-grid>
-			</div>
-			
-			<br/>
-			<br/>
-			<br/>
+              </div>  
+                
+                <h2>Therapeuten</h2>
+	            <vaadin-combo-box id="selectableTherapists"></vaadin-combo-box>
+	            <vaadin-button id="addTherapistButton" theme="success">Hinzufügen</vaadin-button>
+				<div hidden="{{_isEmpty(therapists)}}">
+					<vaadin-grid theme="no-border" items="[[therapists]]">
+						<vaadin-grid-sort-column header="Titel">
+	                        <template>
+	                            [[item.prefix]]
+	                        </template>
+	                    </vaadin-grid-sort-column>
+	                    <vaadin-grid-sort-column header="Vorname">
+	                        <template>
+	                            [[item.firstName]]
+	                        </template>
+	                    </vaadin-grid-sort-column>
+	                    <vaadin-grid-sort-column header="Nachname">
+	                        <template>
+	                            [[item.lastName]]
+	                        </template>
+	                    </vaadin-grid-sort-column>
+	                    <vaadin-grid-column>
+	                        <template>
+	                            <vaadin-button theme="tertiary" on-click="removeTherapist"><iron-icon icon="vaadin:close"></iron-icon></vaadin-button>
+	                        </template>
+	                    </vaadin-grid-column>
+	                </vaadin-grid>
+				</div>
+	
 		</div>
 	</template>
 	
