@@ -194,7 +194,7 @@ public class EditGroupSessionView
 	}
 	
 	public void changeToListView() {
-		UI.getCurrent().navigate(ListSingleSessionView.class);
+		UI.getCurrent().navigate(ListGroupSessionView.class);
 	}
 	
 	public GroupSessionDTO getDTO() {

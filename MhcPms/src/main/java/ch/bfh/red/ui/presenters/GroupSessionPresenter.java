@@ -46,19 +46,19 @@ public class GroupSessionPresenter implements ListGroupSessionListener, EditGrou
 		for (GroupSession model: models)
 			dtos.add(GroupSessionDTO.toDTO(model));
 		listView.setGroupSessions(dtos);
-		List<Patient> patients = patientService.getAll();
-		List<PersonDTO> patientsDTO = new ArrayList<>();
-		for (Patient patient: patients) {
-			patientsDTO.add(new PersonDTO(patient.getFirstName(), patient.getLastName()));
-		}
-		listView.setPatients(patientsDTO);
-		
-		List<Therapist> therapists = therapistService.getAll();
-		List<TherapistDTO> therapistsDTO = new ArrayList<>();
-		for (Therapist therapist: therapists) {
-			therapistsDTO.add(new TherapistDTO(therapist.getAcademicTitle().getCode(), therapist.getFirstName(), therapist.getLastName()));
-		}
-		listView.setTherapists(therapistsDTO);
+//		List<Patient> patients = patientService.getAll();
+//		List<PersonDTO> patientsDTO = new ArrayList<>();
+//		for (Patient patient: patients) {
+//			patientsDTO.add(new PersonDTO(patient.getFirstName(), patient.getLastName()));
+//		}
+//		listView.setPatients(patientsDTO);
+//		
+//		List<Therapist> therapists = therapistService.getAll();
+//		List<TherapistDTO> therapistsDTO = new ArrayList<>();
+//		for (Therapist therapist: therapists) {
+//			therapistsDTO.add(new TherapistDTO(therapist.getAcademicTitle().getCode(), therapist.getFirstName(), therapist.getLastName()));
+//		}
+//		listView.setTherapists(therapistsDTO);
 	}
 	
 	@Override
@@ -67,7 +67,7 @@ public class GroupSessionPresenter implements ListGroupSessionListener, EditGrou
 		List<GroupSessionDTO> dtos = new ArrayList<>();
 		for (GroupSession model: models)
 			dtos.add(GroupSessionDTO.toDTO(model));
-        listView.setGroupSessions(dtos);
+        listView.setFilteredSessions(dtos);
     }
 	
 	@Override

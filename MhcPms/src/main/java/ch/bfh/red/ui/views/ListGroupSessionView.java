@@ -2,7 +2,9 @@ package ch.bfh.red.ui.views;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,12 +27,15 @@ import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.shared.Registration;
 import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.templatemodel.Encode;
 import com.vaadin.flow.templatemodel.Include;
 import com.vaadin.flow.templatemodel.TemplateModel;
 
 import ch.bfh.red.MainLayout;
+import ch.bfh.red.backend.models.Patient;
+import ch.bfh.red.backend.models.Therapist;
 import ch.bfh.red.common.DateTimeUtils;
 import ch.bfh.red.ui.components.ConfirmationDialog;
 import ch.bfh.red.ui.dto.GroupSessionDTO;
@@ -72,6 +77,8 @@ public class ListGroupSessionView
 	
 	private GroupSessionSearchDTO searchBean = new GroupSessionSearchDTO();
 	
+	private boolean detectChanges = false;
+	
 	@Autowired
 	public ListGroupSessionView(GroupSessionPresenter presenter) {
 		this.presenter = presenter;
@@ -84,40 +91,50 @@ public class ListGroupSessionView
 						GroupSessionSearchDTO::setPatient);
 		
 		patientComboBox.addValueChangeListener(event -> {
-			PersonDTO patientSearchBean = event.getValue();
-			this.searchBean.setPatient(patientSearchBean);
-			applyFilter();
+			if (detectChanges) {
+				PersonDTO patientSearchBean = event.getValue();
+				this.searchBean.setPatient(patientSearchBean);
+				applyFilter();
+			}
 		});
 		
 		therapistComboBox.addValueChangeListener(event -> {
-			TherapistDTO patientSearchBean = event.getValue();
-			PersonDTO personDTO = new PersonDTO();
-			if (patientSearchBean != null) {
-				personDTO.setFirstName(patientSearchBean.getFirstName());
-				personDTO.setLastName(patientSearchBean.getLastName());
+			if (detectChanges) {
+				TherapistDTO patientSearchBean = event.getValue();
+				PersonDTO personDTO = new PersonDTO();
+				if (patientSearchBean != null) {
+					personDTO.setFirstName(patientSearchBean.getFirstName());
+					personDTO.setLastName(patientSearchBean.getLastName());
+				}
+				this.searchBean.setTherapist(personDTO);
+				applyFilter();
 			}
-			this.searchBean.setTherapist(personDTO);
-			applyFilter();
 		});
 		
 		startDatePicker.addValueChangeListener(event -> {
-			LocalDate localDate = event.getValue();
-			Date date = null;
-			if (localDate != null)
-				date = DateTimeUtils.toDate(localDate);
-			searchBean.setStartDate(date);
-			applyFilter();
+			if (detectChanges) {
+				LocalDate localDate = event.getValue();
+				Date date = null;
+				if (localDate != null)
+					date = DateTimeUtils.toDate(localDate);
+				searchBean.setStartDate(date);
+				applyFilter();
+			}
 		});
 		
 		endDatePicker.addValueChangeListener(event -> {
-			LocalDate localDate = event.getValue();
-			Date date = null;
-			if (localDate != null)
-				date = DateTimeUtils.toDate(localDate);
-			searchBean.setEndDate(date);
-			applyFilter();
+			if (detectChanges) {
+				LocalDate localDate = event.getValue();
+				Date date = null;
+				if (localDate != null)
+					date = DateTimeUtils.toDate(localDate);
+				searchBean.setEndDate(date);
+				applyFilter();
+			}
 		});
-
+		
+		this.detectChanges = true;
+		
 	}
 	
 	@Override
@@ -131,41 +148,67 @@ public class ListGroupSessionView
 	}
 	
 	@EventHandler
-    public void edit(@ModelItem GroupSessionGridDTO dto) {
-        UI.getCurrent().navigate(EditGroupSessionView.class, dto.getId());
-    }
-
-    @EventHandler
-    public void delete(@ModelItem GroupSessionGridDTO dto) {
-        new ConfirmationDialog<GroupSessionGridDTO>().open(
-                "Gruppensitzung wirklich löschen?",
-                "Möchten Sie die Gruppensitzung wirklich löschen?", "", "Löschen",
-                true, dto, this::confirmDelete);
-    }
-    
-    private void confirmDelete(GroupSessionGridDTO dto) {
-        if (dto == null)
-            return;
-        presenter.delete(dto);
-        Notification.show("Die Gruppensitzung wurde erfolgreich gelöscht.");
-        getModel().getGroupSessions().remove(dto);
-    }
+	public void edit(@ModelItem GroupSessionGridDTO dto) {
+		UI.getCurrent().navigate(EditGroupSessionView.class, dto.getId());
+	}
+	
+	@EventHandler
+	public void delete(@ModelItem GroupSessionGridDTO dto) {
+		new ConfirmationDialog<GroupSessionGridDTO>().open(
+				"Gruppensitzung wirklich löschen?",
+				"Möchten Sie die Gruppensitzung wirklich löschen?", "", "Löschen",
+				true, dto, this::confirmDelete);
+	}
+	
+	private void confirmDelete(GroupSessionGridDTO dto) {
+		if (dto == null)
+			return;
+		presenter.delete(dto);
+		Notification.show("Die Gruppensitzung wurde erfolgreich gelöscht.");
+		getModel().getGroupSessions().remove(dto);
+	}
 	
 	public void setGroupSessions(List<GroupSessionDTO> dtos) {
+		
+		
+		
+		
+		HashSet<PersonDTO> patientsDTO = new HashSet<>();
+		for (GroupSessionDTO dto : dtos) {
+			Collection<Patient> patients = dto.getPatients();
+			for (Patient patient : patients)
+				patientsDTO.add(
+						new PersonDTO(patient.getFirstName(), patient.getLastName()));
+		}
+		patientComboBox.setItems(patientsDTO);
+		
+		HashSet<TherapistDTO> therapistsDTO = new HashSet<>();
+		for (GroupSessionDTO dto : dtos) {
+			Collection<Therapist> therapists = dto.getTherapists();
+			for (Therapist therapist : therapists)
+				therapistsDTO.add(new TherapistDTO(therapist.getAcademicTitle().getCode(),
+						therapist.getFirstName(), therapist.getLastName()));
+		}
+		therapistComboBox.setItems(therapistsDTO);
+
+		setFilteredSessions(dtos);
+	}
+	
+	public void setFilteredSessions(List<GroupSessionDTO> filterDTOs) {
 		List<GroupSessionGridDTO> gridList = new ArrayList<>();
 		DateToStringEncoder encoder = new DateToStringEncoder();
-		for (GroupSessionDTO groupSession : dtos) {
+		for (GroupSessionDTO groupSession : filterDTOs) {
 			Integer id = groupSession.getId();
 			String startDate = encoder.encode(groupSession.getStartDate());
 			String patients = groupSession.getPatients().stream()
 					.map(p -> p.getLastName()).collect(Collectors.joining(", "));
-			String therapists = groupSession.getTherapists().stream().map(t -> t.getLastName())
+			String therapists = groupSession.getTherapists().stream()
+					.map(t -> t.getLastName())
 					.collect(Collectors.joining(", "));
 			gridList.add(new GroupSessionGridDTO(id, startDate, patients, therapists));
 		}
 		
 		getModel().setGroupSessions(gridList);
-		
 	}
 	
 	public void applyFilter() {
@@ -176,13 +219,13 @@ public class ListGroupSessionView
 		presenter.applyFilter(searchBean);
 	}
 	
-	public void setPatients(List<PersonDTO> patients) {
-		patientComboBox.setItems(patients);
-	}
-	
-	public void setTherapists(List<TherapistDTO> therapists) {
-		therapistComboBox.setItems(therapists);
-	}
+//	public void setPatients(List<PersonDTO> patients) {
+//		patientComboBox.setItems(patients);
+//	}
+//	
+//	public void setTherapists(List<TherapistDTO> therapists) {
+//		therapistComboBox.setItems(therapists);
+//	}
 	
 	public interface ListGroupSessionListener {
 		

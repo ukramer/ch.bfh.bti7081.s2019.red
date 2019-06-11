@@ -114,6 +114,7 @@ public class GroupSessionService implements IService<GroupSession> {
 		CriteriaQuery<GroupSession> cq = cb.createQuery(GroupSession.class);
 		Root<GroupSession> root = cq.from(GroupSession.class);
 		Join<?, ?> patientJoin = root.join("patients");
+		Join<?, ?> therapistJoin = root.join("therapists");
 		List<Predicate> predicates = new ArrayList<>();
 		
 		final PersonDTO patientBean = searchBean.getPatient();
@@ -127,6 +128,18 @@ public class GroupSessionService implements IService<GroupSession> {
 				predicates
 						.add(cb.like(patientJoin.get("lastName"), "%" + lastName + "%"));
 		}
+		final PersonDTO therapistBean = searchBean.getTherapist();
+		if (therapistBean != null) {
+			final String firstName = therapistBean.getFirstName();
+			if (StringUtils.isNotBlank(firstName))
+				predicates.add(
+						cb.like(therapistJoin.get("firstName"), "%" + firstName + "%"));
+			final String lastName = therapistBean.getLastName();
+			if (StringUtils.isNotBlank(therapistBean.getLastName()))
+				predicates
+						.add(cb.like(therapistJoin.get("lastName"), "%" + lastName + "%"));
+		}
+		
 		final Date startDate = searchBean.getStartDate();
 		if (startDate != null)
 			predicates.add(cb.greaterThanOrEqualTo(root.get("startDate"), startDate));
