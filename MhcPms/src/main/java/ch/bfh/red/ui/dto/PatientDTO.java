@@ -61,11 +61,11 @@ public class PatientDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		PatientDTO other = (PatientDTO) obj;
-		if (equalsOrNull(other, o -> o.getId()))
+		if (!equalsOrNull(other, o -> o.getId()))
 			return false;
-		if (equalsOrNull(other, o -> o.getFirstName()))
+		if (!equalsOrNull(other, o -> o.getFirstName()))
 			return false;
-		if (equalsOrNull(other, o -> o.getLastName()))
+		if (!equalsOrNull(other, o -> o.getLastName()))
 			return false;
 		return true;
 	}

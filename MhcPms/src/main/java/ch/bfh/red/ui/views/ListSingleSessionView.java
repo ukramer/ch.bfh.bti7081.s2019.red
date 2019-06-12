@@ -1,19 +1,17 @@
 package ch.bfh.red.ui.views;
 
-import ch.bfh.red.MainLayout;
-import ch.bfh.red.backend.models.Patient;
-import ch.bfh.red.common.DateTimeUtils;
-import ch.bfh.red.ui.components.ConfirmationDialog;
-import ch.bfh.red.ui.dto.SingleSessionDTO;
-import ch.bfh.red.ui.dto.SingleSessionSearchDTO;
-import ch.bfh.red.ui.encoders.AcademicTitleToStringEncoder;
-import ch.bfh.red.ui.encoders.DateToStringEncoder;
-import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
-import ch.bfh.red.ui.presenters.SingleSessionPresenter;
-import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.HtmlImport;
@@ -32,13 +30,20 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.templatemodel.Encode;
 import com.vaadin.flow.templatemodel.Include;
 import com.vaadin.flow.templatemodel.TemplateModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import ch.bfh.red.MainLayout;
+import ch.bfh.red.common.DateTimeUtils;
+import ch.bfh.red.ui.components.ConfirmationDialog;
+import ch.bfh.red.ui.dto.GroupSessionDTO;
+import ch.bfh.red.ui.dto.GroupSessionGridDTO;
+import ch.bfh.red.ui.dto.PatientDTO;
+import ch.bfh.red.ui.dto.SingleSessionDTO;
+import ch.bfh.red.ui.dto.SingleSessionSearchDTO;
+import ch.bfh.red.ui.dto.TherapistDTO;
+import ch.bfh.red.ui.encoders.AcademicTitleToStringEncoder;
+import ch.bfh.red.ui.encoders.DateToStringEncoder;
+import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
+import ch.bfh.red.ui.presenters.SingleSessionPresenter;
 
 @Route(value = "singleSession/list", layout = MainLayout.class)
 @Tag("single-session-list")
@@ -60,51 +65,70 @@ public class ListSingleSessionView
     @Id("endDate.date")
     private DatePicker endDatePicker;
 
+    @Id("therapist")
+    private ComboBox<TherapistDTO> therapistComboBox;
+    
     @Id("patient")
-    private ComboBox<Patient> patientComboBox;
+    private ComboBox<PatientDTO> patientComboBox;
 
-    private Binder<SingleSessionDTO> binder = new Binder<>();
+    private Binder<SingleSessionSearchDTO> binder = new Binder<>();
 
     private SingleSessionSearchDTO searchBean = new SingleSessionSearchDTO();
 
+    private boolean detectChanges = false;
+    
     @Autowired
     public ListSingleSessionView(SingleSessionPresenter presenter) {
         this.presenter = presenter;
 
-        patientComboBox.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
+        patientComboBox.setDataProvider(DataProvider.ofCollection(new HashSet<>()));
+        therapistComboBox.setDataProvider(DataProvider.ofCollection(new HashSet<>()));
 
         binder.forField(patientComboBox)
-                .bind(SingleSessionDTO::getPatient, SingleSessionDTO::setPatient);
+                .bind(SingleSessionSearchDTO::getPatient, SingleSessionSearchDTO::setPatient);
+        binder.forField(therapistComboBox)
+        .bind(SingleSessionSearchDTO::getTherapist, SingleSessionSearchDTO::setTherapist);
 
 
         patientComboBox.addValueChangeListener(event -> {
-            PatientSearchBean patientSearchBean = new PatientSearchBean();
-            Patient patient = event.getValue();
-            if (patient != null) {
-                patientSearchBean.setFirstName(patient.getFirstName());
-                patientSearchBean.setLastName(patient.getLastName());
-            }
-            this.searchBean.setPatient(patientSearchBean);
+        	if (detectChanges) {
+            PatientDTO dto = event.getValue();
+            this.searchBean.setPatient(dto);
             applyFilter();
+        	}
+        });
+        
+        therapistComboBox.addValueChangeListener(event -> {
+        	if (detectChanges) {
+            TherapistDTO dto = event.getValue();
+            this.searchBean.setTherapist(dto);
+            applyFilter();
+        	}
         });
 
         startDatePicker.addValueChangeListener(event -> {
+        	if (detectChanges) {
             LocalDate localDate = event.getValue();
             Date date = null;
             if (localDate != null)
                 date = DateTimeUtils.toDate(localDate);
             searchBean.setStartDate(date);
             applyFilter();
+        	}
         });
 
         endDatePicker.addValueChangeListener(event -> {
+        	if (detectChanges) {
             LocalDate localDate = event.getValue();
             Date date = null;
             if (localDate != null)
                 date = DateTimeUtils.toDate(localDate);
             searchBean.setEndDate(date);
             applyFilter();
+        	}
         });
+        
+        this.detectChanges = true;
     }
 
     @Override
@@ -114,23 +138,7 @@ public class ListSingleSessionView
         startDatePicker.setI18n(MainLayout.datePickerI18n);
         endDatePicker.setI18n(MainLayout.datePickerI18n);
     }
-
-    public void setSingleSessions(List<SingleSessionDTO> singleSessions) {
-        getModel().setSingleSessions(singleSessions);
-    }
-
-    public void setPatients(List<Patient> patients) {
-        patientComboBox.setItems(patients);
-    }
-
-    public void applyFilter() {
-        applyFilter(this.searchBean);
-    }
-
-    public void applyFilter(SingleSessionSearchDTO searchBean) {
-        presenter.applyFilter(searchBean);
-    }
-
+    
     @EventHandler
     public void add() {
         UI.getCurrent().navigate(EditSingleSessionView.class);
@@ -149,12 +157,34 @@ public class ListSingleSessionView
                 true, singleSession, this::confirmDelete);
     }
 
-    private void confirmDelete(SingleSessionDTO singleSession) {
-        if (singleSession == null)
-            return;
-        presenter.delete(singleSession);
-        Notification.show("Die Therapie wurde erfolgreich gelöscht.");
-        getModel().getSingleSessions().remove(singleSession);
+    public void setSingleSessions(List<SingleSessionDTO> dtos) {
+    	HashSet<PatientDTO> patientsDTO = new HashSet<>();
+		for (SingleSessionDTO dto : dtos)
+			patientsDTO.add(dto.getPatient());
+		patientComboBox.setItems(patientsDTO);
+		
+		HashSet<TherapistDTO> therapistsDTO = new HashSet<>();
+		for (SingleSessionDTO dto : dtos)
+			therapistsDTO.add(dto.getTherapist());
+		therapistComboBox.setItems(therapistsDTO);
+		
+		setFilteredSessions(dtos);
+    }
+    
+    public void setFilteredSessions(List<SingleSessionDTO> filterDTOs) {
+    	getModel().setSingleSessions(filterDTOs);
+	}
+
+//    public void setPatients(List<PatientDTO> patients) {
+//        patientComboBox.setItems(patients);
+//    }
+
+    public void applyFilter() {
+        applyFilter(this.searchBean);
+    }
+
+    public void applyFilter(SingleSessionSearchDTO searchBean) {
+        presenter.applyFilter(searchBean);
     }
 
     public interface ListSingleSessionListener {
@@ -179,6 +209,14 @@ public class ListSingleSessionView
                 path = "therapist.academicTitle")
         @Encode(value = DateToStringEncoder.class, path = "startDate")
         void setSingleSessions(List<SingleSessionDTO> singleSessions);
+    }
+    
+    private void confirmDelete(SingleSessionDTO singleSession) {
+        if (singleSession == null)
+            return;
+        presenter.delete(singleSession);
+        Notification.show("Die Einzelsitzun wurde erfolgreich gelöscht.");
+        getModel().getSingleSessions().remove(singleSession);
     }
 
 }

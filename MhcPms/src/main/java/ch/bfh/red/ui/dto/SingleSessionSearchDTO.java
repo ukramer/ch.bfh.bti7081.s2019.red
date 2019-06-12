@@ -2,20 +2,19 @@ package ch.bfh.red.ui.dto;
 
 import java.util.Date;
 
-import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
-
 public class SingleSessionSearchDTO {
-	private PatientSearchBean patient;
+	private PatientDTO patient;
+	private TherapistDTO therapist;
 	private Date startDate;
 	private Date endDate;
 	
 	public SingleSessionSearchDTO() {}
 
-	public PatientSearchBean getPatient() {
+	public PatientDTO getPatient() {
 		return patient;
 	}
 
-	public void setPatient(PatientSearchBean patient) {
+	public void setPatient(PatientDTO patient) {
 		this.patient = patient;
 	}
 
@@ -34,5 +33,15 @@ public class SingleSessionSearchDTO {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
+
+	public TherapistDTO getTherapist() {
+		return therapist;
+	}
+
+	public void setTherapist(TherapistDTO therapist) {
+		this.therapist = therapist;
+	}
+	
+	
 	
 }

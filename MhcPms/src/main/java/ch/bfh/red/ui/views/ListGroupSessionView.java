@@ -89,6 +89,9 @@ public class ListGroupSessionView
 		binder.forField(patientComboBox)
 				.bind(GroupSessionSearchDTO::getPatient,
 						GroupSessionSearchDTO::setPatient);
+		binder.forField(therapistComboBox)
+		.bind(GroupSessionSearchDTO::getTherapist,
+				GroupSessionSearchDTO::setTherapist);
 		
 		patientComboBox.addValueChangeListener(event -> {
 			if (detectChanges) {
@@ -100,13 +103,8 @@ public class ListGroupSessionView
 		
 		therapistComboBox.addValueChangeListener(event -> {
 			if (detectChanges) {
-				TherapistDTO patientSearchBean = event.getValue();
-				PatientDTO personDTO = new PatientDTO();
-				if (patientSearchBean != null) {
-					personDTO.setFirstName(patientSearchBean.getFirstName());
-					personDTO.setLastName(patientSearchBean.getLastName());
-				}
-				this.searchBean.setTherapist(personDTO);
+				TherapistDTO dto = event.getValue();
+				this.searchBean.setTherapist(dto);
 				applyFilter();
 			}
 		});
@@ -140,8 +138,6 @@ public class ListGroupSessionView
 	@Override
 	public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
 		presenter.setView(this);
-		
-		// init view elements
 		header.setText("Gruppensitzungen");
 		startDatePicker.setI18n(MainLayout.datePickerI18n);
 		endDatePicker.setI18n(MainLayout.datePickerI18n);
@@ -165,13 +161,7 @@ public class ListGroupSessionView
 				true, dto, this::confirmDelete);
 	}
 	
-	private void confirmDelete(GroupSessionGridDTO dto) {
-		if (dto == null)
-			return;
-		presenter.delete(dto);
-		Notification.show("Die Gruppensitzung wurde erfolgreich gelöscht.");
-		getModel().getGroupSessions().remove(dto);
-	}
+	
 	
 	public void setGroupSessions(List<GroupSessionDTO> dtos) {
 		HashSet<PatientDTO> patientsDTO = new HashSet<>();
@@ -222,9 +212,9 @@ public class ListGroupSessionView
 	
 	public interface ListGroupSessionListener {
 		
-		void applyFilter(GroupSessionSearchDTO searchBean);
-		
 		void delete(GroupSessionGridDTO dto);
+		
+		void applyFilter(GroupSessionSearchDTO searchBean);
 		
 	}
 	
@@ -236,6 +226,14 @@ public class ListGroupSessionView
 		
 		List<GroupSessionGridDTO> getGroupSessions();
 		
+	}
+	
+	private void confirmDelete(GroupSessionGridDTO dto) {
+		if (dto == null)
+			return;
+		presenter.delete(dto);
+		Notification.show("Die Gruppensitzung wurde erfolgreich gelöscht.");
+		getModel().getGroupSessions().remove(dto);
 	}
 	
 }

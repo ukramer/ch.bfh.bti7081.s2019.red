@@ -35,11 +35,11 @@ import com.vaadin.flow.templatemodel.Include;
 import com.vaadin.flow.templatemodel.TemplateModel;
 
 import ch.bfh.red.MainLayout;
-import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.SessionType;
-import ch.bfh.red.backend.models.Therapist;
 import ch.bfh.red.common.DateTimeUtils;
+import ch.bfh.red.ui.dto.PatientDTO;
 import ch.bfh.red.ui.dto.SingleSessionDTO;
+import ch.bfh.red.ui.dto.TherapistDTO;
 import ch.bfh.red.ui.presenters.SingleSessionPresenter;
 
 @Route(value = "editSingleSession", layout = MainLayout.class)
@@ -55,10 +55,10 @@ public class EditSingleSessionView
 	private H2 header;
 	
 	@Id("therapist")
-	private ComboBox<Therapist> therapistComboBox;
+	private ComboBox<TherapistDTO> therapistComboBox;
 	
 	@Id("patient")
-	private ComboBox<Patient> patientComboBox;
+	private ComboBox<PatientDTO> patientComboBox;
 	
 	@Id("sessionType")
 	private ComboBox<SessionType> sessionTypeComboBox;
@@ -88,17 +88,17 @@ public class EditSingleSessionView
 	
 	private SingleSessionDTO singleSession;
 	
+	private boolean validating = false;
+	
 	@Autowired
 	public EditSingleSessionView(SingleSessionPresenter presenter) {
 		this.presenter = presenter;
 		
-		Collection<Patient> patients = presenter.getPatients();
-		Collection<Therapist> therapists = presenter.getTherapist();
 		Collection<SessionType> sessionTypes = presenter.getSessionTypes();
 		
-		this.patientComboBox.setDataProvider(DataProvider.ofCollection(patients));
-		this.therapistComboBox.setDataProvider(DataProvider.ofCollection(therapists));
 		this.sessionTypeComboBox.setDataProvider(DataProvider.ofCollection(sessionTypes));
+		this.patientComboBox.setDataProvider(DataProvider.ofCollection(presenter.getPatients()));
+		this.therapistComboBox.setDataProvider(DataProvider.ofCollection(presenter.getTherapist()));
 		
 		binder.forField(patientComboBox)
 				.asRequired("Auswahl leer")
@@ -114,33 +114,42 @@ public class EditSingleSessionView
 		openCreateMode();
 		
 		patientComboBox.addValueChangeListener(event -> {
+			if (validating)
 			updateChangedButtons(event.getValue(), dto -> dto.getPatient());
 		});
 		therapistComboBox.addValueChangeListener(event -> {
+			if (validating)
 			updateChangedButtons(event.getValue(), dto -> dto.getTherapist());
 		});
 		sessionTypeComboBox.addValueChangeListener(event -> {
+			if (validating)
 			updateChangedButtons(event.getValue(), dto -> dto.getSessionType());
 		});
 		startDatePicker.addValueChangeListener(event -> {
+			if (validating)
 			updateChangedButtons(event.getValue(),
 					dto -> DateTimeUtils.toLocalDate(dto.getStartDate()));
 		});
 		startTimePicker.addValueChangeListener(event -> {
+			if (validating)
 			updateChangedButtons(event.getValue(),
 					dto -> DateTimeUtils.toLocalTime(dto.getStartDate()));
 		});
 		endDatePicker.addValueChangeListener(event -> {
+			if (validating)
 			updateChangedButtons(event.getValue(),
 					dto -> DateTimeUtils.toLocalDate(dto.getEndDate()));
 		});
 		endTimePicker.addValueChangeListener(event -> {
+			if (validating)
 			updateChangedButtons(event.getValue(),
 					dto -> DateTimeUtils.toLocalTime(dto.getEndDate()));
 		});
 		
 		saveButton.addClickListener(event -> saveChanges());
 		cancelButton.addClickListener(event -> cancelChanges());
+		
+		validating = true;
 		
 	}
 	
@@ -154,6 +163,7 @@ public class EditSingleSessionView
 				SingleSessionDTO dto = presenter.load(singleSessionId);
 				openEditMode(dto);
 			} catch (NoSuchElementException e) {
+				e.printStackTrace();
 				UI.getCurrent().navigate(ListSingleSessionView.class);
 				Notification
 						.show("Einzelsitzung nicht gefunden. Id = " + singleSessionId);
@@ -195,6 +205,7 @@ public class EditSingleSessionView
 				presenter.save(singleSession);
 				Notification.show("Die Einzelsitzung wurde erfolgreich gespeichert.");
 			} catch (Exception e) {
+				e.printStackTrace();
 				Notification.show(e.getMessage());
 			}
 		} else {
@@ -209,6 +220,7 @@ public class EditSingleSessionView
 	
 	public void cancelChanges() {
 		setSingleSession(singleSession.clone());
+		updateChangedButtons(false);
 	}
 	
 	public SingleSessionDTO getSingleSession() {
@@ -222,11 +234,17 @@ public class EditSingleSessionView
 		return singleSession;
 	}
 	
-	public void setPatients(Collection<Patient> patients) {
+	public void setPatients(Collection<PatientDTO> patients) {
 		patientComboBox.setItems(patients);
 	}
 	
+	public void setTherapists(Collection<TherapistDTO> therapists) {
+		therapistComboBox.setItems(therapists);
+	}
+	
 	private void setSingleSession(SingleSessionDTO singleSession) {
+		validating = false;
+		
 		this.singleSession = singleSession;
 		SingleSessionDTO clone = singleSession.clone();
 		binder.setBean(clone);
@@ -243,6 +261,9 @@ public class EditSingleSessionView
 		LocalTime localEndTime = DateTimeUtils.toLocalTimeOrNull(singleSession.getEndDate());
 		endDatePicker.setValue(localEndDate);
 		endTimePicker.setValue(localEndTime);
+		
+		validating = true;
+		updateChangedButtons(false);
 	}
 	
 	private <T> void updateChangedButtons(  T newValue,
@@ -251,33 +272,35 @@ public class EditSingleSessionView
 		try {
 			mappedAttribute = mapper.apply(singleSession);
 		} catch (NullPointerException e) {}
-		boolean changed = true;
-		if (mappedAttribute != null) {
-			changed = (singleSession != null
-					&& !mappedAttribute.equals(newValue));
-		}
+		boolean changed;
+		if (mappedAttribute == null && newValue == null)
+			changed = false;
+		else if (mappedAttribute == null || newValue == null)
+			changed = true;
+		else 
+			changed = mappedAttribute.equals(newValue);
 		updateChangedButtons(changed);
 	}
 	
 	private void updateChangedButtons(boolean changed) {
-		if (!changed && !hasValueChanged())
-			changedButtons.setVisible(false);
-		else
+		if (changed || hasValueChanged())
 			changedButtons.setVisible(true);
+		else
+			changedButtons.setVisible(false);
 	}
 	
 	private boolean hasValueChanged() {
 		if (singleSession == null)
 			return false;
 		SingleSessionDTO dto = getSingleSession();
-		return dto.equals(singleSession);
+		return !dto.equals(singleSession);
 	}
 	
 	public interface EditSingleSessionListener {
 		
-		Collection<Patient> getPatients();
+		Collection<PatientDTO> getPatients();
 		
-		Collection<Therapist> getTherapist();
+		Collection<TherapistDTO> getTherapist();
 		
 		Collection<SessionType> getSessionTypes();
 		
@@ -296,15 +319,15 @@ public class EditSingleSessionView
 	 */
 	public interface EditSingleSessionModel extends TemplateModel {
 		@Include({ "id", "patient.firstName", "patient.lastName" })
-		void setPatient(Patient patient);
+		void setPatient(PatientDTO patient);
 		
-		Patient getPatient();
+		PatientDTO getPatient();
 		
 		@Include({ "id", "therapist.academicTitle", "therapist.firstName",
 				"therapist.lastName" })
-		void setTherapist(Therapist therapist);
+		void setTherapist(TherapistDTO therapist);
 		
-		Therapist getTherapist();
+		TherapistDTO getTherapist();
 		
 	}
 	

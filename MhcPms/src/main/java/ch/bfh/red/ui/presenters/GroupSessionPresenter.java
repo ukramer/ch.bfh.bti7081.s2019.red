@@ -79,6 +79,21 @@ public class GroupSessionPresenter implements ListGroupSessionListener, EditGrou
     }
 	
 	@Override
+	public GroupSessionDTO load(Integer therapyId) {
+		GroupSession model = service.getById(therapyId);
+		GroupSessionDTO dto = groupSessionConverter.toDTO(model);
+		return dto;
+	}
+
+	@Override
+	public GroupSessionDTO save(GroupSessionDTO dto) throws Exception {
+		GroupSession model = groupSessionConverter.toModel(dto);
+		model = service.persist(model);
+		GroupSessionDTO dto2 = groupSessionConverter.toDTO(model);
+		return dto2;
+	}
+	
+	@Override
 	public void delete(GroupSessionGridDTO singleSession) {
 		service.delete(service.getById(singleSession.getId()));
 	}
@@ -102,19 +117,6 @@ public class GroupSessionPresenter implements ListGroupSessionListener, EditGrou
 		return Arrays.asList(SessionType.values());
 	}
 
-	@Override
-	public GroupSessionDTO load(Integer therapyId) {
-		GroupSession model = service.getById(therapyId);
-		GroupSessionDTO dto = groupSessionConverter.toDTO(model);
-		return dto;
-	}
-
-	@Override
-	public GroupSessionDTO save(GroupSessionDTO dto) throws Exception {
-		GroupSession model = groupSessionConverter.toModel(dto);
-		model = service.persist(model);
-		GroupSessionDTO dto2 = groupSessionConverter.toDTO(model);
-		return dto2;
-	}
+	
 	
 }

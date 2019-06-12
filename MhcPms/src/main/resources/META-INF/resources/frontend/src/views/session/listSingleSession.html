@@ -17,6 +17,7 @@
 		<div class="view-container">
 	    	<h2 id="header"></h2>
 			
+			<vaadin-combo-box id="therapist" label="Therapeut"></vaadin-combo-box>
 			<vaadin-combo-box id="patient" label="Patient"></vaadin-combo-box>
 			<br/>
 			<vaadin-form-layout>
@@ -43,12 +44,12 @@
                     </vaadin-grid-sort-column>
                     <vaadin-grid-column>
                         <template>
-                            <vaadin-button theme="tertiary" on-click="edit">Bearbeiten</vaadin-button>
+                            <vaadin-button theme="tertiary" on-click="edit"><iron-icon icon="vaadin:edit" flex-grow="2"></iron-icon></vaadin-button>
                         </template>
                     </vaadin-grid-column>
                     <vaadin-grid-column>
                         <template>
-                            <vaadin-button theme="error tertiary" on-click="delete">Löschen</vaadin-button>
+                            <vaadin-button theme="error tertiary" on-click="delete"><iron-icon icon="vaadin:trash" flex-grow="2"></iron-icon></vaadin-button>
                         </template>
                     </vaadin-grid-column>
                 </vaadin-grid>

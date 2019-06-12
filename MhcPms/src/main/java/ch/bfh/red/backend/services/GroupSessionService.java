@@ -25,6 +25,7 @@ import ch.bfh.red.backend.repositories.GroupSessionRepository;
 import ch.bfh.red.common.BeanUtils;
 import ch.bfh.red.ui.dto.GroupSessionSearchDTO;
 import ch.bfh.red.ui.dto.PatientDTO;
+import ch.bfh.red.ui.dto.TherapistDTO;
 
 @Service("groupSessionService")
 public class GroupSessionService implements IService<GroupSession> {
@@ -128,7 +129,7 @@ public class GroupSessionService implements IService<GroupSession> {
 				predicates
 						.add(cb.like(patientJoin.get("lastName"), "%" + lastName + "%"));
 		}
-		final PatientDTO therapistBean = searchBean.getTherapist();
+		final TherapistDTO therapistBean = searchBean.getTherapist();
 		if (therapistBean != null) {
 			final String firstName = therapistBean.getFirstName();
 			if (StringUtils.isNotBlank(firstName))

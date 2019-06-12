@@ -24,7 +24,7 @@ public class TherapistConverter extends AbstractConverter<Therapist, TherapistDT
 			model = new Therapist();
 		String prefix = dto.getPrefix();
 		if (prefix != null)
-			model.setAcademicTitle(AcademicTitle.valueOf(prefix));
+			model.setAcademicTitle(getAcademicTitle(prefix));
 		model.setFirstName(dto.getFirstName());
 		model.setLastName(dto.getLastName());
 		return model;
@@ -33,12 +33,20 @@ public class TherapistConverter extends AbstractConverter<Therapist, TherapistDT
 	@Override
 	public TherapistDTO toDTO(Therapist model) {
 		TherapistDTO dto = new TherapistDTO();
+		dto.setId(model.getId());
 		AcademicTitle academicTitle = model.getAcademicTitle();
 		if (academicTitle != null)
 			dto.setPrefix(academicTitle.getCode());
 		dto.setFirstName(model.getFirstName());
 		dto.setLastName(model.getLastName());
 		return dto;
+	}
+	
+	private AcademicTitle getAcademicTitle(String prefix) {
+		for (AcademicTitle academicTitle: AcademicTitle.values())
+			if (academicTitle.getCode().equals(prefix))
+				return academicTitle;
+		throw new IllegalArgumentException("enum not found");
 	}
 	
 }

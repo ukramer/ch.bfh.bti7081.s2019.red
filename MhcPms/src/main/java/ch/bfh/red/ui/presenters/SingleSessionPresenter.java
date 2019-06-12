@@ -1,6 +1,5 @@
 package ch.bfh.red.ui.presenters;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -12,11 +11,17 @@ import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.SessionType;
 import ch.bfh.red.backend.models.SingleSession;
 import ch.bfh.red.backend.models.Therapist;
+import ch.bfh.red.backend.persistence.SingleSessionPersistenceManager;
 import ch.bfh.red.backend.services.PatientService;
 import ch.bfh.red.backend.services.SingleSessionService;
 import ch.bfh.red.backend.services.TherapistService;
+import ch.bfh.red.converters.PatientConverter;
+import ch.bfh.red.converters.SingleSessionConverter;
+import ch.bfh.red.converters.TherapistConverter;
+import ch.bfh.red.ui.dto.PatientDTO;
 import ch.bfh.red.ui.dto.SingleSessionDTO;
 import ch.bfh.red.ui.dto.SingleSessionSearchDTO;
+import ch.bfh.red.ui.dto.TherapistDTO;
 import ch.bfh.red.ui.views.EditSingleSessionView.EditSingleSessionListener;
 import ch.bfh.red.ui.views.ListSingleSessionView;
 import ch.bfh.red.ui.views.ListSingleSessionView.ListSingleSessionListener;
@@ -35,60 +40,70 @@ public class SingleSessionPresenter implements EditSingleSessionListener, ListSi
 	@Autowired
 	private TherapistService therapistService;
 	
+	@Autowired
+	private SingleSessionConverter singleSessionConverter;
+	
+	@Autowired
+	private PatientConverter patientConverter;
+	
+	@Autowired
+	private TherapistConverter therapistConverter;
+	
+	@Autowired
+	private SingleSessionPersistenceManager persistenceManager;
+	
 	public SingleSessionPresenter() {}
 	
 	public void setView(ListSingleSessionView listView) {
 		this.listView = listView;
-		
 		List<SingleSession> models = service.getAll();
-		List<SingleSessionDTO> dtos = new ArrayList<>();
-		for (SingleSession model: models)
-			dtos.add(SingleSessionDTO.toDTO(model));
+		List<SingleSessionDTO> dtos = singleSessionConverter.toDTOList(models);
 		listView.setSingleSessions(dtos);
-		listView.setPatients(patientService.getAll());
 	}
 	
 	@Override
     public void applyFilter(SingleSessionSearchDTO searchBean) {
 		List<SingleSession> models = service.findByDTO(searchBean);
-		List<SingleSessionDTO> dtos = new ArrayList<>();
-		for (SingleSession model: models)
-			dtos.add(SingleSessionDTO.toDTO(model));
-        listView.setSingleSessions(dtos);
+		List<SingleSessionDTO> dtos = singleSessionConverter.toDTOList(models);
+        listView.setFilteredSessions(dtos);
     }
-
-	@Override
-	public Collection<Patient> getPatients() {
-		return patientService.getAll();
-	}
-
-	@Override
-	public Collection<Therapist> getTherapist() {
-		return therapistService.getAll();
-	}
-
-	@Override
-	public Collection<SessionType> getSessionTypes() {
-		return Arrays.asList(SessionType.values());
-	}
-
+	
 	@Override
 	public SingleSessionDTO load(Integer therapyId) {
 		SingleSession singleSession = service.getById(therapyId);
-		SingleSessionDTO dto = SingleSessionDTO.toDTO(singleSession);
+		SingleSessionDTO dto = singleSessionConverter.toDTO(singleSession);
 		return dto;
 	}
 	
 	@Override
 	public SingleSessionDTO save(SingleSessionDTO singleSession) throws Exception {
-		SingleSession singleSession2 = service.persist(SingleSessionDTO.toModel(singleSession));
-		SingleSessionDTO dto = SingleSessionDTO.toDTO(singleSession2);
+		SingleSession singleSession2 = persistenceManager.persistAll(singleSessionConverter.toModel(singleSession));
+		SingleSessionDTO dto = singleSessionConverter.toDTO(singleSession2);
 		return dto;
 	}
 
 	@Override
 	public void delete(SingleSessionDTO singleSession) {
 		service.delete(service.getById(singleSession.getId()));
+	}
+
+	@Override
+	public Collection<PatientDTO> getPatients() {
+		Collection<Patient> models = patientService.getAll();
+		Collection<PatientDTO> dtos = patientConverter.toDTOList(models);
+		return dtos;
+	}
+
+	@Override
+	public Collection<TherapistDTO> getTherapist() {
+		Collection<Therapist> models = therapistService.getAll();
+		Collection<TherapistDTO> dtos = therapistConverter.toDTOList(models);
+		return dtos;
+	}
+
+	@Override
+	public Collection<SessionType> getSessionTypes() {
+		return Arrays.asList(SessionType.values());
 	}
 	
 }

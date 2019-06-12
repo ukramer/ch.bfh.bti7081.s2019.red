@@ -17,12 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import ch.bfh.red.backend.models.Patient;
 import ch.bfh.red.backend.models.SingleSession;
 import ch.bfh.red.backend.repositories.SingleSessionRepository;
 import ch.bfh.red.common.BeanUtils;
+import ch.bfh.red.ui.dto.PatientDTO;
 import ch.bfh.red.ui.dto.SingleSessionSearchDTO;
-import ch.bfh.red.ui.views.SearchBean.PatientSearchBean;
 
 @Service("singleSessionService")
 public class SingleSessionService implements IService<SingleSession> {
@@ -94,7 +93,7 @@ public class SingleSessionService implements IService<SingleSession> {
 		Join<?, ?> patientJoin = root.join("patient");
 		List<Predicate> predicates = new ArrayList<>();
 		
-		final PatientSearchBean patientBean = searchBean.getPatient();
+		final PatientDTO patientBean = searchBean.getPatient();
 		if (patientBean != null) {
 			final String firstName = patientBean.getFirstName();
 			if (StringUtils.isNotBlank(firstName))

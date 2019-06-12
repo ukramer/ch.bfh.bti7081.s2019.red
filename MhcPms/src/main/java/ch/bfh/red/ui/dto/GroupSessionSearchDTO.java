@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class GroupSessionSearchDTO {
 	private PatientDTO patient;
-	private PatientDTO therapist;
+	private TherapistDTO therapist;
 	private Date startDate;
 	private Date endDate;
 	
@@ -18,11 +18,11 @@ public class GroupSessionSearchDTO {
 		this.patient = patient;
 	}
 
-	public PatientDTO getTherapist() {
+	public TherapistDTO getTherapist() {
 		return therapist;
 	}
 
-	public void setTherapist(PatientDTO therapist) {
+	public void setTherapist(TherapistDTO therapist) {
 		this.therapist = therapist;
 	}
 

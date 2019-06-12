@@ -71,13 +71,13 @@ public class TherapistDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		TherapistDTO other = (TherapistDTO) obj;
-		if (equalsOrNull(other, o -> o.getId()))
+		if (!equalsOrNull(other, o -> o.getId()))
 			return false;
-		if (equalsOrNull(other, o -> o.getPrefix()))
+		if (!equalsOrNull(other, o -> o.getPrefix()))
 			return false;
-		if (equalsOrNull(other, o -> o.getFirstName()))
+		if (!equalsOrNull(other, o -> o.getFirstName()))
 			return false;
-		if (equalsOrNull(other, o -> o.getLastName()))
+		if (!equalsOrNull(other, o -> o.getLastName()))
 			return false;
 		return true;
 	}

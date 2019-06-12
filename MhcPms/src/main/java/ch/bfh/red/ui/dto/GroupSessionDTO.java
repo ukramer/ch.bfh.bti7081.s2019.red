@@ -98,17 +98,17 @@ public class GroupSessionDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		GroupSessionDTO other = (GroupSessionDTO) obj;
-		if (equalsOrNull(other, o -> o.getId()))
+		if (!equalsOrNull(other, o -> o.getId()))
 			return false;
-		if (equalsOrNull(other, o -> o.getStartDate()))
+		if (!equalsOrNull(other, o -> o.getStartDate()))
 			return false;
-		if (equalsOrNull(other, o -> o.getEndDate()))
+		if (!equalsOrNull(other, o -> o.getEndDate()))
 			return false;
-		if (equalsOrNull(other, o -> o.getSessionType()))
+		if (!equalsOrNull(other, o -> o.getSessionType()))
 			return false;
-		if (equalsOrNullCollection(other, o -> o.getPatients()))
+		if (!equalsOrNullCollection(other, o -> o.getPatients()))
 			return false;
-		if (equalsOrNullCollection(other, o -> o.getTherapists()))
+		if (!equalsOrNullCollection(other, o -> o.getTherapists()))
 			return false;
 		return true;
 	}
