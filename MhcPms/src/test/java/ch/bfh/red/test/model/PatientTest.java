@@ -48,15 +48,6 @@ public class PatientTest extends StartupTest {
     }
 
     @Test
-    public void testPatientTherapist() {
-        assertTrue(patient1.getTherapists().isEmpty());
-
-        patient1.setTherapists(therapists);
-
-        assertFalse(patient1.getTherapists().isEmpty());
-    }
-
-    @Test
     public void testPatientSingleSession() {
         assertTrue(patient1.getSingleSessions().isEmpty());
 

@@ -110,8 +110,6 @@ public class TherapyTest extends StartupTest {
 
     @Test
     public void testTherapyState() {
-        assertFalse(therapy1.isFinished());
-
         therapy1.setFinished(true);
 
         assertTrue(therapy1.isFinished());
