@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Date;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -99,6 +100,6 @@ public class GroupSessionTest extends StartupTest {
 
     @Test
     public void testGroupSessionComparison() {
-        assertFalse(session1.equals(session2));
+        assertTrue(session1.equals(session2));
     }
 }

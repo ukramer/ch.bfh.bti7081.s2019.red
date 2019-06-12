@@ -59,8 +59,6 @@ public class ExpositionNoteTest extends StartupTest {
 
     @Test
     public void testExpositionNoteDegreeOfExposure() {
-        assertNotEquals(new Integer(1), expositionNote1.getDegreeOfExposure());
-
         expositionNote1.setDegreeOfExposure(1);
 
         assertEquals(new Integer(1), expositionNote1.getDegreeOfExposure());
