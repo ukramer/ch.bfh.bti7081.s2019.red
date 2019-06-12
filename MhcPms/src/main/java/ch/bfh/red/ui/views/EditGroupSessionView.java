@@ -109,9 +109,13 @@ public class EditGroupSessionView
 	
 	private Collection<TherapistDTO> therapists = new ArrayList<>();
 	
+	private boolean validating = false;
+	
 	@Autowired
 	public EditGroupSessionView(GroupSessionPresenter presenter) {
 		this.presenter = presenter;
+	
+		updateDTO();
 		
 		Collection<SessionType> sessionTypes = presenter.getSessionTypes();
 		
@@ -123,6 +127,7 @@ public class EditGroupSessionView
 		setTherapists(presenter.getTherapist());
 		updateSelectablePatients();
 		updateSelectableTherapists();
+		
 		
 		binder.forField(sessionTypeComboBox)
 				.asRequired("Auswahl leer")
@@ -241,6 +246,7 @@ public class EditGroupSessionView
 				presenter.save(dto);
 				Notification.show("Die Gruppensitzung wurde erfolgreich gespeichert.");
 			} catch (Exception e) {
+				e.printStackTrace();
 				Notification.show(e.getMessage());
 			}
 		} else {
@@ -273,7 +279,10 @@ public class EditGroupSessionView
 	}
 	
 	private void setDTO(GroupSessionDTO dto) {
+		validating = false;
+		
 		this.dto = dto;
+		updateDTO();
 		GroupSessionDTO clone = dto.clone();
 		binder.setBean(clone);
 		
@@ -290,6 +299,9 @@ public class EditGroupSessionView
 		
 		getModel().setPatients(dto.getPatients());
 		getModel().setTherapists(dto.getTherapists());
+		
+		validating = true;
+		updateChangedButtons(false);
 	}
 	
 	public void setPatients(Collection<PatientDTO> patients) {
@@ -327,28 +339,43 @@ public class EditGroupSessionView
 											Function<GroupSessionDTO, T> mapper) {
 		T mappedAttribute = null;
 		try {
-			mappedAttribute = mapper.apply(this.dto);
+			mappedAttribute = mapper.apply(dto);
 		} catch (NullPointerException e) {}
-		boolean changed = true;
-		if (mappedAttribute != null) {
-			changed = (this.dto != null
-					&& !mappedAttribute.equals(newValue));
-		}
+		boolean changed;
+		if (mappedAttribute == null && newValue == null)
+			changed = false;
+		else if (mappedAttribute == null || newValue == null)
+			changed = true;
+		else 
+			changed = mappedAttribute.equals(newValue);
 		updateChangedButtons(changed);
 	}
 	
 	private void updateChangedButtons(boolean changed) {
-		if (!changed && !hasValueChanged())
-			changedButtons.setVisible(false);
-		else
+		if (changed || hasValueChanged())
 			changedButtons.setVisible(true);
+		else
+			changedButtons.setVisible(false);
 	}
 	
 	private boolean hasValueChanged() {
 		if (this.dto == null)
 			return false;
 		GroupSessionDTO dto = getDTO();
-		return dto.equals(this.dto);
+		return !dto.equals(this.dto);
+	}
+	
+	/**
+	 * Workaround if therapist or patients are null
+	 * Better would be a null check in html with script
+	 */
+	private void updateDTO() {
+		if (dto == null)
+			dto = new GroupSessionDTO();
+		if (dto.getPatients() == null)
+			dto.setPatients(new ArrayList<>());
+		if (dto.getTherapists() == null)
+			dto.setTherapists(new ArrayList<>());
 	}
 	
 	public interface EditGroupSessionListener {
@@ -361,7 +388,7 @@ public class EditGroupSessionView
 		
 		GroupSessionDTO load(Integer therapyId);
 		
-		GroupSessionDTO save(GroupSessionDTO singleSession) throws Exception;
+		GroupSessionDTO save(GroupSessionDTO groupSession) throws Exception;
 		
 	}
 	
