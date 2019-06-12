@@ -74,7 +74,18 @@ public class GroupSession extends AbstractSession<GroupSession> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		return true;
+		GroupSession other = (GroupSession) obj;
+		if (patients == null) {
+			if (other.patients != null)
+				return false;
+		} else if (!patients.equals(other.patients))
+			return false;
+		if (therapists == null) {
+			if (other.therapists != null)
+				return false;
+		} else if (!therapists.equals(other.therapists))
+			return false;
+		return super.equals(obj);
 	}
 
 	@Override
