@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.flow.component.EventData;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -114,20 +115,21 @@ public class EditGroupSessionView
 	@Autowired
 	public EditGroupSessionView(GroupSessionPresenter presenter) {
 		this.presenter = presenter;
-	
+		
 		updateDTO();
 		
 		Collection<SessionType> sessionTypes = presenter.getSessionTypes();
 		
 		this.sessionTypeComboBox.setDataProvider(DataProvider.ofCollection(sessionTypes));
-		this.selectablePatients.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
-		this.selectableTherapists.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
+		this.selectablePatients
+				.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
+		this.selectableTherapists
+				.setDataProvider(DataProvider.ofCollection(new ArrayList<>()));
 		
 		setPatients(presenter.getPatients());
 		setTherapists(presenter.getTherapist());
 		updateSelectablePatients();
 		updateSelectableTherapists();
-		
 		
 		binder.forField(sessionTypeComboBox)
 				.asRequired("Auswahl leer")
@@ -137,21 +139,26 @@ public class EditGroupSessionView
 		openCreateMode();
 		
 		sessionTypeComboBox.addValueChangeListener(event -> {
+			if (validating)
 			updateChangedButtons(event.getValue(), dto -> dto.getSessionType());
 		});
 		startDatePicker.addValueChangeListener(event -> {
+			if (validating)
 			updateChangedButtons(event.getValue(),
 					dto -> DateTimeUtils.toLocalDate(dto.getStartDate()));
 		});
 		startTimePicker.addValueChangeListener(event -> {
+			if (validating)
 			updateChangedButtons(event.getValue(),
 					dto -> DateTimeUtils.toLocalTime(dto.getStartDate()));
 		});
 		endDatePicker.addValueChangeListener(event -> {
+			if (validating)
 			updateChangedButtons(event.getValue(),
 					dto -> DateTimeUtils.toLocalDate(dto.getEndDate()));
 		});
 		endTimePicker.addValueChangeListener(event -> {
+			if (validating)
 			updateChangedButtons(event.getValue(),
 					dto -> DateTimeUtils.toLocalTime(dto.getEndDate()));
 		});
@@ -161,18 +168,22 @@ public class EditGroupSessionView
 		
 		addPatientButton.addClickListener(event -> {
 			PatientDTO selectedPatient = selectablePatients.getValue();
-			List<PatientDTO> dtos = getModel().getPatients();
-			dtos.add(selectedPatient);
-			getModel().setPatients(new ArrayList<>(dtos));
-			updateSelectablePatients();
+			if (selectedPatient != null) {
+				List<PatientDTO> dtos = getModel().getPatients();
+				dtos.add(selectedPatient);
+				getModel().setPatients(new ArrayList<>(dtos));
+				updateSelectablePatients();
+			}
 		});
 		
 		addTherapistButton.addClickListener(event -> {
 			TherapistDTO selectedDTOs = selectableTherapists.getValue();
-			List<TherapistDTO> dtos = getModel().getTherapists();
-			dtos.add(selectedDTOs);
-			getModel().setTherapists(new ArrayList<>(dtos));
-			updateSelectableTherapists();
+			if (selectedDTOs != null) {
+				List<TherapistDTO> dtos = getModel().getTherapists();
+				dtos.add(selectedDTOs);
+				getModel().setTherapists(new ArrayList<>(dtos));
+				updateSelectableTherapists();
+			}
 		});
 		
 	}
@@ -212,6 +223,11 @@ public class EditGroupSessionView
 	public void navigatePatient(@ModelItem PatientDTO patient) {
 		UI.getCurrent().navigate(EditPatientView.class, patient.getId());
 	}
+	
+//	@EventHandler
+//    public void editGroupSession(@EventData("event.model.item.id") int id) {
+//    	UI.getCurrent().navigate(EditGroupSessionView.class, id);
+//    }
 	
 	public void openCreateMode() {
 		header.setText("Neue Gruppensitzung");
@@ -315,22 +331,23 @@ public class EditGroupSessionView
 	}
 	
 	public void updateSelectablePatients() {
-		updateSelectable(getModel().getPatients(), this.patients, 
+		updateSelectable(getModel().getPatients(), this.patients,
 				dtos -> this.selectablePatients.setItems(dtos));
 	}
 	
 	public void updateSelectableTherapists() {
-		updateSelectable(getModel().getTherapists(), this.therapists, 
+		updateSelectable(getModel().getTherapists(), this.therapists,
 				dtos -> this.selectableTherapists.setItems(dtos));
 	}
 	
-	private <T> void updateSelectable(Collection<T> selectedDTOs, Collection<T> allDTOs, Consumer<Collection<T>> selectableConsumer) {
+	private <T> void updateSelectable(  Collection<T> selectedDTOs, Collection<T> allDTOs,
+										Consumer<Collection<T>> selectableConsumer) {
 		Collection<T> selected = selectedDTOs;
 		Collection<T> all = allDTOs;
 		Set<T> selectable = new HashSet<>();
-		for (T dto: all)
+		for (T dto : all)
 			selectable.add(dto);
-		for (T dto: selected)
+		for (T dto : selected)
 			selectable.remove(dto);
 		selectableConsumer.accept(selectable);
 	}
@@ -346,7 +363,7 @@ public class EditGroupSessionView
 			changed = false;
 		else if (mappedAttribute == null || newValue == null)
 			changed = true;
-		else 
+		else
 			changed = mappedAttribute.equals(newValue);
 		updateChangedButtons(changed);
 	}
@@ -366,8 +383,8 @@ public class EditGroupSessionView
 	}
 	
 	/**
-	 * Workaround if therapist or patients are null
-	 * Better would be a null check in html with script
+	 * Workaround if therapist or patients are null Better would be a null check in
+	 * html with script
 	 */
 	private void updateDTO() {
 		if (dto == null)
@@ -401,13 +418,13 @@ public class EditGroupSessionView
 	 */
 	public interface EditGroupSessionModel extends TemplateModel {
 		
-		@Include({"id", "firstName", "lastName"})
+		@Include({ "id", "firstName", "lastName" })
 		@Encode(value = IntegerToStringEncoder.class, path = "id")
 		void setPatients(List<PatientDTO> patients);
 		
 		List<PatientDTO> getPatients();
 		
-		@Include({"id", "prefix", "firstName", "lastName"})
+		@Include({ "id", "prefix", "firstName", "lastName" })
 		@Encode(value = IntegerToStringEncoder.class, path = "id")
 		void setTherapists(List<TherapistDTO> therapists);
 		
