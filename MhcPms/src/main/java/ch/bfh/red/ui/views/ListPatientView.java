@@ -86,6 +86,7 @@ public class ListPatientView extends PolymerTemplate<ListPatientView.ListPatient
     public void beforeEnter(BeforeEnterEvent event) {
         resetView();
         patientPresenter.setView(this);
+        search();
     }
 
     @Override

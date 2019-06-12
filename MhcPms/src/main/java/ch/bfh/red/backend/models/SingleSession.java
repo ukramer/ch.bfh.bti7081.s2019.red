@@ -1,7 +1,5 @@
 package ch.bfh.red.backend.models;
 
-import org.hibernate.annotations.Cascade;
-
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -9,18 +7,16 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class SingleSession extends AbstractSession<SingleSession> {
-    
-    /**
-     * Removed therapist as leader from AbstractSession
-     */
-    private static final long serialVersionUID = 8992909023275704028L;
 
-    @ManyToOne
-	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
+    /**
+	 * Removed CascadeTypes
+	 */
+	private static final long serialVersionUID = 8992909023275704028L;
+
+	@ManyToOne
 	private Patient patient;
 	
 	@ManyToOne
-    @Cascade({org.hibernate.annotations.CascadeType.MERGE})
     private Therapist therapist;
 	
 	public SingleSession() {}

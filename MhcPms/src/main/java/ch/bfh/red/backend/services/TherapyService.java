@@ -138,7 +138,7 @@ public class TherapyService implements IService<Therapy> {
         return query.getResultList();
     }
 
-    private void applyFilter(Root<Therapy> therapy, CriteriaQuery cq, boolean finished, String firstName, String lastName, LocalDate startDate, LocalDate endDate) {
+    private void applyFilter(Root<Therapy> therapy, CriteriaQuery<?> cq, boolean finished, String firstName, String lastName, LocalDate startDate, LocalDate endDate) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(cb.equal(therapy.get("finished"), finished));

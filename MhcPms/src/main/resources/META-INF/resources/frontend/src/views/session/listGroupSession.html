@@ -1,0 +1,76 @@
+<!-- Dependency resources -->
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<!-- Added Web Component dependencies to make Vaadin Designer preview work -->
+<link rel="import" href="../../../bower_components/vaadin-text-field/vaadin-text-field.html">
+<link rel="import" href="../../../bower_components/vaadin-button/vaadin-button.html">
+<link rel="import" href="../../../bower_components/vaadin-grid/all-imports.html">
+<link rel="import" href="../../../bower_components/vaadin-select/vaadin-select.html">
+<link rel="import" href="../../../bower_components/vaadin-date-picker/vaadin-date-picker.html">
+<link rel="import" href="../../../bower_components/vaadin-form-layout/vaadin-form-layout.html">
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/badge.html">
+<!-- TODO Needed to show icons in Vaadin Designer preview mode for now, but can be removed soon -->
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/icons.html">
+
+<dom-module id="group-session-list">
+	<template>
+		<style include="lumo-color lumo-typography lumo-badge view-styles"></style>
+		<div class="view-container">
+	    	<h2 id="header"></h2>
+			
+			<vaadin-combo-box id="therapist" style="width:300px" label="Therapeut"></vaadin-combo-box>
+			<vaadin-combo-box id="patient" style="width:300px" label="Patient"></vaadin-combo-box>
+			<br/>
+			<vaadin-form-layout>
+				<vaadin-custom-field class="width-auto" label="Datumsbereich" on-change="dateFilter">
+                    <vaadin-date-picker label="Datumsbereich" id="startDate.date" on-change="startChanged"></vaadin-date-picker>
+                    <vaadin-date-picker id="endDate.date" on-change="endChanged"></vaadin-date-picker>
+                </vaadin-custom-field>
+			</vaadin-form-layout>
+			
+			<vaadin-button on-click="add" theme="success">Gruppensitzung hinzufügen</vaadin-button>
+			
+			<br/>
+			<div hidden="{{_isEmpty(groupSessions)}}">
+				<vaadin-grid theme="no-border" style="width:1100px" items="[[groupSessions]]">
+                    <vaadin-grid-sort-column header="Startdatum" flex-grow="100" path="startDate" direction="desc"></vaadin-grid-sort-column>
+                    <vaadin-grid-column header="Typ" path="sessionType"></vaadin-grid-column>
+                    <vaadin-grid-sort-column header="Patienten" flex-grow="800">
+                        <template>
+                            [[item.patients]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Therapeuten" flex-grow="300">
+                        <template>
+                            [[item.therapists]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="tertiary" on-click="edit"><iron-icon icon="vaadin:edit" flex-grow="2"></iron-icon></vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="error tertiary" on-click="delete"><iron-icon icon="vaadin:trash" flex-grow="2"></iron-icon></vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                </vaadin-grid>
+			</div>
+		</div>
+	</template>
+
+	<script>
+        class ListGroupSession extends Polymer.Element {
+            static get is() {
+                return 'group-session-list'
+            }
+            
+            _isEmpty(array) {
+                return array.length == 0;
+            }
+            
+        }
+        customElements.define(ListGroupSession.is, ListGroupSession);
+    </script> 
+
+</dom-module>

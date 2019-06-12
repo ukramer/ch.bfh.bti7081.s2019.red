@@ -45,7 +45,7 @@ public class SingleSessionPersistenceManager implements IPersistenceManager<Sing
 		if (classes.contains(Therapist.class))
 			therapistManager.persist(t.getTherapist(), new ArrayList<>(classes));
 //		if (classes.contains(TherapistNote.class))
-//			therapistNoteManager.persist(t.get, classes)
+//			therapistNoteManager.persist(t., classes)
 		return service.persist(t);
 	}
 	

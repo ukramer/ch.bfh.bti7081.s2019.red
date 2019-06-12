@@ -1,7 +1,5 @@
 package ch.bfh.red.backend.models;
 
-import org.hibernate.annotations.Cascade;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -20,7 +18,11 @@ import javax.persistence.TemporalType;
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class AbstractNote<T extends AbstractNote<T>> implements Comparable<T>, Serializable  {
-	private static final long serialVersionUID = 7401678212507566844L;
+
+	/**
+	 * Removed CascadeTypes
+	 */
+	private static final long serialVersionUID = 4718623058730732527L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -36,7 +38,6 @@ public abstract class AbstractNote<T extends AbstractNote<T>> implements Compara
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private Visibility visibility;
 
 	public AbstractNote() {}

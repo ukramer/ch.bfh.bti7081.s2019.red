@@ -159,7 +159,7 @@ public class EditPatientView extends PolymerTemplate<EditPatientView.EditPatient
 
     @EventHandler
     public void editGroupSession(@EventData("event.model.item.id") int id) {
-        System.out.println("edit group session with id: " + id);
+    	UI.getCurrent().navigate(EditGroupSessionView.class, id);
     }
 
     private void initBinder() {

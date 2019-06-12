@@ -9,11 +9,11 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 
-import ch.bfh.red.ui.views.EditGroupSessionView;
 import ch.bfh.red.ui.views.ExpositionView;
 import ch.bfh.red.ui.views.ListPatientView;
 import ch.bfh.red.ui.views.ListTherapyView;
 import ch.bfh.red.ui.views.ListSingleSessionView;
+import ch.bfh.red.ui.views.ListGroupSessionView;
 
 @Tag("div")
 public class NavigationComponent extends Component {
@@ -26,7 +26,7 @@ public class NavigationComponent extends Component {
         patientList.setHighlightCondition(HighlightConditions.sameLocation());
         add(patientList);
 
-        RouterLink editGroupSession = new RouterLink(null, EditGroupSessionView.class);
+        RouterLink editGroupSession = new RouterLink(null, ListGroupSessionView.class);
         editGroupSession.add(new Icon(VaadinIcon.PENCIL), new Text("Gruppensitzungen"));
         editGroupSession.addClassName("main-layout__nav-item");
         editGroupSession.setHighlightCondition(HighlightConditions.sameLocation());

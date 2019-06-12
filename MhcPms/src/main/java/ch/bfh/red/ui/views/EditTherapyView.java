@@ -122,7 +122,7 @@ public class EditTherapyView extends PolymerTemplate<EditTherapyView.TherapyMode
 
     @EventHandler
     public void showGroupSession(@ModelItem GroupSession groupSession) {
-        UI.getCurrent().navigate(EditGroupSessionView.class/*, groupSession.getId()*/); // @todo: correct after the session view is finished
+        UI.getCurrent().navigate(EditGroupSessionView.class, groupSession.getId());
     }
 
     @EventHandler

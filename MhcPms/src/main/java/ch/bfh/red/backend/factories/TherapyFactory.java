@@ -16,6 +16,7 @@ public class TherapyFactory extends AbstractFactory<Therapy> {
     private final Faker faker;
     private final TherapistFactory therapistFactory;
     private final PatientFactory patientFactory;
+    private final Random random = new Random();
 
     public TherapyFactory(){
         this(Locale.getDefault());
@@ -35,13 +36,16 @@ public class TherapyFactory extends AbstractFactory<Therapy> {
     }
     
     public Therapy create(Patient patient, Therapist therapist) {
-    	Random random = new Random();
         Date startDate =  faker.date().past(1000, TimeUnit.DAYS);
-        TherapyType therapyType =  TherapyType.values()[random.nextInt(TherapyType.values().length)];
+        TherapyType therapyType =  createTherapyType();
         Therapy therapy =  new Therapy(startDate, therapyType, patient, therapist);
         therapy.setFinished(random.nextBoolean());
         return therapy;
 
+    }
+    
+    public TherapyType createTherapyType() {
+    	return TherapyType.values()[random.nextInt(TherapyType.values().length)];
     }
     
 }
