@@ -1,0 +1,90 @@
+<!-- Dependency resources -->
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<!-- Added Web Component dependencies to make Vaadin Designer preview work -->
+<link rel="import" href="../../../bower_components/vaadin-text-field/src/vaadin-text-field.html">
+<link rel="import" href="../../../bower_components/vaadin-button/src/vaadin-button.html">
+<link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/badge.html">
+<!-- TODO Needed to show icons in Vaadin Designer preview mode for now, but can be removed soon -->
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/icons.html">
+
+<dom-module id="editpatient-element">
+    <template>
+        <style include="lumo-color lumo-typography lumo-badge view-styles"></style>
+        <div class="view-container">
+            <h2 id="header"></h2>
+            <vaadin-text-field id="firstName" label="Vorname" value="{{patient.firstName::input}}"></vaadin-text-field>
+            <vaadin-text-field id="lastName" label="Nachname" value="{{patient.lastName::input}}"></vaadin-text-field><br/>
+            <vaadin-text-field id="street" label="Strasse" value="{{patient.address.street::input}}"></vaadin-text-field>
+            <vaadin-text-field id="streetNr" label="Hausnummer" value="{{patient.address.streetNumber::input}}"></vaadin-text-field>
+            <vaadin-text-field id="postalCode" label="PLZ" value="{{patient.address.postalCode::input}}"></vaadin-text-field>
+            <vaadin-text-field id="city" label="Stadt" value="{{patient.address.city::input}}"></vaadin-text-field>
+            <br/><vaadin-button on-click="save">Speichern</vaadin-button>
+            <vaadin-button on-click="cancel">Abbrechen</vaadin-button>
+            <div hidden="{{_isEmpty(therapies)}}">
+                <h4>Therapien</h4>
+                <vaadin-grid id="gridTherapies" items=[[therapies]] theme="no-border" column-reordering-allowed multi-sort>
+                    <vaadin-grid-column>
+                        <template class="header">#</template>
+                        <template>[[index]]</template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-sort-column header="Startdatum" path="startDateAsLocalDate"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Therapy Name" path="therapyType"></vaadin-grid-sort-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="tertiary" on-click="editTherapy"><iron-icon icon="vaadin:edit"></iron-icon></vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                </vaadin-grid>
+            </div>
+            <div hidden="{{_isEmpty(singleSessions)}}">
+                <h4>Einzelsitzungen</h4>
+                <vaadin-grid id="gridSingleSessions" items=[[singleSessions]] theme="no-border" column-reordering-allowed multi-sort>
+                    <vaadin-grid-column>
+                        <template class="header">#</template>
+                        <template>[[index]]</template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-sort-column header="Startdatum" path="startDateAsLocalDate"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Enddatum" path="endDateAsLocalDate"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Bezeichnung" path="sessionType"></vaadin-grid-sort-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="tertiary" on-click="editSingleSession"><iron-icon icon="vaadin:edit"></iron-icon></vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                </vaadin-grid>
+            </div>
+            <div hidden="{{_isEmpty(groupSessions)}}">
+                <h4>Gruppensitzungen</h4>
+                <vaadin-grid id="gridGroupSessions" items=[[groupSessions]] theme="no-border" column-reordering-allowed multi-sort>
+                    <vaadin-grid-column>
+                        <template class="header">#</template>
+                        <template>[[index]]</template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-sort-column header="Startdatum" path="startDateAsLocalDate"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Enddatum" path="endDateAsLocalDate"></vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Bezeichnung" path="sessionType"></vaadin-grid-sort-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="tertiary" on-click="editGroupSession"><iron-icon icon="vaadin:edit"></iron-icon></vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                </vaadin-grid>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        class EditPersonElement extends Polymer.Element {
+            static get is() {
+                return 'editpatient-element'
+            }
+
+            _isEmpty(array) {
+                return array.length == 0;
+            }
+        }
+
+        customElements.define(EditPersonElement.is, EditPersonElement);
+    </script>
+</dom-module>

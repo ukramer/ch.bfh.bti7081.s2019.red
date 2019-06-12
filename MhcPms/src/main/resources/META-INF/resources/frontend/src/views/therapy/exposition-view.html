@@ -1,0 +1,104 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/vaadin-ordered-layout/src/vaadin-vertical-layout.html">
+<link rel="import" href="../../../bower_components/vaadin-ordered-layout/src/vaadin-horizontal-layout.html">
+<link rel="import" href="../../../bower_components/vaadin-button/src/vaadin-button.html">
+<link rel="import" href="../../../bower_components/vaadin-grid/all-imports.html">
+<link rel="import" href="../../../bower_components/vaadin-grid/src/vaadin-grid.html">
+<link rel="import" href="../../../bower_components/vaadin-grid/src/vaadin-grid-column.html">
+<link rel="import" href="../../../bower_components/vaadin-grid/src/vaadin-grid-column-group.html">
+<link rel="import" href="../../../bower_components/vaadin-ordered-layout/src/vaadin-horizontal-layout.html">
+<link rel="import" href="../../../bower_components/vaadin-ordered-layout/src/vaadin-vertical-layout.html">
+<link rel="import" href="../../../bower_components/vaadin-button/src/vaadin-button.html">
+<link rel="import" href="../../../bower_components/vaadin-select/vaadin-select.html">
+
+<dom-module id="exposition-view">
+    <template>
+        <style include="lumo-color lumo-typography lumo-badge view-styles"></style>
+        <vaadin-vertical-layout theme="spacing" id="vaadinVerticalLayout">
+            <h2 id="header"></h2>
+            <vaadin-form-layout>
+                <vaadin-select id="patient" label="Patient" placeholder="Nach Patient filtern">
+                    <template>
+                        <vaadin-list-box>
+                            <dom-repeat items="[[patients]]">
+                                <template>
+                                    <vaadin-item on-click="patientFilter">[[item.lastName]] [[item.firstName]]</vaadin-item>
+                                </template>
+                            </dom-repeat>
+                        </vaadin-list-box>
+                    </template>
+                </vaadin-select>
+            </vaadin-form-layout>
+            <vaadin-grid theme="no-border" style="width:1100px" items="[[expositions]]" id="vaadinGrid-expositions">
+                <vaadin-grid-column-group id="vaadinGridColumnGroup">
+                    <template class="header">
+                        Übersicht Expositionstherapie
+                    </template>
+                    <vaadin-grid-sort-column header = "Vorname" id="patientFirstNameColumn">
+                        <template>
+                            [[item.patient.firstName]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header="Nachname"  id="patientLastNameColumn" width="9em">
+                        <template>
+                            [[item.patient.lastName]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-column  id="expositionColumn" width="25em">
+                        <template class="header">
+                            Exposition
+                        </template>
+                        <template>
+                            [[item.text]]
+                        </template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-sort-column header ="Datum" id="dateColumn" width="9em" >
+                        <template>
+                            [[item.date]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-sort-column header ="Grad" id="degreeColumn" >
+                        <template>
+                            [[item.degreeOfExposure]]
+                        </template>
+                    </vaadin-grid-sort-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="tertiary" on-click="edit"><iron-icon icon="vaadin:edit"></iron-icon></vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="error tertiary" on-click="delete"><iron-icon icon="vaadin:trash"></iron-icon></vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                </vaadin-grid-column-group>
+            </vaadin-grid>
+            <vaadin-horizontal-layout theme="spacing" id="exp-layout">
+                <vaadin-button theme="primary" id="add-exp-btn" on-click="createExposition">
+                    Neue Exposition
+                </vaadin-button>
+            </vaadin-horizontal-layout>
+        </vaadin-vertical-layout>
+    </template>
+
+    <script>
+        class ExpositionView extends Polymer.Element {
+
+            static get is() {
+                return 'exposition-view';
+            }
+
+            _isEmpty(array) {
+                return array.length == 0;
+            }
+
+            static get properties() {
+                return {
+                    // Declare your properties here.
+                };
+            }
+        }
+        customElements.define(ExpositionView.is, ExpositionView);
+    </script>
+</dom-module>

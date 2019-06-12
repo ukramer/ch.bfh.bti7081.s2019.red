@@ -1,0 +1,100 @@
+<!-- Dependency resources -->
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<!-- Added Web Component dependencies to make Vaadin Designer preview work -->
+<link rel="import" href="../../../bower_components/vaadin-text-field/vaadin-text-field.html">
+<link rel="import" href="../../../bower_components/vaadin-button/vaadin-button.html">
+<link rel="import" href="../../../bower_components/vaadin-grid/all-imports.html">
+<link rel="import" href="../../../bower_components/vaadin-select/vaadin-select.html">
+<link rel="import" href="../../../bower_components/vaadin-date-picker/vaadin-date-picker.html">
+<link rel="import" href="../../../bower_components/vaadin-form-layout/vaadin-form-layout.html">
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/badge.html">
+<!-- TODO Needed to show icons in Vaadin Designer preview mode for now, but can be removed soon -->
+<link rel="import" href="../../../bower_components/vaadin-lumo-styles/icons.html">
+
+<dom-module id="therapy-list">
+    <template>
+        <style include="lumo-color lumo-typography lumo-badge view-styles"></style>
+        <div class="view-container">
+            <h2 id="header"></h2>
+
+            <div>Ohne zu filtern, werden nur die neusten 10 Therapien geladen.</div>
+            <vaadin-form-layout>
+                <vaadin-select id="patient" label="Patient" placeholder="Nach Patient filtern">
+                    <template>
+                        <vaadin-list-box>
+                            <dom-repeat items="[[patients]]">
+                                <template>
+                                    <vaadin-item on-click="patientFilter">[[item.lastName]] [[item.firstName]]</vaadin-item>
+                                </template>
+                            </dom-repeat>
+                        </vaadin-list-box>
+                    </template>
+                </vaadin-select>
+                <vaadin-custom-field class="width-auto" label="Datumsbereich" on-change="dateFilter">
+                    <vaadin-date-picker label="Datumsbereich" id="start" on-change="startChanged"></vaadin-date-picker>
+                    <vaadin-date-picker id="end" on-change="endChanged"></vaadin-date-picker>
+                </vaadin-custom-field>
+                <vaadin-checkbox id="showFinished" on-change="showFinished">Abgeschlossene Therapien anzeigen</vaadin-checkbox>
+            </vaadin-form-layout>
+
+            <div hidden="{{!_isEmpty(therapies)}}">
+                Keine passende Therapie gefunden.
+                <vaadin-button on-click="add" theme="success">Therapie hinzufügen</vaadin-button>
+            </div>
+
+            <div hidden="{{_isEmpty(therapies)}}">
+                <vaadin-button on-click="add" theme="success">Therapie hinzufügen</vaadin-button>
+                <vaadin-grid theme="no-border" items="[[therapies]]">
+                    <vaadin-grid-sort-column header="Startdatum" path="startDate" direction="desc"></vaadin-grid-sort-column>
+                    <vaadin-grid-column header="Patient">
+                        <template>
+                            [[item.patient.lastName]] [[item.patient.firstName]]
+                        </template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-column header="Therapeut">
+                        <template>
+                            [[item.therapist.academicTitle]] [[item.therapist.lastName]] [[item.therapist.firstName]]
+                        </template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="tertiary" on-click="edit"><iron-icon icon="vaadin:edit"></iron-icon></vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-column>
+                        <template>
+                            <vaadin-button theme="error tertiary" on-click="delete"><iron-icon icon="vaadin:trash"></vaadin-button>
+                        </template>
+                    </vaadin-grid-column>
+                </vaadin-grid>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        class TherapyList extends Polymer.Element {
+            static get is() {
+                return 'therapy-list'
+            }
+
+            _isEmpty(array) {
+                return array.length == 0;
+            }
+
+            startChanged() {
+                this.$.end.min = this.$.start.value;
+
+                // Open the second date picker when the user has selected a value
+                if (this.$.start.value)
+                {
+                    this.$.end.open();
+                }
+            }
+
+            endChanged() {
+                this.$.start.max = this.$.end.value;
+            }
+        }
+        customElements.define(TherapyList.is, TherapyList);
+    </script>
+</dom-module>
