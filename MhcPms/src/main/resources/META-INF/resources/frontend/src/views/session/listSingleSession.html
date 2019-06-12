@@ -17,8 +17,8 @@
 		<div class="view-container">
 	    	<h2 id="header"></h2>
 			
-			<vaadin-combo-box id="therapist" label="Therapeut"></vaadin-combo-box>
-			<vaadin-combo-box id="patient" label="Patient"></vaadin-combo-box>
+			<vaadin-combo-box id="therapist" style="width:300px" label="Therapeut"></vaadin-combo-box>
+			<vaadin-combo-box id="patient" style="width:300px" label="Patient"></vaadin-combo-box>
 			<br/>
 			<vaadin-form-layout>
 				<vaadin-custom-field class="width-auto" label="Datumsbereich" on-change="dateFilter">
@@ -32,6 +32,7 @@
 			<div hidden="{{_isEmpty(singleSessions)}}">
 				<vaadin-grid theme="no-border" items="[[singleSessions]]">
                     <vaadin-grid-sort-column header="Startdatum" path="startDate" direction="desc"></vaadin-grid-sort-column>
+                    <vaadin-grid-column header="Typ" path="sessionType"></vaadin-grid-column>
                     <vaadin-grid-sort-column header="Patient">
                         <template>
                             [[item.patient.lastName]] [[item.patient.firstName]]

@@ -224,11 +224,6 @@ public class EditGroupSessionView
 		UI.getCurrent().navigate(EditPatientView.class, patient.getId());
 	}
 	
-//	@EventHandler
-//    public void editGroupSession(@EventData("event.model.item.id") int id) {
-//    	UI.getCurrent().navigate(EditGroupSessionView.class, id);
-//    }
-	
 	public void openCreateMode() {
 		header.setText("Neue Gruppensitzung");
 		

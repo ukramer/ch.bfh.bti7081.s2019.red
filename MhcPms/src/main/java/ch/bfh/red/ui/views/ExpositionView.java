@@ -1,28 +1,20 @@
 package ch.bfh.red.ui.views;
 
-import ch.bfh.red.MainLayout;
-import ch.bfh.red.backend.models.Address;
-import ch.bfh.red.backend.models.ExpositionNote;
-import ch.bfh.red.backend.models.Patient;
-import ch.bfh.red.backend.models.Visibility;
-import ch.bfh.red.ui.components.ConfirmationDialog;
-import ch.bfh.red.ui.encoders.DateToStringEncoder;
-import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
-import ch.bfh.red.ui.presenters.ExpositionPresenter;
-import com.vaadin.flow.component.EventData;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.HtmlImport;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.polymertemplate.EventHandler;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.ModelItem;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
-import com.vaadin.flow.component.select.generated.GeneratedVaadinSelect;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.Route;
@@ -30,12 +22,14 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import com.vaadin.flow.templatemodel.Encode;
 import com.vaadin.flow.templatemodel.Include;
 import com.vaadin.flow.templatemodel.TemplateModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import ch.bfh.red.MainLayout;
+import ch.bfh.red.backend.models.ExpositionNote;
+import ch.bfh.red.backend.models.Patient;
+import ch.bfh.red.ui.components.ConfirmationDialog;
+import ch.bfh.red.ui.encoders.DateToStringEncoder;
+import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
+import ch.bfh.red.ui.presenters.ExpositionPresenter;
 
 
 @Route(value = "exposition", layout = MainLayout.class)
@@ -72,7 +66,6 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
         List<Patient> getPatients();
     }
 
-
     public interface ExpositionViewListener {
 
         void delete(ExpositionNote expositionNote);
@@ -92,24 +85,18 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
     public ExpositionView(ExpositionPresenter expositionPresenter) {
         this.expositionPresenter = expositionPresenter;
         this.layout.setSizeFull();
-
-
-
     }
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         this.expositionPresenter.setView(this);
         header.setText("Expositionen");
-
-
     }
 
     @Override
     public void setListener(ExpositionViewListener listener) {
         this.listener = listener;
     }
-
 
     public void setExpositions(List<ExpositionNote> expositions) {
         getModel().setExpositions(expositions);
@@ -149,12 +136,10 @@ public class ExpositionView extends PolymerTemplate<ExpositionView.ExpositionVie
         //listener.updateList();
     }
 
-
     @EventHandler
     private void createExposition() {
-
         UI.getCurrent().navigate(ExpositionDetailView.class);
-
     }
+    
 }
 

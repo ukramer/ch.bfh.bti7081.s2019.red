@@ -35,6 +35,7 @@ import com.vaadin.flow.templatemodel.TemplateModel;
 
 import ch.bfh.red.MainLayout;
 import ch.bfh.red.backend.models.Patient;
+import ch.bfh.red.backend.models.SessionType;
 import ch.bfh.red.backend.models.Therapist;
 import ch.bfh.red.common.DateTimeUtils;
 import ch.bfh.red.ui.components.ConfirmationDialog;
@@ -45,6 +46,7 @@ import ch.bfh.red.ui.dto.PatientDTO;
 import ch.bfh.red.ui.dto.TherapistDTO;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
+import ch.bfh.red.ui.encoders.SessionTypeToStringEncoder;
 import ch.bfh.red.ui.presenters.GroupSessionPresenter;
 
 @Route(value = "groupSession/list", layout = MainLayout.class)
@@ -188,7 +190,8 @@ public class ListGroupSessionView
 			String therapists = groupSession.getTherapists().stream()
 					.map(t -> t.getLastName())
 					.collect(Collectors.joining(", "));
-			gridList.add(new GroupSessionGridDTO(id, startDate, patients, therapists));
+			SessionType sessionType = groupSession.getSessionType();
+			gridList.add(new GroupSessionGridDTO(id, startDate, patients, therapists, sessionType));
 		}
 		
 		getModel().setGroupSessions(gridList);
@@ -220,8 +223,9 @@ public class ListGroupSessionView
 	
 	public interface ListGroupSessionModel extends TemplateModel {
 		
-		@Include({ "id", "startDate", "patients", "therapists" })
+		@Include({ "id", "startDate", "sessionType", "patients", "therapists" })
 		@Encode(value = IntegerToStringEncoder.class, path = "id")
+		@Encode(value = SessionTypeToStringEncoder.class, path="sessionType")
 		void setGroupSessions(List<GroupSessionGridDTO> groupSessions);
 		
 		List<GroupSessionGridDTO> getGroupSessions();

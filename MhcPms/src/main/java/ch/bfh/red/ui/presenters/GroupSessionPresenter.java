@@ -1,6 +1,5 @@
 package ch.bfh.red.ui.presenters;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -56,19 +55,6 @@ public class GroupSessionPresenter implements ListGroupSessionListener, EditGrou
 		List<GroupSession> models = service.getAll();
 		List<GroupSessionDTO> dtos = groupSessionConverter.toDTOList(models);
 		listView.setGroupSessions(dtos);
-//		List<Patient> patients = patientService.getAll();
-//		List<PersonDTO> patientsDTO = new ArrayList<>();
-//		for (Patient patient: patients) {
-//			patientsDTO.add(new PersonDTO(patient.getFirstName(), patient.getLastName()));
-//		}
-//		listView.setPatients(patientsDTO);
-//		
-//		List<Therapist> therapists = therapistService.getAll();
-//		List<TherapistDTO> therapistsDTO = new ArrayList<>();
-//		for (Therapist therapist: therapists) {
-//			therapistsDTO.add(new TherapistDTO(therapist.getAcademicTitle().getCode(), therapist.getFirstName(), therapist.getLastName()));
-//		}
-//		listView.setTherapists(therapistsDTO);
 	}
 	
 	@Override

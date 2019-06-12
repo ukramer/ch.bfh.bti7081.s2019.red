@@ -43,6 +43,7 @@ import ch.bfh.red.ui.dto.TherapistDTO;
 import ch.bfh.red.ui.encoders.AcademicTitleToStringEncoder;
 import ch.bfh.red.ui.encoders.DateToStringEncoder;
 import ch.bfh.red.ui.encoders.IntegerToStringEncoder;
+import ch.bfh.red.ui.encoders.SessionTypeToStringEncoder;
 import ch.bfh.red.ui.presenters.SingleSessionPresenter;
 
 @Route(value = "singleSession/list", layout = MainLayout.class)
@@ -201,13 +202,14 @@ public class ListSingleSessionView
     public interface ListSingleSessionModel extends TemplateModel {
         List<SingleSessionDTO> getSingleSessions();
 
-        @Include({"id", "startDate", "finished", "patient.firstName",
+        @Include({"id", "startDate", "sessionType", "finished", "patient.firstName",
                 "patient.lastName", "therapist.academicTitle", "therapist.firstName",
                 "therapist.lastName"})
         @Encode(value = IntegerToStringEncoder.class, path = "id")
         @Encode(value = AcademicTitleToStringEncoder.class,
                 path = "therapist.academicTitle")
         @Encode(value = DateToStringEncoder.class, path = "startDate")
+        @Encode(value = SessionTypeToStringEncoder.class, path="sessionType")
         void setSingleSessions(List<SingleSessionDTO> singleSessions);
     }
     

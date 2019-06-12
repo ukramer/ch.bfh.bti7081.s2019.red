@@ -16,16 +16,21 @@
 		<style include="lumo-color lumo-typography lumo-badge view-styles"></style>
 		<div class="view-container">
 			<h2 id="header"></h2>
-            <vaadin-combo-box id="therapist" label="Therapeut" value="{{singleSession.therapist::input}}"></vaadin-combo-box>
-            <vaadin-combo-box id="patient" label="Patient" value="{{singleSession.patient::input}}"></vaadin-combo-box>
-            <vaadin-combo-box id="sessionType" label="Typ" value="{{singleSession.sessionType::input}}"></vaadin-combo-box>
-            <br/>
+			<vaadin-combo-box id="sessionType" label="Typ" value="{{singleSession.sessionType::input}}"></vaadin-combo-box>
+			
+			<br/>
             <vaadin-date-picker id="startDate.date" label="Start Datum" value="{{startDate.date::input}}"></vaadin-date-picker>
             <vaadin-time-picker id="startDate.time" label="Start Zeit" value="{{startDate.time::input}}"></vaadin-time-picker>
             <br/>
             <vaadin-date-picker id="endDate.date" label="Abschluss Datum" value="{{endDate.date::input}}"></vaadin-date-picker>
             <vaadin-time-picker id="endDate.time" label="Abschluss Zeit" value="{{endDate.time::input}}"></vaadin-time-picker>
             <br/>
+            
+            <vaadin-combo-box id="therapist" label="Therapeut" style="width:300px" value="{{singleSession.therapist::input}}"></vaadin-combo-box>
+            <vaadin-combo-box id="patient" label="Patient" style="width:300px" value="{{singleSession.patient::input}}"></vaadin-combo-box>
+            
+            
+            
             <div id="changedButtons">
 	            <vaadin-button id="saveButton" theme="success">Speichern</vaadin-button>
 	            <vaadin-button id="cancelButton" theme="success">Abbrechen</vaadin-button>
