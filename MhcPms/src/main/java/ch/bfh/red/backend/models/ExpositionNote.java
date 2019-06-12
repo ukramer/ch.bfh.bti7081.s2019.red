@@ -1,17 +1,20 @@
 package ch.bfh.red.backend.models;
 
-import org.hibernate.annotations.Cascade;
-
 import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class ExpositionNote extends AbstractNote<ExpositionNote> {
+
+	/**
+	 * Removed CascadeTypes
+	 */
 	private static final long serialVersionUID = -3982221341929865452L;
 
 	@ManyToOne
-    @Cascade({org.hibernate.annotations.CascadeType.MERGE})
     Patient patient;
 
     @Column(nullable = false)

@@ -1,34 +1,33 @@
 package ch.bfh.red.backend.models;
 
-import org.hibernate.annotations.Cascade;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Patient extends AbstractPerson<Patient> {
-	private static final long serialVersionUID = -6431476383345860703L;
 
-    @OneToMany(mappedBy = "patient")
-    @Cascade({org.hibernate.annotations.CascadeType.MERGE, org.hibernate.annotations.CascadeType.REMOVE})
+    /**
+	 * Removed CascadeTypes
+	 */
+	private static final long serialVersionUID = 7882260288158996060L;
+
+	@OneToMany(mappedBy = "patient")
     private Collection<Therapy> therapies = new ArrayList<>();
 
     @OneToMany(mappedBy = "patient")
-    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Collection<SingleSession> singleSessions = new ArrayList<>();
 
     @ManyToMany(mappedBy = "patients")
-    @Cascade({org.hibernate.annotations.CascadeType.MERGE})
     private Collection<GroupSession> groupSessions = new ArrayList<>();
 
     @OneToMany(mappedBy = "patient")
-    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Collection<PatientNote> patientNotes = new ArrayList<>();
 
     @OneToMany(mappedBy = "patient")
-    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Collection<ExpositionNote> expositionNotes = new ArrayList<>();
 
     public Patient() {}

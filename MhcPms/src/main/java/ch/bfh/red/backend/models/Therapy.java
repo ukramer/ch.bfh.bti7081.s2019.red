@@ -19,15 +19,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.Cascade;
-
 @Entity
 public class Therapy implements Comparable<Therapy>, Serializable {
 
 	/**
-	 * Added attribute expositionNotes
+	 * Removed CascadeTypes
 	 */
-	private static final long serialVersionUID = -4519216661077289951L;
+	private static final long serialVersionUID = 7945812175821366873L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,35 +42,28 @@ public class Therapy implements Comparable<Therapy>, Serializable {
 	private TherapyType therapyType;
 	
 	@ManyToOne
-	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private Patient patient;
 	
 	@ManyToOne
-	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private Therapist therapist;
 
 	@OneToMany
 	@JoinColumn(name="THERAPY_ID") // necessary to avoid join table
-	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private List<SingleSession> singleSessions;
 
 	@ManyToMany
-	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private List<GroupSession> groupSessions;
 
 	@OneToMany
 	@JoinColumn(name="THERAPY_ID") // necessary to avoid join table
-	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private List<PatientNote> patientNotes;
 
 	@OneToMany
 	@JoinColumn(name="THERAPY_ID") // necessary to avoid join table
-	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private List<TherapistNote> therapistNotes;
 	
 	@OneToMany
 	@JoinColumn(name="THERAPY_ID") // necessary to avoid join table
-	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private List<ExpositionNote> expositionNotes;
 	
 	public Therapy() {}

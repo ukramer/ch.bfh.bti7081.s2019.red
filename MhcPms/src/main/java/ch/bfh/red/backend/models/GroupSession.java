@@ -7,26 +7,21 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 
-import org.hibernate.annotations.Cascade;
-
 @Entity
 public class GroupSession extends AbstractSession<GroupSession> {
 
-    /**
-	 * Removed patients and therapists in equals method for passing test
+	/**
+	 * Removed CascadeTypes
 	 */
-	private static final long serialVersionUID = 5737573157528543893L;
+	private static final long serialVersionUID = -4809341956248106723L;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private List<Patient> patients;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
-	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private List<Therapist> therapists;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
-	@Cascade({org.hibernate.annotations.CascadeType.MERGE})
 	private List<Therapy> therapies;
 
 	public GroupSession() {}
