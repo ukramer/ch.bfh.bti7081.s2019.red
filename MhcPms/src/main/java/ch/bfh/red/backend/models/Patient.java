@@ -7,27 +7,34 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Cascade;
+
 @Entity
 public class Patient extends AbstractPerson<Patient> {
 
-    /**
-	 * Removed CascadeTypes
-	 */
-	private static final long serialVersionUID = 7882260288158996060L;
+	/**
+     * Added CascadeType for fixing delete patient in patient list view
+     */
+    private static final long serialVersionUID = 7882260288158996060L;
 
-	@OneToMany(mappedBy = "patient")
+    @OneToMany(mappedBy = "patient")
+	@Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Collection<Therapy> therapies = new ArrayList<>();
 
     @OneToMany(mappedBy = "patient")
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Collection<SingleSession> singleSessions = new ArrayList<>();
 
     @ManyToMany(mappedBy = "patients")
+    @Cascade({org.hibernate.annotations.CascadeType.REMOVE})
     private Collection<GroupSession> groupSessions = new ArrayList<>();
 
     @OneToMany(mappedBy = "patient")
+    @Cascade({org.hibernate.annotations.CascadeType.DELETE})
     private Collection<PatientNote> patientNotes = new ArrayList<>();
 
     @OneToMany(mappedBy = "patient")
+    @Cascade({org.hibernate.annotations.CascadeType.DELETE})
     private Collection<ExpositionNote> expositionNotes = new ArrayList<>();
 
     public Patient() {}
